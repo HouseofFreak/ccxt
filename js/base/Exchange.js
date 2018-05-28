@@ -463,7 +463,7 @@ module.exports = class Exchange extends EventEmitter{
         }
     }
 
-    handleErrors (statusCode, statusText, url, method, requestHeaders, responseBody, json) {
+    handleErrors (statusCode, statusText, url, method, responseHeaders, responseBody, json) {
         // override me
     }
 
@@ -550,6 +550,7 @@ module.exports = class Exchange extends EventEmitter{
                 values.filter (market => 'base' in market)
                     .map (market => ({
                         id: market.baseId || market.base,
+                        numericId: (typeof market.baseNumericId !== 'undefined') ? market.baseNumericId : undefined,
                         code: market.base,
                         precision: market.precision ? (market.precision.base || market.precision.amount) : 8,
                     }))
@@ -557,6 +558,7 @@ module.exports = class Exchange extends EventEmitter{
                 values.filter (market => 'quote' in market)
                     .map (market => ({
                         id: market.quoteId || market.quote,
+                        numericId: (typeof market.quoteNumericId !== 'undefined') ? market.quoteNumericId : undefined,
                         code: market.quote,
                         precision: market.precision ? (market.precision.quote || market.precision.price) : 8,
                     }))
@@ -1097,14 +1099,15 @@ module.exports = class Exchange extends EventEmitter{
         }
     }
 
-    ymd (timestamp, infix = ' ') {
+    ymd (timestamp, infix = '-') {
+        infix = infix || ''
         let date = new Date (timestamp)
-        let Y = date.getUTCFullYear ()
+        let Y = date.getUTCFullYear ().toString ()
         let m = date.getUTCMonth () + 1
         let d = date.getUTCDate ()
-        m = m < 10 ? ('0' + m) : m
-        d = d < 10 ? ('0' + d) : d
-        return Y + '-' + m + '-' + d
+        m = m < 10 ? ('0' + m) : m.toString ()
+        d = d < 10 ? ('0' + d) : d.toString ()
+        return Y + infix + m + infix + d
     }
 
     ymdhms (timestamp, infix = ' ') {

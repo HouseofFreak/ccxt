@@ -69,6 +69,7 @@ class coinone extends Exchange {
                 'ETH/KRW' => array ( 'id' => 'eth', 'symbol' => 'ETH/KRW', 'base' => 'ETH', 'quote' => 'KRW', 'baseId' => 'eth', 'quoteId' => 'krw' ),
                 'IOTA/KRW' => array ( 'id' => 'iota', 'symbol' => 'IOTA/KRW', 'base' => 'IOTA', 'quote' => 'KRW', 'baseId' => 'iota', 'quoteId' => 'krw' ),
                 'LTC/KRW' => array ( 'id' => 'ltc', 'symbol' => 'LTC/KRW', 'base' => 'LTC', 'quote' => 'KRW', 'baseId' => 'ltc', 'quoteId' => 'krw' ),
+                'OMG/KRW' => array ( 'id' => 'omg', 'symbol' => 'OMG/KRW', 'base' => 'OMG', 'quote' => 'KRW', 'baseId' => 'omg', 'quoteId' => 'krw' ),
                 'QTUM/KRW' => array ( 'id' => 'qtum', 'symbol' => 'QTUM/KRW', 'base' => 'QTUM', 'quote' => 'KRW', 'baseId' => 'qtum', 'quoteId' => 'krw' ),
                 'XRP/KRW' => array ( 'id' => 'xrp', 'symbol' => 'XRP/KRW', 'base' => 'XRP', 'quote' => 'KRW', 'baseId' => 'xrp', 'quoteId' => 'krw' ),
             ),
@@ -113,10 +114,15 @@ class coinone extends Exchange {
     public function fetch_balance ($params = array ()) {
         $response = $this->privatePostAccountBalance ();
         $result = array ( 'info' => $response );
-        $ids = is_array ($response) ? array_keys ($response) : array ();
+        $balances = $this->omit ($response, array (
+            'errorCode',
+            'result',
+            'normalWallets',
+        ));
+        $ids = is_array ($balances) ? array_keys ($balances) : array ();
         for ($i = 0; $i < count ($ids); $i++) {
             $id = $ids[$i];
-            $balance = $response[$id];
+            $balance = $balances[$id];
             $code = strtoupper ($id);
             if (is_array ($this->currencies_by_id) && array_key_exists ($id, $this->currencies_by_id))
                 $code = $this->currencies_by_id[$id]['code'];
@@ -271,10 +277,10 @@ class coinone extends Exchange {
             $this->check_required_credentials();
             $url .= $this->version . '/' . $request;
             $nonce = (string) $this->nonce ();
-            $json = $this->json (array (
+            $json = $this->json (array_merge (array (
                 'access_token' => $this->apiKey,
                 'nonce' => $nonce,
-            ));
+            ), $params));
             $payload = base64_encode ($this->encode ($json));
             $body = $this->decode ($payload);
             $secret = strtoupper ($this->secret);

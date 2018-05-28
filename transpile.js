@@ -119,6 +119,7 @@ const commonRegexes = [
     [ /\.checkAddress\s/g, '.check_address'],
     [ /\.convertTradingViewToOHLCV\s/g, '.convert_trading_view_to_ohlcv'],
     [ /\.convertOHLCVToTradingView\s/g, '.convert_ohlcv_to_trading_view'],
+    [ /\.signBodyWithSecret\s/g, '.sign_body_with_secret'],
 ]
 
 // ----------------------------------------------------------------------------
@@ -169,6 +170,7 @@ const pythonRegexes = [
         [ /\}\s*else\s*\{/g, 'else:' ],
         [ /else\s*[\n]/g, "else:\n" ],
         [ /for\s+\(([a-zA-Z0-9_]+)\s*=\s*([^\;\s]+\s*)\;[^\<\>\=]+(?:\<=|\>=|<|>)\s*(.*)\.length\s*\;[^\)]+\)\s*{/g, 'for $1 in range($2, len($3)):'],
+        [ /for\s+\(([a-zA-Z0-9_]+)\s*=\s*([^\;\s]+\s*)\;[^\<\>\=]+(?:\<=|\>=|<|>)\s*(.*)\s*\;[^\)]+\)\s*{/g, 'for $1 in range($2, $3):'],
         [ /\s\|\|\s/g, ' or ' ],
         [ /\s\&\&\s/g, ' and ' ],
         [ /\!([^\=])/g, 'not $1'],
@@ -265,6 +267,7 @@ const pythonRegexes = [
         [ '([^a-z]+) (' + Object.keys (errors).join ('|') + ')([^\\s])', "$1 '\\\\ccxt\\\\$2'$3" ],
         [ /\}\s+catch \(([\S]+)\) {/g, '} catch (Exception $$$1) {' ],
         [ /for\s+\(([a-zA-Z0-9_]+)\s*=\s*([^\;\s]+\s*)\;[^\<\>\=]+(\<=|\>=|<|>)\s*(.*)\.length\s*\;([^\)]+)\)\s*{/g, 'for ($1 = $2; $1 $3 count ($4);$5) {' ],
+        [ /for\s+\(([a-zA-Z0-9_]+)\s*=\s*([^\;\s]+\s*)\;[^\<\>\=]+(\<=|\>=|<|>)\s*(.*)\s*\;([^\)]+)\)\s*{/g, 'for ($1 = $2; $1 $3 $4;$5) {' ],
         [ /([^\s]+)\.length\;/g, 'is_array ($1) ? count ($1) : 0;' ],
         [ /([^\s\(]+)\.length/g, 'strlen ($1)' ],
         [ /\.push\s*\(([\s\S]+?)\)\;/g, '[] = $1;' ],
@@ -295,7 +298,7 @@ const pythonRegexes = [
         [ /this\[([^\]+]+)\]/g, '$$this->$$$1' ],
         [ /([^\s\(]+).slice \(([^\)\:]+)\)/g, 'mb_substr ($1, $2)' ],
         [ /([^\s\(]+).slice \(([^\,\)]+)\,\s*([^\)]+)\)/g, 'mb_substr ($1, $2, $3)' ],
-        [ /([^\s\(]+).split \(([^\,]+?)\)/g, 'explode ($2, $1)' ],
+        [ /([^\s\(]+).split \(('[^']*'|[^\,]+?)\)/g, 'explode ($2, $1)' ],
         [ /Math\.floor\s*\(([^\)]+)\)/g, '(int) floor ($1)' ],
         [ /Math\.abs\s*\(([^\)]+)\)/g, 'abs ($1)' ],
         [ /Math\.round\s*\(([^\)]+)\)/g, '(int) round ($1)' ],
