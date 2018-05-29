@@ -380,8 +380,10 @@ module.exports = class Exchange extends EventEmitter{
 
     defineAsyncConnection (asyncConfig) {
         if (asyncConfig.type === 'ws') {
-            this.asyncConnection = new WebsocketConnection (asyncConfig, this.timeout);
-            this.asyncInitialize();
+            if (typeof asyncConfig.autoconnect === 'undefined' || asyncConfig.autoconnect === true) {
+                this.asyncConnection = new WebsocketConnection (asyncConfig, this.timeout);
+                this.asyncInitialize();
+            }
         }
     }
 
@@ -1218,11 +1220,11 @@ module.exports = class Exchange extends EventEmitter{
         } else {
             ret['bids'] = ob.bids.slice (0, limit);
             ret['asks'] = ob.asks.slice (0, limit);
-            
         }
+
         return ret;
     }
-    
+
     asyncFetchOrderBook (symbol, limit = undefined) {
         return this.timeoutPromise (new Promise (async (resolve, reject) => {
             try {
@@ -1262,5 +1264,66 @@ module.exports = class Exchange extends EventEmitter{
             }
         });
         return this.timeoutPromise (promise, 'asyncSubscribeOrderBook');
+    }
+
+    asyncFetchTicker (symbol, limit = undefined) {
+        return this.timeoutPromise (new Promise (async (resolve, reject) => {
+            try {
+                await this.asyncConnect ();
+                if (this.asyncContext.ticker[symbol] !== undefined) {
+                    resolve (this.asyncContext.ticker[symbol], limit);
+                    return;
+                }
+                // let f = (symbolR, ob) => {
+                //     if (symbolR === symbol) {
+                //         this.removeListener (f);
+                //         resolve (this._cloneOrderBook (ob, limit));
+                //     }
+                // }
+                // this.on ('ob', f);
+            } catch (ex) {
+                reject (ex);
+            }
+        }), 'asyncFetchTicker');
+    }
+
+    asyncSubscribeTickers () {
+        let promise = new Promise (async (resolve, reject) => {
+            try {
+                await this.asyncConnect ();
+
+                this.once ('ticker', (success, data) => {
+                    if (success) {
+                        resolve (data);
+                    } else {
+                        reject (data);
+                    }
+                });
+                this._asyncSubscribeTickers ();
+            } catch (ex) {
+                reject (ex);
+            }
+        });
+        return this.timeoutPromise (promise, 'asyncSubscribeTickers');
+    }
+
+    asyncSubscribeTicker (symbol) {
+        let promise = new Promise (async (resolve, reject) => {
+            try {
+                await this.asyncConnect ();
+
+                this.once ('ticker', (success, data) => {
+                    if (success) {
+                        resolve (data);
+                    } else {
+                        reject (data);
+                    }
+                });
+                this._asyncSubscribeTicker (symbol);
+            } catch (ex) {
+                reject (ex);
+            }
+        });
+        return this.timeoutPromise (promise, 'asyncSubscribeTicker');
     }
 }
