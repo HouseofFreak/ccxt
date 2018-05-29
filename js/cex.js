@@ -83,7 +83,7 @@ module.exports = class cex extends Exchange {
             'async': {
                 'type': 'ws',
                 'url': 'wss://ws.cex.io/ws/',
-                'wait4readyEvent': 'auth',
+                'wait4readyEvent': undefined,
             },
             'fees': {
                 'trading': {
@@ -556,6 +556,7 @@ module.exports = class cex extends Exchange {
         let e = this.safeString (msg, 'e');
         let oid = this.safeString (msg, 'oid');
         let resData = this.safeValue (msg, 'data', {});
+
         if (e === 'connected') {
             this.asyncSendJson (this._asyncAuthPayload ());
         } else if (e === 'auth') {
@@ -593,6 +594,13 @@ module.exports = class cex extends Exchange {
                 this.asyncContext['ob'][symbol] = ob;
                 this.emit ('ob', symbol, ob);
             }
+        } else if (e === 'tick') {
+            let symbol = [ resData['symbol1'], resData['symbol2'] ].join ('/');
+
+            this.asyncContext['ticker'][symbol] = resData;
+            this.emit ('ticker', symbol, resData);
+        } else {
+            console.log('_asyncOnMsg//rnadom', e, resData);
         }
     }
 
@@ -619,5 +627,16 @@ module.exports = class cex extends Exchange {
             },
             'oid': nonce,
         });
+    }
+
+    _asyncSubscribeTickers (symbol) {
+        let payload = {
+            'e': 'subscribe',
+            'rooms': [
+                "tickers"
+            ]
+        };
+
+        this.asyncSendJson (payload);
     }
 };
