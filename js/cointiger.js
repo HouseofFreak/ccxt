@@ -258,15 +258,8 @@ module.exports = class cointiger extends huobipro {
         return this.parseTicker (response[marketId], market);
     }
 
-    async transformMarketsByUppercaseId () {
-        await this.loadMarkets ();
-        if (typeof this.options['marketsByUppercaseId'] === 'undefined') {
-            this.options['marketsByUppercaseId'] = this.indexBy (this.markets, 'uppercaseId');
-        }
-    }
-
     async fetchTickers (symbols = undefined, params = {}) {
-        await this.transformMarketsByUppercaseId ();
+        await this.loadMarkets ();
         let response = await this.exchangeGetApiPublicMarketDetail (params);
         let result = {};
         let ids = Object.keys (response);
@@ -277,7 +270,6 @@ module.exports = class cointiger extends huobipro {
             if (id in this.options['marketsByUppercaseId']) {
                 // this endpoint returns uppercase ids
                 symbol = this.options['marketsByUppercaseId'][id]['symbol'];
-                market = this.options['marketsByUppercaseId'][id];
             }
             result[symbol] = this.parseTicker (response[id], market);
         }
