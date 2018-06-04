@@ -169,6 +169,7 @@ module.exports = class Exchange {
         // }
 
         this.options = {} // exchange-specific options, if any
+        this.fetchOptions = {} // fetch implementation options (JS only)
 
         this.userAgents = {
             'chrome': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36',
@@ -314,7 +315,7 @@ module.exports = class Exchange {
         this.executeRestRequest = function (url, method = 'GET', headers = undefined, body = undefined) {
 
             let promise =
-                fetchImplementation (url, { method, headers, body, 'agent': this.agent || null, timeout: this.timeout })
+                fetchImplementation (url, this.extend ({ method, headers, body, 'agent': this.agent || null, timeout: this.timeout }, this.fetchOptions))
                     .catch (e => {
                         if (isNode)
                             throw new ExchangeNotAvailable ([ this.id, method, url, e.type, e.message ].join (' '))
@@ -1057,6 +1058,17 @@ module.exports = class Exchange {
             'rate': rate,
             'cost': parseFloat (this.feeToPrecision (symbol, rate * cost)),
         }
+    }
+
+    mdy (timestamp, infix = '-') {
+        infix = infix || ''
+        let date = new Date (timestamp)
+        let Y = date.getUTCFullYear ().toString ()
+        let m = date.getUTCMonth () + 1
+        let d = date.getUTCDate ()
+        m = m < 10 ? ('0' + m) : m.toString ()
+        d = d < 10 ? ('0' + d) : d.toString ()
+        return m + infix + d + infix + y
     }
 
     ymd (timestamp, infix = '-') {
