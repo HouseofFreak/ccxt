@@ -200,7 +200,8 @@ module.exports = class gatecoin extends Exchange {
                 '1005': InsufficientFunds,
                 '1008': OrderNotFound,
                 '1057': InvalidOrder,
-                '1044': OrderNotFound, // already canceled
+                '1044': OrderNotFound, // already canceled,
+                '1054': OrderNotFound, // already executed
             },
         });
     }
@@ -450,9 +451,8 @@ module.exports = class gatecoin extends Exchange {
                 throw new AuthenticationError (this.id + ' two-factor authentication requires a missing ValidationCode parameter');
         }
         let response = await this.privatePostTradeOrders (this.extend (order, params));
-        // At this point response.responseStatus.message has been verified
-        // in handleErrors() to be == 'OK', so we assume the order has
-        // indeed been opened.
+        // At this point response['responseStatus']['message'] has been verified in handleErrors ()
+        // to be == 'OK', so we assume the order has indeed been opened
         return {
             'info': response,
             'status': 'open',

@@ -8,10 +8,8 @@ const assert = require ('assert');
 
 // assert (numberToString (-7.9e-7) === '-0.0000007899999999999999');
 // assert (numberToString ( 7.9e-7) ===  '0.0000007899999999999999');
-
 // assert (numberToString (-12.345) === '-12.345');
 // assert (numberToString ( 12.345) === '12.345');
-
 // assert (numberToString (0) === '0');
 
 // ----------------------------------------------------------------------------
@@ -43,17 +41,20 @@ assert (decimalToPrecision ('0.000123456', TRUNCATE, 5, SIGNIFICANT_DIGITS) === 
 assert (decimalToPrecision ('0.000123456', TRUNCATE, 2, SIGNIFICANT_DIGITS) === '0.00012');
 assert (decimalToPrecision ('0.000123456', TRUNCATE, 1, SIGNIFICANT_DIGITS) === '0.0001');
 
-assert (decimalToPrecision ('123.0000987654', TRUNCATE, 10, SIGNIFICANT_DIGITS) === '123.0000987');
+assert (decimalToPrecision ('123.0000987654', TRUNCATE, 10, SIGNIFICANT_DIGITS, PAD_WITH_ZERO) === '123.0000987');
 assert (decimalToPrecision ('123.0000987654', TRUNCATE, 8, SIGNIFICANT_DIGITS) === '123.00009');
-assert (decimalToPrecision ('123.0000987654', TRUNCATE, 7, SIGNIFICANT_DIGITS) === '123');
 assert (decimalToPrecision ('123.0000987654', TRUNCATE, 7, SIGNIFICANT_DIGITS, PAD_WITH_ZERO) === '123.0000');
+assert (decimalToPrecision ('123.0000987654', TRUNCATE, 6, SIGNIFICANT_DIGITS) === '123');
+assert (decimalToPrecision ('123.0000987654', TRUNCATE, 5, SIGNIFICANT_DIGITS, PAD_WITH_ZERO) === '123.00');
+assert (decimalToPrecision ('123.0000987654', TRUNCATE, 4, SIGNIFICANT_DIGITS) === '123');
 assert (decimalToPrecision ('123.0000987654', TRUNCATE, 4, SIGNIFICANT_DIGITS, PAD_WITH_ZERO) === '123.0');
-
+assert (decimalToPrecision ('123.0000987654', TRUNCATE, 3, SIGNIFICANT_DIGITS, PAD_WITH_ZERO) === '123');
 assert (decimalToPrecision ('123.0000987654', TRUNCATE, 2, SIGNIFICANT_DIGITS) === '120');
 assert (decimalToPrecision ('123.0000987654', TRUNCATE, 1, SIGNIFICANT_DIGITS) === '100');
 assert (decimalToPrecision ('123.0000987654', TRUNCATE, 1, SIGNIFICANT_DIGITS, PAD_WITH_ZERO) === '100');
 
-assert (decimalToPrecision ('0', TRUNCATE, 0, SIGNIFICANT_DIGITS) === '0');
+assert (decimalToPrecision ('1234.69', TRUNCATE, 0, SIGNIFICANT_DIGITS) === '0');
+assert (decimalToPrecision ('1234.69', TRUNCATE, 0, SIGNIFICANT_DIGITS, PAD_WITH_ZERO) === '0');
 
 // ----------------------------------------------------------------------------
 // testDecimalToPrecisionRoundingToNDigitsAfterDot

@@ -393,6 +393,7 @@ module.exports = class livecoin extends Exchange {
             'OPEN': 'open',
             'PARTIALLY_FILLED': 'open',
             'EXECUTED': 'closed',
+            'CANCELLED': 'canceled',
             'PARTIALLY_FILLED_AND_CANCELLED': 'canceled',
         };
         if (status in statuses)
@@ -432,7 +433,8 @@ module.exports = class livecoin extends Exchange {
         let type = undefined;
         let side = undefined;
         if ('type' in order) {
-            let orderType = order['type'].toLowerCase ().split ('_');
+            let lowercaseType = order['type'].toLowerCase ();
+            let orderType = lowercaseType.split ('_');
             type = orderType[0];
             side = orderType[1];
         }
@@ -446,21 +448,12 @@ module.exports = class livecoin extends Exchange {
             filled = amount - remaining;
         }
         let cost = undefined;
-        if (status === 'open') {
-            if (typeof filled !== 'undefined' && typeof amount !== 'undefined' && typeof price !== 'undefined') {
-                cost = amount * price;
-            }
-        } else if (status === 'closed' || status === 'canceled') {
-            if (typeof filled !== 'undefined' && typeof price !== 'undefined') {
-                cost = filled * price;
-            }
-        }
-        if (typeof cost !== 'undefined') {
-            return undefined;
+        if (typeof filled !== 'undefined' && typeof price !== 'undefined') {
+            cost = filled * price;
         }
         const feeRate = this.safeFloat (order, 'commission_rate');
         let feeCost = undefined;
-        if (typeof cost !== 'undefined') {
+        if (typeof cost !== 'undefined' && typeof feeRate !== 'undefined') {
             feeCost = cost * feeRate;
         }
         let feeCurrency = undefined;

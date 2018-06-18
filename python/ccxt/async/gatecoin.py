@@ -217,7 +217,8 @@ class gatecoin (Exchange):
                 '1005': InsufficientFunds,
                 '1008': OrderNotFound,
                 '1057': InvalidOrder,
-                '1044': OrderNotFound,  # already canceled
+                '1044': OrderNotFound,  # already canceled,
+                '1054': OrderNotFound,  # already executed
             },
         })
 
@@ -447,9 +448,8 @@ class gatecoin (Exchange):
             else:
                 raise AuthenticationError(self.id + ' two-factor authentication requires a missing ValidationCode parameter')
         response = await self.privatePostTradeOrders(self.extend(order, params))
-        # At self point response.responseStatus.message has been verified
-        # in handleErrors() to be == 'OK', so we assume the order has
-        # indeed been opened.
+        # At self point response['responseStatus']['message'] has been verified in handleErrors()
+        # to be == 'OK', so we assume the order has indeed been opened
         return {
             'info': response,
             'status': 'open',

@@ -394,6 +394,7 @@ class livecoin extends Exchange {
             'OPEN' => 'open',
             'PARTIALLY_FILLED' => 'open',
             'EXECUTED' => 'closed',
+            'CANCELLED' => 'canceled',
             'PARTIALLY_FILLED_AND_CANCELLED' => 'canceled',
         );
         if (is_array ($statuses) && array_key_exists ($status, $statuses))
@@ -433,7 +434,8 @@ class livecoin extends Exchange {
         $type = null;
         $side = null;
         if (is_array ($order) && array_key_exists ('type', $order)) {
-            $orderType = strtolower (explode ('_', $order['type']));
+            $lowercaseType = strtolower ($order['type']);
+            $orderType = explode ('_', $lowercaseType);
             $type = $orderType[0];
             $side = $orderType[1];
         }
@@ -447,21 +449,12 @@ class livecoin extends Exchange {
             $filled = $amount - $remaining;
         }
         $cost = null;
-        if ($status === 'open') {
-            if ($filled !== null && $amount !== null && $price !== null) {
-                $cost = $amount * $price;
-            }
-        } else if ($status === 'closed' || $status === 'canceled') {
-            if ($filled !== null && $price !== null) {
-                $cost = $filled * $price;
-            }
-        }
-        if ($cost !== null) {
-            return null;
+        if ($filled !== null && $price !== null) {
+            $cost = $filled * $price;
         }
         $feeRate = $this->safe_float($order, 'commission_rate');
         $feeCost = null;
-        if ($cost !== null) {
+        if ($cost !== null && $feeRate !== null) {
             $feeCost = $cost * $feeRate;
         }
         $feeCurrency = null;
@@ -649,7 +642,7 @@ class livecoin extends Exchange {
     }
 
     public function handle_errors ($code, $reason, $url, $method, $headers, $body) {
-        if (gettype ($body) != 'string')
+        if (gettype ($body) !== 'string')
             return;
         if ($body[0] === '{') {
             $response = json_decode ($body, $as_associative_array = true);
