@@ -202,8 +202,8 @@ module.exports = class lykke extends Exchange {
             'change': undefined,
             'percentage': undefined,
             'average': undefined,
-            'baseVolume': parseFloat (ticker['volume24H']) / close,
-            'quoteVolume': parseFloat (ticker['volume24H']),
+            'baseVolume': parseFloat (ticker['volume24H']),
+            'quoteVolume': undefined,
             'info': ticker,
         };
     }
