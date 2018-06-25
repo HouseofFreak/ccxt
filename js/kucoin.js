@@ -412,7 +412,6 @@ module.exports = class kucoin extends Exchange {
             'currency': code,
             'address': address,
             'tag': tag,
-            'status': 'ok',
             'info': response,
         };
     }
@@ -440,7 +439,6 @@ module.exports = class kucoin extends Exchange {
                 'info': currency,
                 'name': currency['name'],
                 'active': active,
-                'status': 'ok',
                 'fee': currency['withdrawMinFee'], // todo: redesign
                 'precision': precision,
                 'limits': {
@@ -686,12 +684,17 @@ module.exports = class kucoin extends Exchange {
     }
 
     async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        if (!symbol)
-            throw new ExchangeError (this.id + ' fetchOpenOrders requires a symbol');
         await this.loadMarkets ();
-        let market = this.market (symbol);
+        let marketId = undefined;
+        let market = undefined;
+        if (typeof symbol !== 'undefined') {
+            market = this.market (symbol);
+            marketId = market['id'];
+        } else {
+            marketId = '';
+        }
         let request = {
-            'symbol': market['id'],
+            'symbol': marketId,
         };
         let response = await this.privateGetOrderActiveMap (this.extend (request, params));
         let sell = this.safeValue (response['data'], 'SELL');

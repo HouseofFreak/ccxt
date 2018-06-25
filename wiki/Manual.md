@@ -53,7 +53,7 @@ Full public and private HTTP REST APIs for all exchanges are implemented. WebSoc
 
 # Exchanges
 
-The ccxt library currently supports the following 119 cryptocurrency exchange markets and trading APIs:
+The ccxt library currently supports the following 121 cryptocurrency exchange markets and trading APIs:
 
 |                                                                                                                           | id                 | name                                                                         | ver | doc                                                                                          | countries                               |
 |---------------------------------------------------------------------------------------------------------------------------|--------------------|------------------------------------------------------------------------------|:---:|:--------------------------------------------------------------------------------------------:|-----------------------------------------|
@@ -100,10 +100,12 @@ The ccxt library currently supports the following 119 cryptocurrency exchange ma
 |![chilebit](https://user-images.githubusercontent.com/1294454/27991414-1298f0d8-647f-11e7-9c40-d56409266336.jpg)           | chilebit           | [ChileBit](https://chilebit.net)                                             | 1   | [API](https://blinktrade.com/docs)                                                           | Chile                                   |
 |![cobinhood](https://user-images.githubusercontent.com/1294454/35755576-dee02e5c-0878-11e8-989f-1595d80ba47f.jpg)          | cobinhood          | [COBINHOOD](https://cobinhood.com)                                           | *   | [API](https://cobinhood.github.io/api-public)                                                | Taiwan                                  |
 |![coinbase](https://user-images.githubusercontent.com/1294454/40811661-b6eceae2-653a-11e8-829e-10bfadb078cf.jpg)           | coinbase           | [coinbase](https://www.coinbase.com)                                         | 2   | [API](https://developers.coinbase.com/api/v2)                                                | US                                      |
+|![coinbasepro](https://user-images.githubusercontent.com/1294454/41764625-63b7ffde-760a-11e8-996d-a6328fa9347a.jpg)        | coinbasepro        | [Coinbase Pro](https://pro.coinbase.com/)                                    | *   | [API](https://docs.gdax.com)                                                                 | US                                      |
 |![coincheck](https://user-images.githubusercontent.com/1294454/27766464-3b5c3c74-5ed9-11e7-840e-31b32968e1da.jpg)          | coincheck          | [coincheck](https://coincheck.com)                                           | *   | [API](https://coincheck.com/documents/exchange/api)                                          | Japan, Indonesia                        |
 |![coinegg](https://user-images.githubusercontent.com/1294454/36770310-adfa764e-1c5a-11e8-8e09-449daac3d2fb.jpg)            | coinegg            | [CoinEgg](https://www.coinegg.com)                                           | *   | [API](https://www.coinegg.com/explain.api.html)                                              | China, UK                               |
 |![coinex](https://user-images.githubusercontent.com/1294454/38046312-0b450aac-32c8-11e8-99ab-bc6b136b6cc7.jpg)             | coinex             | [CoinEx](https://www.coinex.com)                                             | 1   | [API](https://github.com/coinexcom/coinex_exchange_api/wiki)                                 | China                                   |
 |![coinexchange](https://user-images.githubusercontent.com/1294454/34842303-29c99fca-f71c-11e7-83c1-09d900cb2334.jpg)       | coinexchange       | [CoinExchange](https://www.coinexchange.io)                                  | *   | [API](https://coinexchangeio.github.io/slate/)                                               | India, Japan, South Korea, Vietnam, US  |
+|![coinfalcon](https://user-images.githubusercontent.com/1294454/41822275-ed982188-77f5-11e8-92bb-496bcd14ca52.jpg)         | coinfalcon         | [CoinFalcon](https://coinfalcon.com)                                         | *   | [API](https://docs.coinfalcon.com)                                                           | UK                                      |
 |![coinfloor](https://user-images.githubusercontent.com/1294454/28246081-623fc164-6a1c-11e7-913f-bac0d5576c90.jpg)          | coinfloor          | [coinfloor](https://www.coinfloor.co.uk)                                     | *   | [API](https://github.com/coinfloor/api)                                                      | UK                                      |
 |![coingi](https://user-images.githubusercontent.com/1294454/28619707-5c9232a8-7212-11e7-86d6-98fe5d15cc6e.jpg)             | coingi             | [Coingi](https://coingi.com)                                                 | *   | [API](http://docs.coingi.apiary.io/)                                                         | Panama, Bulgaria, China, US             |
 |![coinmarketcap](https://user-images.githubusercontent.com/1294454/28244244-9be6312a-69ed-11e7-99c1-7c1797275265.jpg)      | coinmarketcap      | [CoinMarketCap](https://coinmarketcap.com)                                   | 1   | [API](https://coinmarketcap.com/api)                                                         | US                                      |
@@ -456,6 +458,18 @@ $exchange->enableRateLimit = true; // enable
 $exchange->enableRateLimit = false; // disable
 ```
 
+In case your calls hit a rate limit or get nonce errors, the ccxt library will throw an exception of one of the following types:
+
+- DDoSProtectionError
+- ExchangeNotAvailable
+- ExchangeError
+
+A later retry is usually enough to handle that. More on that here:
+
+- [Authentication](https://github.com/ccxt/ccxt/wiki/Manual#authentication)
+- [Troubleshooting](https://github.com/ccxt/ccxt/wiki/Manual#troubleshooting)
+- [Overriding The Nonce](https://github.com/ccxt/ccxt/wiki/Manual#overriding-the-nonce)
+
 ### DDoS Protection By Cloudflare / Incapsula
 
 Some exchanges are [DDoS](https://en.wikipedia.org/wiki/Denial-of-service_attack)-protected by [Cloudflare](https://www.cloudflare.com) or [Incapsula](https://www.incapsula.com). Your IP can get temporarily blocked during periods of high load. Sometimes they even restrict whole countries and regions. In that case their servers usually return a page that states a HTTP 40x error or runs an AJAX test of your browser / captcha test and delays the reload of the page for several seconds. Then your browser/fingerprint is granted access temporarily and gets added to a whitelist or receives a HTTP cookie for further use.
@@ -472,18 +486,6 @@ If you encounter DDoS protection errors and cannot reach a particular exchange t
 - try an alternative IP within a different geographic region
 - run your software in a distributed network of servers
 - ...
-
-In case your calls hit a rate limit or get nonce errors, the ccxt library will throw an exception of one of the following types:
-
-- DDoSProtectionError
-- ExchangeNotAvailable
-- ExchangeError
-
-A later retry is usually enough to handle that. More on that here:
-
-- [Authentication](https://github.com/ccxt/ccxt/wiki/Manual#authentication)
-- [Troubleshooting](https://github.com/ccxt/ccxt/wiki/Manual#troubleshooting)
-- [Overriding The Nonce](https://github.com/ccxt/ccxt/wiki/Manual#overriding-the-nonce)
 
 # Markets
 
@@ -616,7 +618,9 @@ Market ids are used during the REST request-response process to reference tradin
 
 The ccxt library abstracts uncommon market ids to symbols, standardized to a common format. Symbols aren't the same as market ids. Every market is referenced by a corresponding symbol. Symbols are common across exchanges which makes them suitable for arbitrage and many other things.
 
-A symbol is an uppercase string literal name for a pair of traded currencies with a slash in between. A currency is a code of three or four uppercase letters, like `BTC`, `ETH`, `USD`, `GBP`, `CNY`, `LTC`, `JPY`, `DOGE`, `RUB`, `ZEC`, `XRP`, `XMR`, etc. Some exchanges have exotic currencies with longer names. The first currency before the slash is usually called *base currency*, and the one after the slash is called *quote currency*.  Examples of a symbol are: `BTC/USD`, `DOGE/LTC`, `ETH/EUR`, `DASH/XRP`, `BTC/CNY`, `ZEC/XMR`, `ETH/JPY`.
+A symbol is usually an uppercase string literal name for a pair of traded currencies with a slash in between. A currency is a code of three or four uppercase letters, like `BTC`, `ETH`, `USD`, `GBP`, `CNY`, `LTC`, `JPY`, `DOGE`, `RUB`, `ZEC`, `XRP`, `XMR`, etc. Some exchanges have exotic currencies with longer names. The first currency before the slash is usually called *base currency*, and the one after the slash is called *quote currency*.  Examples of a symbol are: `BTC/USD`, `DOGE/LTC`, `ETH/EUR`, `DASH/XRP`, `BTC/CNY`, `ZEC/XMR`, `ETH/JPY`.
+
+Sometimes the user might notice a symbol like `'XBTM18'` or `'.XRPUSDM20180101'` or some other *"exotic/rare symbols"*. The symbol is **not required** to have a slash or to be a pair of currencies. The string in the symbol really depends on the type of the market (whether it is a spot market or a futures market, a darkpool market or an expired market, etc). Attempting to parse the symbol string is highly discouraged, one should not rely on the symbol format, it is recommended to use market properties instead.
 
 Market structures are indexed by symbols and ids. The base exchange class also has builtin methods for accessing markets by symbols. Most API methods require a symbol to be passed in their first argument. You are often required to specify a symbol when querying current prices, making orders, etc.
 
@@ -1309,7 +1313,7 @@ The `fetchOHLCV` method is declared in the following way:
 fetchOHLCV (symbol, timeframe = '1m', since = undefined, limit = undefined, params = {})
 ```
 
-You can call the unified `fetchOHLCV` / `fetch_ohlcv` method to get the list of most recent OHLCV candles for a particular symbol like so:
+You can call the unified `fetchOHLCV` / `fetch_ohlcv` method to get the list of OHLCV candles for a particular symbol like so:
 
 ```JavaScript
 // JavaScript
@@ -1349,6 +1353,8 @@ To get the list of available timeframes for your exchange see the `timeframes` p
 **Note that the info from the last (current) candle may be incomplete until the candle is closed (until the next candle starts).**
 
 Like with most other unified and implicit methods, the `fetchOHLCV` method accepts as its last argument an associative array (a dictionary) of extra `params`, which is used to override default values that are sent in requests to the exchanges. The contents of `params` are exchange-specific, consult the exchanges' API documentation for supported fields and values.
+
+If `since` is not specified the `fetchOHLCV` method will return the time range as is the default from the exchange itself.  This is not a bug. Some exchanges will return candles from the beginning of time, others will return most recent candles only, the exchanges' default behaviour is expected. Thus, without specifying `since` the range of returned candles will be exchange-specific. One should pass  the `since` argument to ensure getting precisely the history range needed.
 
 ### OHLCV Structure
 
@@ -1850,9 +1856,7 @@ Most of methods returning orders within ccxt unified API will usually yield an o
 - The `lastTradeTimestamp` timestamp may have no value and may be `undefined/None/null` where not supported by the exchange or in case of an open order (an order that has not been filled nor partially filled yet).
 - The `lastTradeTimestamp`, if any, designates the timestamp of the last trade, in case the order is filled fully or partially, otherwise `lastTradeTimestamp` is `undefined/None/null`.
 - Order `status` prevails or has precedence over the `lastTradeTimestamp`.
-- The `cost` of an order is:
-  - `if (status === 'open' and filled === 0) { amount * price }`
-  - `if (status === 'closed' || status === 'canceled') { filled * price }`
+- The `cost` of an order is: `{ filled * price }`
 - The `cost` of an order means the total *quote* volume of the order (whereas the `amount` is the *base* volume). The value of `cost` should be as close to the actual most recent known order cost as possible. The `cost` field itself is there mostly for convenience and can be deduced from other fields.
 
 ### Placing Orders
@@ -2009,7 +2013,7 @@ To put it shortly, an order can contain *one or more* trades. Or, in other words
 For example, an orderbook can have the following orders (whatever trading symbol or pair it is):
 
 ```
-    | price | amount
+    | price  | amount
 ----|----------------
   a |  1.200 | 200
   s |  1.100 | 300
@@ -2025,7 +2029,7 @@ All specific numbers above aren't real, this is just to illustrate the way order
 A seller decides to place a sell limit order on the ask side for a price of 0.700 and an amount of 150.
 
 ```
-    | price | amount
+    | price  | amount
 ----|----------------  ↓
   a |  1.200 | 200     ↓
   s |  1.100 | 300     ↓
@@ -2038,7 +2042,7 @@ A seller decides to place a sell limit order on the ask side for a price of 0.70
 
 As the price and amount of the incoming sell (ask) order cover more than one bid order (orders `b` and `i`), the following sequence of events usually happens within an exchange engine very quickly, but not immediately:
 
-1. Order `b` is matched against the incoming sell because their prices intersect. Their volumes *"mutually annihilate"* each other, so, the bidder gets 100 for a price of 0.800. The seller (asker) will have his sell order partially filled by bid volume of 100.
+1. Order `b` is matched against the incoming sell because their prices intersect. Their volumes *"mutually annihilate"* each other, so, the bidder gets 100 for a price of 0.800. The seller (asker) will have his sell order partially filled by bid volume 100 for a price of 0.800. Note that for this filled part of the order the seller gets a better price than he asked for initially (0.8 instead of 0.7). Most conventional exchanges fill orders for the best price available.
 
 2. A trade is generated for the order `b` against the incoming sell order. That trade *"fills"* the entire order `b` and most of the sell order. One trade is generated pear each pair of matched orders, whether the amount was filled completely or partially. In this example the amount of 100 fills order `b` completely (closed the order `b`) and also fills the selling order partially (leaves it open in the orderbook).
 
@@ -2055,7 +2059,7 @@ As the price and amount of the incoming sell (ask) order cover more than one bid
 After the above sequence takes place, the updated orderbook will look like this.
 
 ```
-    | price | amount
+    | price  | amount
 ----|----------------
   a |  1.200 | 200
   s |  1.100 | 300
@@ -2131,12 +2135,11 @@ createDepositAddress (code, params = {})
     'currency': currency, // currency code
     'address': address,   // address in terms of requested currency
     'tag': tag,           // tag / memo / paymentId for particular currencies (XRP, XMR, ...)
-    'status': status,     // 'ok' or other
     'info': response,     // raw unparsed data as returned from the exchange
 }
 ```
 
-With certain currencies, like AEON, BTS, GXS, NXT, SBD, STEEM, STR, XEM, XLM, XMR, XRP, an additional argument `tag` is usually required by exchanges. The tag is a memo or a message or a payment id that is attached to a withdrawal transaction. The tag is mandatory for those currencies and it identifies the recipient user account.
+With certain currencies, like AEON, BTS, GXS, NXT, SBD, STEEM, STR, XEM, XLM, XMR, XRP, an additional argument `tag` is usually required by exchanges. Other currencies will have the `tag` set to `undefined / None / null`. The tag is a memo or a message or a payment id that is attached to a withdrawal transaction. The tag is mandatory for those currencies and it identifies the recipient user account.
 
 Be careful when specifying the `tag` and the `address`. The `tag` is **NOT an arbitrary user-defined string** of your choice! You cannot send user messages and comments in the `tag`. The purpose of the `tag` field is to address your wallet properly, so it must be correct. You should only use the `tag` received from the exchange you're working with, otherwise your withdrawal transaction might not arrive to its destination ever.
 
@@ -2417,7 +2420,12 @@ All errors related to networking are usually recoverable, meaning that networkin
 
 ### DDoSProtection
 
-This exception is thrown whenever Cloudflare or Incapsula rate limiter restrictions are enforced per user or region/location. The ccxt library does a case-insensitive search in the response received from the exchange for one of the following keywords:
+This exception is thrown in either of two cases:
+
+- when Cloudflare or Incapsula rate limiter restrictions are enforced per user or region/location
+- when the exchange restricts user access for requesting the endpoints in question too frequently
+
+In addition to default error handling, the ccxt library does a case-insensitive search in the response received from the exchange for one of the following keywords:
 
   - `cloudflare`
   - `incapsula`

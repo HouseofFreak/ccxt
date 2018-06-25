@@ -343,7 +343,6 @@ class bibox (Exchange):
                 'info': currency,
                 'name': currency['name'],
                 'active': active,
-                'status': 'ok',
                 'fee': None,
                 'precision': precision,
                 'limits': {
@@ -436,6 +435,7 @@ class bibox (Exchange):
         return response
 
     def fetch_order(self, id, symbol=None, params={}):
+        self.load_markets()
         response = self.privatePostOrderpending({
             'cmd': 'orderpending/order',
             'body': self.extend({

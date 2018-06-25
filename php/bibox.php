@@ -347,7 +347,6 @@ class bibox extends Exchange {
                 'info' => $currency,
                 'name' => $currency['name'],
                 'active' => $active,
-                'status' => 'ok',
                 'fee' => null,
                 'precision' => $precision,
                 'limits' => array (
@@ -450,6 +449,7 @@ class bibox extends Exchange {
     }
 
     public function fetch_order ($id, $symbol = null, $params = array ()) {
+        $this->load_markets();
         $response = $this->privatePostOrderpending (array (
             'cmd' => 'orderpending/order',
             'body' => array_merge (array (
