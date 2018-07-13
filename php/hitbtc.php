@@ -13,7 +13,7 @@ class hitbtc extends Exchange {
         return array_replace_recursive (parent::describe (), array (
             'id' => 'hitbtc',
             'name' => 'HitBTC',
-            'countries' => 'HK',
+            'countries' => array ( 'HK' ),
             'rateLimit' => 1500,
             'version' => '1',
             'has' => array (
@@ -490,6 +490,8 @@ class hitbtc extends Exchange {
                 'DRK' => 'DASH',
                 'EMGO' => 'MGO',
                 'GET' => 'Themis',
+                'LNC' => 'LinkerCoin',
+                'UNC' => 'Unigame',
                 'USD' => 'USDT',
                 'XBT' => 'BTC',
             ),
@@ -769,16 +771,13 @@ class hitbtc extends Exchange {
         $status = $this->safe_string($order, 'orderStatus');
         if ($status)
             $status = $this->parse_order_status($status);
-        $averagePrice = $this->safe_float($order, 'avgPrice', 0.0);
         $price = $this->safe_float($order, 'orderPrice');
-        if ($price === null)
-            $price = $this->safe_float($order, 'price');
+        $price = $this->safe_float($order, 'price', $price);
+        $price = $this->safe_float($order, 'avgPrice', $price);
         $amount = $this->safe_float($order, 'orderQuantity');
-        if ($amount === null)
-            $amount = $this->safe_float($order, 'quantity');
+        $amount = $this->safe_float($order, 'quantity', $amount);
         $remaining = $this->safe_float($order, 'quantityLeaves');
-        if ($remaining === null)
-            $remaining = $this->safe_float($order, 'leavesQuantity');
+        $remaining = $this->safe_float($order, 'leavesQuantity', $remaining);
         $filled = null;
         $cost = null;
         $amountDefined = ($amount !== null);
@@ -797,7 +796,7 @@ class hitbtc extends Exchange {
         if ($amountDefined) {
             if ($remainingDefined) {
                 $filled = $amount - $remaining;
-                $cost = $averagePrice * $filled;
+                $cost = $price * $filled;
             }
         }
         $feeCost = $this->safe_float($order, 'fee');
@@ -849,7 +848,7 @@ class hitbtc extends Exchange {
             'sort' => 'desc',
             'statuses' => implode (',', $statuses),
         );
-        if ($symbol) {
+        if ($symbol !== null) {
             $market = $this->market ($symbol);
             $request['symbols'] = $market['id'];
         }
@@ -866,7 +865,7 @@ class hitbtc extends Exchange {
             'statuses' => implode (',', $statuses),
             'max_results' => 1000,
         );
-        if ($symbol) {
+        if ($symbol !== null) {
             $market = $this->market ($symbol);
             $request['symbols'] = $market['id'];
         }

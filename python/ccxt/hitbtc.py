@@ -16,7 +16,7 @@ class hitbtc (Exchange):
         return self.deep_extend(super(hitbtc, self).describe(), {
             'id': 'hitbtc',
             'name': 'HitBTC',
-            'countries': 'HK',
+            'countries': ['HK'],
             'rateLimit': 1500,
             'version': '1',
             'has': {
@@ -493,6 +493,8 @@ class hitbtc (Exchange):
                 'DRK': 'DASH',
                 'EMGO': 'MGO',
                 'GET': 'Themis',
+                'LNC': 'LinkerCoin',
+                'UNC': 'Unigame',
                 'USD': 'USDT',
                 'XBT': 'BTC',
             },
@@ -754,16 +756,13 @@ class hitbtc (Exchange):
         status = self.safe_string(order, 'orderStatus')
         if status:
             status = self.parse_order_status(status)
-        averagePrice = self.safe_float(order, 'avgPrice', 0.0)
         price = self.safe_float(order, 'orderPrice')
-        if price is None:
-            price = self.safe_float(order, 'price')
+        price = self.safe_float(order, 'price', price)
+        price = self.safe_float(order, 'avgPrice', price)
         amount = self.safe_float(order, 'orderQuantity')
-        if amount is None:
-            amount = self.safe_float(order, 'quantity')
+        amount = self.safe_float(order, 'quantity', amount)
         remaining = self.safe_float(order, 'quantityLeaves')
-        if remaining is None:
-            remaining = self.safe_float(order, 'leavesQuantity')
+        remaining = self.safe_float(order, 'leavesQuantity', remaining)
         filled = None
         cost = None
         amountDefined = (amount is not None)
@@ -781,7 +780,7 @@ class hitbtc (Exchange):
         if amountDefined:
             if remainingDefined:
                 filled = amount - remaining
-                cost = averagePrice * filled
+                cost = price * filled
         feeCost = self.safe_float(order, 'fee')
         feeCurrency = None
         if market is not None:
@@ -827,7 +826,7 @@ class hitbtc (Exchange):
             'sort': 'desc',
             'statuses': ','.join(statuses),
         }
-        if symbol:
+        if symbol is not None:
             market = self.market(symbol)
             request['symbols'] = market['id']
         response = self.tradingGetOrdersActive(self.extend(request, params))
@@ -842,7 +841,7 @@ class hitbtc (Exchange):
             'statuses': ','.join(statuses),
             'max_results': 1000,
         }
-        if symbol:
+        if symbol is not None:
             market = self.market(symbol)
             request['symbols'] = market['id']
         response = self.tradingGetOrdersRecent(self.extend(request, params))
