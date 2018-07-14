@@ -224,28 +224,55 @@ module.exports = class ccex extends Exchange {
         };
     }
 
+    parseTicker2 (ticker, market = undefined) {
+        let timestamp = ticker['TimeStamp'] * 1000;
+        let symbol = ticker.MarketName.toUpperCase().replace('-', '/');
+        let last = this.safeFloat (ticker, 'Last');
+
+        return {
+            'symbol': symbol,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'high': this.safeFloat (ticker, 'High'),
+            'low': this.safeFloat (ticker, 'Low'),
+            'bid': this.safeFloat (ticker, 'Low'),
+            'bidVolume': undefined,
+            'ask': this.safeFloat (ticker, 'Ask'),
+            'askVolume': undefined,
+            'vwap': undefined,
+            'open': undefined,
+            'close': last,
+            'last': last,
+            'previousClose': undefined,
+            'change': undefined,
+            'percentage': undefined,
+            'average': undefined,
+            'baseVolume': this.safeFloat (ticker, 'BaseVolume'),
+            'quoteVolume': undefined,
+            'info': ticker,
+        };
+    }
+
     async fetchTickers (symbols = undefined, params = {}) {
         await this.loadMarkets ();
-        let tickers = await this.webGetPrices (params);
+        let tickers = await this.publicGetMarketsummaries ();
+
         let result = {};
-        let ids = Object.keys (tickers);
-        for (let i = 0; i < ids.length; i++) {
-            let id = ids[i];
-            let ticker = tickers[id];
+
+        tickers = tickers.result;
+
+        for (let i = 0; i < tickers.length; i++) {
+            let ticker = tickers[i];
             let market = undefined;
             let symbol = undefined;
-            if (id in this.markets_by_id) {
-                market = this.markets_by_id[id];
-                symbol = market['symbol'];
-            } else {
-                let uppercase = id.toUpperCase ();
-                let [ base, quote ] = uppercase.split ('-');
-                base = this.commonCurrencyCode (base);
-                quote = this.commonCurrencyCode (quote);
-                symbol = base + '/' + quote;
-            }
-            result[symbol] = this.parseTicker (ticker, market);
+            let [ base, quote ] = ticker.MarketName.toUpperCase().split ('-');
+            base = this.commonCurrencyCode (base);
+            quote = this.commonCurrencyCode (quote);
+            symbol = base + '/' + quote;
+
+            result[symbol] = this.parseTicker2 (ticker, market);
         }
+
         return result;
     }
 
