@@ -23,7 +23,7 @@ module.exports = class bigone extends Exchange {
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/42704835-0e48c7aa-86da-11e8-8e91-a4d1024a91b5.jpg',
-                'api': 'https://api.big.one',
+                'api': 'https://big.one/api/v2',
                 'www': 'https://big.one',
                 'doc': 'https://open.big.one/docs/api.html',
                 'fees': 'https://help.big.one/hc/en-us/articles/115001933374-BigONE-Fee-Policy',
@@ -32,6 +32,7 @@ module.exports = class bigone extends Exchange {
             'api': {
                 'public': {
                     'get': [
+                        'tickers',
                         'markets',
                         'markets/{symbol}',
                         'markets/{symbol}/book',
@@ -91,15 +92,15 @@ module.exports = class bigone extends Exchange {
         let result = [];
         for (let i = 0; i < markets.length; i++) {
             let market = markets[i];
-            let id = market['symbol'];
-            let baseId = market['quote'];
-            let quoteId = market['base'];
+            let id = market['uuid'];
+            let baseId = market['baseAsset']['symbol'];
+            let quoteId = market['quoteAsset']['symbol'];
             let base = this.commonCurrencyCode (baseId);
             let quote = this.commonCurrencyCode (quoteId);
             let symbol = base + '/' + quote;
             let precision = {
-                'amount': 8,
-                'price': 8,
+                'amount': market['baseScale'],
+                'price': market['quoteScale'],
             };
             result.push ({
                 'id': id,
@@ -110,20 +111,6 @@ module.exports = class bigone extends Exchange {
                 'quoteId': quoteId,
                 'active': true,
                 'precision': precision,
-                'limits': {
-                    'amount': {
-                        'min': parseFloat (market['base_min']),
-                        'max': parseFloat (market['base_max']),
-                    },
-                    'price': {
-                        'min': Math.pow (10, -precision['price']),
-                        'max': Math.pow (10, precision['price']),
-                    },
-                    'cost': {
-                        'min': undefined,
-                        'max': undefined,
-                    },
-                },
                 'info': market,
             });
         }
@@ -155,7 +142,7 @@ module.exports = class bigone extends Exchange {
         //     ]
         //
         if (typeof market !== 'undefined') {
-            let marketId = this.safeString (ticker, 'market_id');
+            let marketId = this.safeString (ticker, 'market_uuid');
             if (marketId in this.markets_by_id) {
                 market = this.markets_by_id[marketId];
             }
@@ -201,11 +188,11 @@ module.exports = class bigone extends Exchange {
 
     async fetchTickers (symbols = undefined, params = {}) {
         await this.loadMarkets ();
-        let response = await this.publicGetMarkets (params);
+        let response = await this.publicGetTickers ();
         let tickers = response['data'];
         let result = {};
         for (let i = 0; i < tickers.length; i++) {
-            let ticker = this.parseTicker (tickers[i]);
+            let ticker = this.parseTicker (tickers[i], true);
             let symbol = ticker['symbol'];
             result[symbol] = ticker;
         }

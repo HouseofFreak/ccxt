@@ -73,6 +73,7 @@ const exchanges = {
     'bleutrade':               require ('./js/bleutrade.js'),
     'braziliex':               require ('./js/braziliex.js'),
     'btcalpha':                require ('./js/btcalpha.js'),
+    'bigone':                  require ('./js/bigone.js'),
     'btcbox':                  require ('./js/btcbox.js'),
     'btcchina':                require ('./js/btcchina.js'),
     'btcexchange':             require ('./js/btcexchange.js'),
