@@ -20,6 +20,7 @@ module.exports = class cobinhood extends Exchange {
                 'fetchOHLCV': true,
                 'fetchOpenOrders': true,
                 'fetchClosedOrders': true,
+                'fetchOrderTrades': true,
                 'fetchOrder': true,
                 'fetchDepositAddress': true,
                 'createDepositAddress': true,
@@ -306,7 +307,7 @@ module.exports = class cobinhood extends Exchange {
         let timestamp = trade['timestamp'];
         let price = this.safeFloat (trade, 'price');
         let amount = this.safeFloat (trade, 'size');
-        let cost = parseFloat (this.costToPrecision (symbol, price * amount));
+        let cost = price * amount;
         let side = trade['maker_side'] === 'bid' ? 'sell' : 'buy';
         return {
             'info': trade,

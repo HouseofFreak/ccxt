@@ -26,6 +26,7 @@ class cobinhood (Exchange):
                 'fetchOHLCV': True,
                 'fetchOpenOrders': True,
                 'fetchClosedOrders': True,
+                'fetchOrderTrades': True,
                 'fetchOrder': True,
                 'fetchDepositAddress': True,
                 'createDepositAddress': True,
@@ -301,7 +302,7 @@ class cobinhood (Exchange):
         timestamp = trade['timestamp']
         price = self.safe_float(trade, 'price')
         amount = self.safe_float(trade, 'size')
-        cost = float(self.cost_to_precision(symbol, price * amount))
+        cost = price * amount
         side = trade['maker_side'] == 'sell' if 'bid' else 'buy'
         return {
             'info': trade,
