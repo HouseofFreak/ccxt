@@ -45,7 +45,7 @@ const Exchange  = require ('./js/base/Exchange')
 //-----------------------------------------------------------------------------
 // this is updated by vss.js when building
 
-const version = '1.16.54'
+const version = '1.16.64'
 
 Exchange.ccxtVersion = version
 
@@ -8347,11 +8347,11 @@ module.exports = class bitfinex2 extends bitfinex {
                         'book/{symbol}/P2',
                         'book/{symbol}/P3',
                         'book/{symbol}/R0',
-                        'stats1/{key}:{size}:{symbol}/{side}/{section}',
-                        'stats1/{key}:{size}:{symbol}/long/last',
-                        'stats1/{key}:{size}:{symbol}/long/hist',
-                        'stats1/{key}:{size}:{symbol}/short/last',
-                        'stats1/{key}:{size}:{symbol}/short/hist',
+                        'stats1/{key}:{size}:{symbol}:{side}/{section}',
+                        'stats1/{key}:{size}:{symbol}:long/last',
+                        'stats1/{key}:{size}:{symbol}:long/hist',
+                        'stats1/{key}:{size}:{symbol}:short/last',
+                        'stats1/{key}:{size}:{symbol}:short/hist',
                         'candles/trade:{timeframe}:{symbol}/{section}',
                         'candles/trade:{timeframe}:{symbol}/last',
                         'candles/trade:{timeframe}:{symbol}/hist',
@@ -24583,7 +24583,7 @@ module.exports = class cointiger extends huobipro {
                 'fetchCurrencies': false,
                 'fetchTickers': true,
                 'fetchTradingLimits': false,
-                'fetchOrder': false, // not tested yet
+                'fetchOrder': true,
                 'fetchOpenOrders': true,
                 'fetchClosedOrders': true,
                 'fetchOrderTrades': false, // not tested yet
@@ -24652,6 +24652,14 @@ module.exports = class cointiger extends huobipro {
                     'delete': [
                         'order',
                     ],
+                },
+            },
+            'fees': {
+                'trading': {
+                    'tierBased': false,
+                    'percentage': true,
+                    'maker': 0.001,
+                    'taker': 0.001,
                 },
             },
             'exceptions': {
@@ -25155,7 +25163,7 @@ module.exports = class cointiger extends huobipro {
         let status = this.safeString (order, 'status');
         let timestamp = this.safeInteger (order, 'created_at');
         timestamp = this.safeInteger (order, 'ctime', timestamp);
-        let lastTradeTimestamp = this.safeInteger (order, 'mtime');
+        let lastTradeTimestamp = this.safeInteger2 (order, 'mtime', 'finished-at');
         let symbol = undefined;
         if (typeof market === 'undefined') {
             let marketId = this.safeString (order, 'symbol');
@@ -25177,9 +25185,13 @@ module.exports = class cointiger extends huobipro {
             amount = this.safeFloat (order['volume'], 'amount');
             remaining = ('remain_volume' in order) ? this.safeFloat (order['remain_volume'], 'amount') : undefined;
             filled = ('deal_volume' in order) ? this.safeFloat (order['deal_volume'], 'amount') : undefined;
-            price = ('age_price' in order) ? this.safeFloat (order['age_price'], 'amount') : undefined;
-            if (typeof price === 'undefined')
-                price = ('price' in order) ? this.safeFloat (order['price'], 'amount') : undefined;
+            price = ('price' in order) ? this.safeFloat (order['price'], 'amount') : undefined;
+            if ('age_price' in order) {
+                let average = this.safeFloat (order['age_price'], 'amount');
+                if ((typeof average !== 'undefined') && (average > 0)) {
+                    price = average;
+                }
+            }
         } else {
             if (typeof orderType !== 'undefined') {
                 let parts = orderType.split ('-');
@@ -25187,7 +25199,9 @@ module.exports = class cointiger extends huobipro {
                 type = parts[1];
                 cost = this.safeFloat (order, 'deal_money');
                 price = this.safeFloat (order, 'price');
-                price = this.safeFloat (order, 'avg_price', price);
+                let average = this.safeFloat (order, 'avg_price');
+                if ((typeof average !== 'undefined') && (average > 0))
+                    price = average;
                 amount = this.safeFloat2 (order, 'amount', 'volume');
                 filled = this.safeFloat (order, 'deal_volume');
                 let feeCost = this.safeFloat (order, 'fee');
@@ -26023,13 +26037,14 @@ module.exports = class cryptopia extends Exchange {
         let markets = response['Data'];
         for (let i = 0; i < markets.length; i++) {
             let market = markets[i];
-            let id = market['Id'];
-            let symbol = market['Label'];
+            let numericId = market['Id'];
+            // let symbol = market['Label'];
             let baseId = market['Symbol'];
             let quoteId = market['BaseSymbol'];
             let base = this.commonCurrencyCode (baseId);
             let quote = this.commonCurrencyCode (quoteId);
-            symbol = base + '/' + quote;
+            let symbol = base + '/' + quote;
+            let id = baseId + '_' + quoteId;
             let precision = {
                 'amount': 8,
                 'price': 8,
@@ -26055,7 +26070,7 @@ module.exports = class cryptopia extends Exchange {
             result.push ({
                 'id': id,
                 'symbol': symbol,
-                'label': market['Label'],
+                'numericId': numericId,
                 'base': base,
                 'quote': quote,
                 'baseId': baseId,
@@ -26106,7 +26121,7 @@ module.exports = class cryptopia extends Exchange {
         await this.loadMarkets ();
         let market = this.market (symbol);
         let request = {
-            'tradePairId': market['id'],
+            'tradePairId': market['numericId'],
             'dataRange': dataRange,
             'dataGroup': this.timeframes[timeframe],
         };
@@ -26144,7 +26159,7 @@ module.exports = class cryptopia extends Exchange {
         let result = {};
         for (let i = 0; i < orderbooks.length; i++) {
             let orderbook = orderbooks[i];
-            let id = this.safeInteger (orderbook, 'TradePairId');
+            let id = this.safeString (orderbook, 'Market');
             let symbol = id;
             if (id in this.markets_by_id) {
                 let market = this.markets_by_id[id];
@@ -26158,7 +26173,7 @@ module.exports = class cryptopia extends Exchange {
     parseTicker (ticker, market = undefined) {
         let timestamp = this.milliseconds ();
         let symbol = undefined;
-        if (market)
+        if (typeof market !== 'undefined')
             symbol = market['symbol'];
         let open = this.safeFloat (ticker, 'Open');
         let last = this.safeFloat (ticker, 'LastPrice');
@@ -26211,7 +26226,7 @@ module.exports = class cryptopia extends Exchange {
         let tickers = response['Data'];
         for (let i = 0; i < tickers.length; i++) {
             let ticker = tickers[i];
-            let id = ticker['TradePairId'];
+            let id = ticker['Label'].replace ('/', '_');
             let recognized = (id in this.markets_by_id);
             if (!recognized) {
                 if (this.options['fetchTickersErrors'])
@@ -26238,9 +26253,11 @@ module.exports = class cryptopia extends Exchange {
         let cost = this.safeFloat (trade, 'Total');
         let id = this.safeString (trade, 'TradeId');
         if (typeof market === 'undefined') {
-            if ('TradePairId' in trade)
-                if (trade['TradePairId'] in this.markets_by_id)
-                    market = this.markets_by_id[trade['TradePairId']];
+            let marketId = this.safeString (trade, 'Market');
+            marketId = marketId.replace ('/', '_');
+            if (marketId in this.markets_by_id) {
+                market = this.markets_by_id[marketId];
+            }
         }
         let symbol = undefined;
         let fee = undefined;
@@ -26293,7 +26310,7 @@ module.exports = class cryptopia extends Exchange {
         let market = undefined;
         if (typeof symbol !== 'undefined') {
             market = this.market (symbol);
-            request['TradePairId'] = market['id'];
+            request['Market'] = market['id'];
         }
         if (typeof limit !== 'undefined') {
             request['Count'] = limit; // default 100
@@ -26378,7 +26395,7 @@ module.exports = class cryptopia extends Exchange {
         // price = parseFloat (price);
         // amount = parseFloat (amount);
         let request = {
-            'TradePairId': market['id'],
+            'Market': market['id'],
             'Type': this.capitalize (side),
             // 'Rate': this.priceToPrecision (symbol, price),
             // 'Amount': this.amountToPrecision (symbol, amount),
@@ -26516,7 +26533,7 @@ module.exports = class cryptopia extends Exchange {
         };
         if (typeof symbol !== 'undefined') {
             market = this.market (symbol);
-            request['TradePairId'] = market['id'];
+            request['Market'] = market['id'];
         }
         let response = await this.privatePostGetOpenOrders (this.extend (request, params));
         let orders = [];
@@ -28814,13 +28831,17 @@ module.exports = class fcoin extends Exchange {
         let filled = this.safeFloat (order, 'filled_amount');
         let remaining = undefined;
         let price = this.safeFloat (order, 'price');
-        let cost = undefined;
+        let cost = this.safeFloat (order, 'executed_value');
         if (typeof filled !== 'undefined') {
             if (typeof amount !== 'undefined') {
                 remaining = amount - filled;
             }
-            if (typeof price !== 'undefined') {
-                cost = price * filled;
+            if (typeof cost === 'undefined') {
+                if (typeof price !== 'undefined') {
+                    cost = price * filled;
+                }
+            } else if ((cost > 0) && (filled > 0)) {
+                price = cost / filled;
             }
         }
         let feeCurrency = undefined;
@@ -31899,12 +31920,13 @@ module.exports = class gemini extends Exchange {
 
     async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
         await this.loadMarkets ();
-        let market = undefined;
-        if (typeof symbol !== 'undefined') {
-            market = this.market (symbol);
-        }
         let response = await this.privatePostOrders (params);
-        return this.parseOrders (response, market, since, limit);
+        let orders = this.parseOrders (response, undefined, since, limit);
+        if (typeof symbol !== 'undefined') {
+            let market = this.market (symbol); // throws on non-existent symbol
+            orders = this.filterBySymbol (orders, market['symbol']);
+        }
+        return orders;
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
@@ -34573,11 +34595,12 @@ module.exports = class huobipro extends Exchange {
                 'CORS': false,
                 'fetchDepositAddress': true,
                 'fetchOHLCV': true,
+                'fetchOrder': true,
+                'fetchOrders': true,
                 'fetchOpenOrders': true,
                 'fetchClosedOrders': true,
-                'fetchOrder': true,
-                'fetchOrders': false,
                 'fetchTradingLimits': true,
+                'fetchMyTrades': true,
                 'withdraw': true,
                 'fetchCurrencies': true,
             },
@@ -34866,20 +34889,49 @@ module.exports = class huobipro extends Exchange {
         return this.parseTicker (response['tick'], market);
     }
 
-    parseTrade (trade, market) {
-        let timestamp = trade['ts'];
+    parseTrade (trade, market = undefined) {
+        let symbol = undefined;
+        if (typeof market === 'undefined') {
+            let marketId = this.safeString (trade, 'symbol');
+            if (marketId in this.markets_by_id) {
+                market = this.markets_by_id[marketId];
+            }
+        }
+        if (typeof market !== 'undefined')
+            symbol = market['symbol'];
+        let timestamp = this.safeInteger2 (trade, 'ts', 'created-at');
+        let order = this.safeString (trade, 'order-id');
+        let side = this.safeString (trade, 'direction');
+        let type = this.safeString (trade, 'type');
+        if (typeof type !== 'undefined') {
+            let typeParts = type.split ('-');
+            side = typeParts[0];
+            type = typeParts[1];
+        }
+        let amount = this.safeFloat2 (trade, 'filled-amount', 'amount');
         return {
             'info': trade,
-            'id': trade['id'].toString (),
-            'order': undefined,
+            'id': this.safeString (trade, 'id'),
+            'order': order,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
-            'symbol': market['symbol'],
-            'type': undefined,
-            'side': trade['direction'],
-            'price': trade['price'],
-            'amount': trade['amount'],
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': this.safeFloat (trade, 'price'),
+            'amount': amount,
         };
+    }
+
+    async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let response = await this.privateGetOrderMatchresults (params);
+        let trades = this.parseTrades (response['data'], undefined, since, limit);
+        if (typeof symbol !== 'undefined') {
+            let market = this.market (symbol);
+            trades = this.filterBySymbol (trades, market['symbol']);
+        }
+        return trades;
     }
 
     async fetchTrades (symbol, since = undefined, limit = 1000, params = {}) {
@@ -35050,14 +35102,16 @@ module.exports = class huobipro extends Exchange {
     }
 
     async fetchOrdersByStates (states, symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        if (!symbol)
-            throw new ExchangeError (this.id + ' fetchOrders() requires a symbol parameter');
         await this.loadMarkets ();
-        let market = this.market (symbol);
-        let response = await this.privateGetOrderOrders (this.extend ({
-            'symbol': market['id'],
+        let request = {
             'states': states,
-        }, params));
+        };
+        let market = undefined;
+        if (typeof symbol !== 'undefined') {
+            market = this.market (symbol);
+            request['symbol'] = market['id'];
+        }
+        let response = await this.privateGetOrderOrders (this.extend (request, params));
         return this.parseOrders (response['data'], market, since, limit);
     }
 
@@ -43401,9 +43455,9 @@ module.exports = class okcoinusd extends Exchange {
             'api': {
                 'web': {
                     'get': [
-                        'currencies',
-                        'products',
-                        'tickers',
+                        'spot/markets/currencies',
+                        'spot/markets/products',
+                        'spot/markets/tickers',
                     ],
                 },
                 'public': {
@@ -43472,7 +43526,7 @@ module.exports = class okcoinusd extends Exchange {
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766791-89ffb502-5ee5-11e7-8a5b-c5950b68ac65.jpg',
                 'api': {
-                    'web': 'https://www.okcoin.com/v2/spot/markets',
+                    'web': 'https://www.okcoin.com/v2',
                     'public': 'https://www.okcoin.com/api',
                     'private': 'https://www.okcoin.com/api',
                 },
@@ -43533,7 +43587,7 @@ module.exports = class okcoinusd extends Exchange {
     }
 
     async fetchMarkets () {
-        let response = await this.webGetProducts ();
+        let response = await this.webGetSpotMarketsProducts ();
         let markets = response['data'];
         let result = [];
         for (let i = 0; i < markets.length; i++) {
@@ -44190,7 +44244,7 @@ module.exports = class okex extends okcoinusd {
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/32552768-0d6dd3c6-c4a6-11e7-90f8-c043b64756a7.jpg',
                 'api': {
-                    'web': 'https://www.okex.com/v2/spot/markets',
+                    'web': 'https://www.okex.com/v2',
                     'public': 'https://www.okex.com/api',
                     'private': 'https://www.okex.com/api',
                 },
@@ -44270,7 +44324,7 @@ module.exports = class okex extends okcoinusd {
     async fetchTickersFromWeb (symbols = undefined, params = {}) {
         await this.loadMarkets ();
         let request = {};
-        let response = await this.webGetTickers (this.extend (request, params));
+        let response = await this.webGetSpotMarketsTickers (this.extend (request, params));
         let tickers = response['data'];
         let result = {};
         for (let i = 0; i < tickers.length; i++) {
