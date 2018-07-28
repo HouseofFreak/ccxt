@@ -31,6 +31,7 @@ class bitfinex (Exchange):
             'countries': ['VG'],
             'version': 'v1',
             'rateLimit': 1500,
+            'certified': True,
             # new metainfo interface
             'has': {
                 'CORS': False,
@@ -266,6 +267,7 @@ class bitfinex (Exchange):
                 'CTX': 'CTXC',
                 'DAT': 'DATA',
                 'DSH': 'DASH',  # Bitfinex names Dash as DSH, instead of DASH
+                'HOT': 'Hydro Protocol',
                 'IOS': 'IOST',
                 'IOT': 'IOTA',
                 'MNA': 'MANA',

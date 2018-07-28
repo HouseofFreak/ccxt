@@ -16,6 +16,7 @@ class bitfinex extends Exchange {
             'countries' => array ( 'VG' ),
             'version' => 'v1',
             'rateLimit' => 1500,
+            'certified' => true,
             // new metainfo interface
             'has' => array (
                 'CORS' => false,
@@ -251,6 +252,7 @@ class bitfinex extends Exchange {
                 'CTX' => 'CTXC',
                 'DAT' => 'DATA',
                 'DSH' => 'DASH', // Bitfinex names Dash as DSH, instead of DASH
+                'HOT' => 'Hydro Protocol',
                 'IOS' => 'IOST',
                 'IOT' => 'IOTA',
                 'MNA' => 'MANA',

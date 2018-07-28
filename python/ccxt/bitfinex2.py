@@ -19,6 +19,7 @@ class bitfinex2 (bitfinex):
             'name': 'Bitfinex v2',
             'countries': ['VG'],
             'version': 'v2',
+            'certified': False,
             # new metainfo interface
             'has': {
                 'CORS': True,
@@ -302,7 +303,7 @@ class bitfinex2 (bitfinex):
             'last': last,
             'previousClose': None,
             'change': ticker[length - 6],
-            'percentage': ticker[length - 5],
+            'percentage': ticker[length - 5] * 100,
             'average': None,
             'baseVolume': ticker[length - 3],
             'quoteVolume': None,
