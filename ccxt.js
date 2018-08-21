@@ -37,7 +37,7 @@ const Exchange  = require ('./js/base/Exchange')
 //-----------------------------------------------------------------------------
 // this is updated by vss.js when building
 
-const version = '1.17.37'
+const version = '1.17.161'
 
 Exchange.ccxtVersion = version
 
@@ -50,6 +50,7 @@ const exchanges = {
     'allcoin':                 require ('./js/allcoin.js'),
     'anxpro':                  require ('./js/anxpro.js'),
     'anybits':                 require ('./js/anybits.js'),
+    'bcex':                    require ('./js/bcex.js'),
     'bibox':                   require ('./js/bibox.js'),
     'bigone':                  require ('./js/bigone.js'),
     'binance':                 require ('./js/binance.js'),
@@ -59,6 +60,7 @@ const exchanges = {
     'bitfinex':                require ('./js/bitfinex.js'),
     'bitfinex2':               require ('./js/bitfinex2.js'),
     'bitflyer':                require ('./js/bitflyer.js'),
+    'bitforex':                require ('./js/bitforex.js'),
     'bithumb':                 require ('./js/bithumb.js'),
     'bitkk':                   require ('./js/bitkk.js'),
     'bitlish':                 require ('./js/bitlish.js'),
@@ -163,6 +165,7 @@ const exchanges = {
     'therock':                 require ('./js/therock.js'),
     'tidebit':                 require ('./js/tidebit.js'),
     'tidex':                   require ('./js/tidex.js'),
+    'uex':                     require ('./js/uex.js'),
     'urdubit':                 require ('./js/urdubit.js'),
     'vaultoro':                require ('./js/vaultoro.js'),
     'vbtc':                    require ('./js/vbtc.js'),

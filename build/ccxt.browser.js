@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 /*  A entry point for the browser bundle version. This gets compiled by:
         
         browserify --debug ./ccxt.browser.js > ./build/ccxt.browser.js
@@ -45,7 +45,7 @@ const Exchange  = require ('./js/base/Exchange')
 //-----------------------------------------------------------------------------
 // this is updated by vss.js when building
 
-const version = '1.17.37'
+const version = '1.17.161'
 
 Exchange.ccxtVersion = version
 
@@ -58,6 +58,7 @@ const exchanges = {
     'allcoin':                 require ('./js/allcoin.js'),
     'anxpro':                  require ('./js/anxpro.js'),
     'anybits':                 require ('./js/anybits.js'),
+    'bcex':                    require ('./js/bcex.js'),
     'bibox':                   require ('./js/bibox.js'),
     'bigone':                  require ('./js/bigone.js'),
     'binance':                 require ('./js/binance.js'),
@@ -67,6 +68,7 @@ const exchanges = {
     'bitfinex':                require ('./js/bitfinex.js'),
     'bitfinex2':               require ('./js/bitfinex2.js'),
     'bitflyer':                require ('./js/bitflyer.js'),
+    'bitforex':                require ('./js/bitforex.js'),
     'bithumb':                 require ('./js/bithumb.js'),
     'bitkk':                   require ('./js/bitkk.js'),
     'bitlish':                 require ('./js/bitlish.js'),
@@ -169,6 +171,7 @@ const exchanges = {
     'therock':                 require ('./js/therock.js'),
     'tidebit':                 require ('./js/tidebit.js'),
     'tidex':                   require ('./js/tidex.js'),
+    'uex':                     require ('./js/uex.js'),
     'urdubit':                 require ('./js/urdubit.js'),
     'vaultoro':                require ('./js/vaultoro.js'),
     'vbtc':                    require ('./js/vbtc.js'),
@@ -187,7 +190,7 @@ module.exports = Object.assign ({ version, Exchange, exchanges: Object.keys (exc
 
 //-----------------------------------------------------------------------------
 
-},{"./js/_1broker.js":3,"./js/_1btcxe.js":4,"./js/acx.js":5,"./js/allcoin.js":6,"./js/anxpro.js":7,"./js/anybits.js":8,"./js/base/Exchange":9,"./js/base/errors":11,"./js/base/functions":12,"./js/bibox.js":23,"./js/bigone.js":24,"./js/binance.js":25,"./js/bit2c.js":26,"./js/bitbank.js":27,"./js/bitbay.js":28,"./js/bitfinex.js":29,"./js/bitfinex2.js":30,"./js/bitflyer.js":31,"./js/bithumb.js":32,"./js/bitkk.js":33,"./js/bitlish.js":34,"./js/bitmarket.js":35,"./js/bitmex.js":36,"./js/bitsane.js":37,"./js/bitso.js":38,"./js/bitstamp.js":39,"./js/bitstamp1.js":40,"./js/bittrex.js":41,"./js/bitz.js":42,"./js/bl3p.js":43,"./js/bleutrade.js":44,"./js/braziliex.js":45,"./js/btcalpha.js":46,"./js/btcbox.js":47,"./js/btcchina.js":48,"./js/btcexchange.js":49,"./js/btcmarkets.js":50,"./js/btctradeim.js":51,"./js/btctradeua.js":52,"./js/btcturk.js":53,"./js/btcx.js":54,"./js/bxinth.js":55,"./js/ccex.js":56,"./js/cex.js":57,"./js/chbtc.js":58,"./js/chilebit.js":59,"./js/cobinhood.js":60,"./js/coinbase.js":61,"./js/coinbasepro.js":62,"./js/coincheck.js":63,"./js/coinegg.js":64,"./js/coinex.js":65,"./js/coinexchange.js":66,"./js/coinfalcon.js":67,"./js/coinfloor.js":68,"./js/coingi.js":69,"./js/coinmarketcap.js":70,"./js/coinmate.js":71,"./js/coinnest.js":72,"./js/coinone.js":73,"./js/coinsecure.js":74,"./js/coinspot.js":75,"./js/cointiger.js":76,"./js/coolcoin.js":77,"./js/crypton.js":78,"./js/cryptopia.js":79,"./js/deribit.js":80,"./js/dsx.js":81,"./js/ethfinex.js":82,"./js/exmo.js":83,"./js/exx.js":84,"./js/fcoin.js":85,"./js/flowbtc.js":86,"./js/foxbit.js":87,"./js/fybse.js":88,"./js/fybsg.js":89,"./js/gatecoin.js":90,"./js/gateio.js":91,"./js/gdax.js":92,"./js/gemini.js":93,"./js/getbtc.js":94,"./js/hadax.js":95,"./js/hitbtc.js":96,"./js/hitbtc2.js":97,"./js/huobi.js":98,"./js/huobicny.js":99,"./js/huobipro.js":100,"./js/ice3x.js":101,"./js/independentreserve.js":102,"./js/indodax.js":103,"./js/itbit.js":104,"./js/jubi.js":105,"./js/kraken.js":106,"./js/kucoin.js":107,"./js/kuna.js":108,"./js/lakebtc.js":109,"./js/lbank.js":110,"./js/liqui.js":111,"./js/livecoin.js":112,"./js/luno.js":113,"./js/lykke.js":114,"./js/mercado.js":115,"./js/mixcoins.js":116,"./js/negociecoins.js":117,"./js/nova.js":118,"./js/okcoincny.js":119,"./js/okcoinusd.js":120,"./js/okex.js":121,"./js/paymium.js":122,"./js/poloniex.js":123,"./js/qryptos.js":124,"./js/quadrigacx.js":125,"./js/quoinex.js":126,"./js/rightbtc.js":127,"./js/southxchange.js":128,"./js/surbitcoin.js":129,"./js/theocean.js":130,"./js/therock.js":131,"./js/tidebit.js":132,"./js/tidex.js":133,"./js/urdubit.js":134,"./js/vaultoro.js":135,"./js/vbtc.js":136,"./js/virwox.js":137,"./js/wex.js":138,"./js/xbtce.js":139,"./js/yobit.js":140,"./js/yunbi.js":141,"./js/zaif.js":142,"./js/zb.js":143}],3:[function(require,module,exports){
+},{"./js/_1broker.js":3,"./js/_1btcxe.js":4,"./js/acx.js":5,"./js/allcoin.js":6,"./js/anxpro.js":7,"./js/anybits.js":8,"./js/base/Exchange":9,"./js/base/errors":11,"./js/base/functions":12,"./js/bcex.js":23,"./js/bibox.js":24,"./js/bigone.js":25,"./js/binance.js":26,"./js/bit2c.js":27,"./js/bitbank.js":28,"./js/bitbay.js":29,"./js/bitfinex.js":30,"./js/bitfinex2.js":31,"./js/bitflyer.js":32,"./js/bitforex.js":33,"./js/bithumb.js":34,"./js/bitkk.js":35,"./js/bitlish.js":36,"./js/bitmarket.js":37,"./js/bitmex.js":38,"./js/bitsane.js":39,"./js/bitso.js":40,"./js/bitstamp.js":41,"./js/bitstamp1.js":42,"./js/bittrex.js":43,"./js/bitz.js":44,"./js/bl3p.js":45,"./js/bleutrade.js":46,"./js/braziliex.js":47,"./js/btcalpha.js":48,"./js/btcbox.js":49,"./js/btcchina.js":50,"./js/btcexchange.js":51,"./js/btcmarkets.js":52,"./js/btctradeim.js":53,"./js/btctradeua.js":54,"./js/btcturk.js":55,"./js/btcx.js":56,"./js/bxinth.js":57,"./js/ccex.js":58,"./js/cex.js":59,"./js/chbtc.js":60,"./js/chilebit.js":61,"./js/cobinhood.js":62,"./js/coinbase.js":63,"./js/coinbasepro.js":64,"./js/coincheck.js":65,"./js/coinegg.js":66,"./js/coinex.js":67,"./js/coinexchange.js":68,"./js/coinfalcon.js":69,"./js/coinfloor.js":70,"./js/coingi.js":71,"./js/coinmarketcap.js":72,"./js/coinmate.js":73,"./js/coinnest.js":74,"./js/coinone.js":75,"./js/coinsecure.js":76,"./js/coinspot.js":77,"./js/cointiger.js":78,"./js/coolcoin.js":79,"./js/crypton.js":80,"./js/cryptopia.js":81,"./js/deribit.js":82,"./js/dsx.js":83,"./js/ethfinex.js":84,"./js/exmo.js":85,"./js/exx.js":86,"./js/fcoin.js":87,"./js/flowbtc.js":88,"./js/foxbit.js":89,"./js/fybse.js":90,"./js/fybsg.js":91,"./js/gatecoin.js":92,"./js/gateio.js":93,"./js/gdax.js":94,"./js/gemini.js":95,"./js/getbtc.js":96,"./js/hadax.js":97,"./js/hitbtc.js":98,"./js/hitbtc2.js":99,"./js/huobi.js":100,"./js/huobicny.js":101,"./js/huobipro.js":102,"./js/ice3x.js":103,"./js/independentreserve.js":104,"./js/indodax.js":105,"./js/itbit.js":106,"./js/jubi.js":107,"./js/kraken.js":108,"./js/kucoin.js":109,"./js/kuna.js":110,"./js/lakebtc.js":111,"./js/lbank.js":112,"./js/liqui.js":113,"./js/livecoin.js":114,"./js/luno.js":115,"./js/lykke.js":116,"./js/mercado.js":117,"./js/mixcoins.js":118,"./js/negociecoins.js":119,"./js/nova.js":120,"./js/okcoincny.js":121,"./js/okcoinusd.js":122,"./js/okex.js":123,"./js/paymium.js":124,"./js/poloniex.js":125,"./js/qryptos.js":126,"./js/quadrigacx.js":127,"./js/quoinex.js":128,"./js/rightbtc.js":129,"./js/southxchange.js":130,"./js/surbitcoin.js":131,"./js/theocean.js":132,"./js/therock.js":133,"./js/tidebit.js":134,"./js/tidex.js":135,"./js/uex.js":136,"./js/urdubit.js":137,"./js/vaultoro.js":138,"./js/vbtc.js":139,"./js/virwox.js":140,"./js/wex.js":141,"./js/xbtce.js":142,"./js/yobit.js":143,"./js/yunbi.js":144,"./js/zaif.js":145,"./js/zb.js":146}],3:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -1286,7 +1289,7 @@ module.exports = class allcoin extends okcoinusd {
     }
 };
 
-},{"./okcoinusd.js":120}],7:[function(require,module,exports){
+},{"./okcoinusd.js":122}],7:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -1588,7 +1591,7 @@ module.exports = class anybits extends bitsane {
     }
 };
 
-},{"./bitsane.js":37}],9:[function(require,module,exports){
+},{"./bitsane.js":39}],9:[function(require,module,exports){
 (function (Buffer){
 "use strict";
 
@@ -1689,6 +1692,7 @@ module.exports = class Exchange {
                 'fetchClosedOrders': false,
                 'fetchCurrencies': false,
                 'fetchDepositAddress': false,
+                'fetchDeposits': false,
                 'fetchFundingFees': false,
                 'fetchL2OrderBook': true,
                 'fetchMarkets': true,
@@ -1704,6 +1708,8 @@ module.exports = class Exchange {
                 'fetchTrades': true,
                 'fetchTradingFees': false,
                 'fetchTradingLimits': false,
+                'fetchTransactions': false,
+                'fetchWithdrawals': false,
                 'withdraw': false,
             },
             'urls': {
@@ -1852,12 +1858,12 @@ module.exports = class Exchange {
         // do not delete this line, it is needed for users to be able to define their own fetchImplementation
         this.fetchImplementation = defaultFetch
 
-        this.timeout          = 10000 // milliseconds
-        this.verbose          = false
-        this.debug            = false
-        this.journal          = 'debug.json'
-        this.userAgent        = undefined
-        this.twofa            = false // two-factor authentication (2FA)
+        this.timeout       = 10000 // milliseconds
+        this.verbose       = false
+        this.debug         = false
+        this.journal       = 'debug.json'
+        this.userAgent     = undefined
+        this.twofa         = false // two-factor authentication (2FA)
 
         this.apiKey        = undefined
         this.secret        = undefined
@@ -1867,14 +1873,15 @@ module.exports = class Exchange {
         this.privateKey    = undefined // a "0x"-prefixed hexstring private key for a wallet
         this.walletAddress = undefined // a wallet address "0x"-prefixed hexstring
 
-        this.balance    = {}
-        this.orderbooks = {}
-        this.tickers    = {}
-        this.orders     = {}
-        this.trades     = {}
+        this.balance     = {}
+        this.orderbooks  = {}
+        this.tickers     = {}
+        this.orders      = {}
+        this.trades      = {}
+        this.transactions = {}
 
-        this.last_http_response = undefined
-        this.last_json_response = undefined
+        this.last_http_response    = undefined
+        this.last_json_response    = undefined
         this.last_response_headers = undefined
 
         this.arrayConcat = (a, b) => a.concat (b)
@@ -2326,11 +2333,19 @@ module.exports = class Exchange {
         throw new NotSupported (this.id + ' fetchMyTrades not supported yet');
     }
 
-    fetchCurrencies () {
-        throw new NotSupported (this.id + ' fetchCurrencies not supported yet');
+    fetchCurrencies (params = {}) {
+        // markets are returned as a list
+        // currencies are returned as a dict
+        // this is for historical reasons
+        // and may be changed for consistency later
+        return new Promise ((resolve, reject) => resolve (this.currencies));
     }
 
     fetchMarkets () {
+        // markets are returned as a list
+        // currencies are returned as a dict
+        // this is for historical reasons
+        // and may be changed for consistency later
         return new Promise ((resolve, reject) => resolve (Object.values (this.markets)))
     }
 
@@ -2520,11 +2535,11 @@ module.exports = class Exchange {
                     const cachedOrdersCount = Object.values (this.orders).filter (order => (order['status'] === 'open')).length;
                     if (cachedOrdersCount === exchangeOrdersCount) {
                         balance[currency].used = this.getCurrencyUsedOnOpenOrders (currency)
-                        balance[currency].total = balance[currency].used + balance[currency].free
+                        balance[currency].total = (balance[currency].used || 0) + (balance[currency].free || 0)
                     }
                 } else {
                     balance[currency].used = this.getCurrencyUsedOnOpenOrders (currency)
-                    balance[currency].total = balance[currency].used + balance[currency].free
+                    balance[currency].total = (balance[currency].used || 0) + (balance[currency].free || 0)
                 }
             }
 
@@ -2580,21 +2595,29 @@ module.exports = class Exchange {
         return array
     }
 
-    filterBySymbolSinceLimit (array, symbol = undefined, since = undefined, limit = undefined) {
+    filterByValueSinceLimit (array, field, value = undefined, since = undefined, limit = undefined) {
 
-        const symbolIsDefined = typeof symbol !== 'undefined' && symbol !== null
+        const valueIsDefined = typeof value !== 'undefined' && value !== null
         const sinceIsDefined = typeof since !== 'undefined' && since !== null
 
         // single-pass filter for both symbol and since
-        if (symbolIsDefined || sinceIsDefined)
+        if (valueIsDefined || sinceIsDefined)
             array = Object.values (array).filter (entry =>
-                ((symbolIsDefined ? (entry.symbol === symbol)  : true) &&
-                 (sinceIsDefined  ? (entry.timestamp >= since) : true)))
+                ((valueIsDefined ? (entry[field] === value)   : true) &&
+                 (sinceIsDefined ? (entry.timestamp >= since) : true)))
 
         if (typeof limit !== 'undefined' && limit !== null)
             array = Object.values (array).slice (0, limit)
 
         return array
+    }
+
+    filterBySymbolSinceLimit (array, symbol = undefined, since = undefined, limit = undefined) {
+        return this.filterByValueSinceLimit (array, 'symbol', symbol, since, limit)
+    }
+
+    filterByCurrencySinceLimit (array, code = undefined, since = undefined, limit = undefined) {
+        return this.filterByValueSinceLimit (array, 'currency', code, since, limit)
     }
 
     filterByArray (objects, key, values = undefined, indexed = true) {
@@ -2619,6 +2642,13 @@ module.exports = class Exchange {
         result = sortBy (result, 'timestamp')
         let symbol = (typeof market !== 'undefined') ? market['symbol'] : undefined
         return this.filterBySymbolSinceLimit (result, symbol, since, limit)
+    }
+
+    parseTransactions (transactions, currency = undefined, since = undefined, limit = undefined) {
+        let result = Object.values (transactions || []).map (transaction => this.parseTransaction (transaction, currency));
+        result = this.sortBy (result, 'timestamp');
+        let code = (typeof currency !== 'undefined') ? currency['code'] : undefined;
+        return this.filterByCurrencySinceLimit (result, code, since, limit);
     }
 
     parseOrders (orders, market = undefined, since = undefined, limit = undefined) {
@@ -2647,7 +2677,7 @@ module.exports = class Exchange {
                 continue
             result.push (ohlcv)
         }
-        return result
+        return this.sortBy (result, 0)
     }
 
     editLimitBuyOrder (id, symbol, ...args) {
@@ -2717,11 +2747,6 @@ module.exports = class Exchange {
         return this.truncate_to_string (amount, this.markets[symbol].precision.amount)
     }
 
-    amountToLots (symbol, amount) {
-        const lot = this.markets[symbol].lot
-        return this.amountToPrecision (symbol, Math.floor (amount / lot) * lot)
-    }
-
     feeToPrecision (symbol, fee) {
         return parseFloat (fee).toFixed (this.markets[symbol].precision.price)
     }
@@ -2746,7 +2771,7 @@ module.exports = class Exchange {
         let d = date.getUTCDate ()
         m = m < 10 ? ('0' + m) : m.toString ()
         d = d < 10 ? ('0' + d) : d.toString ()
-        return m + infix + d + infix + y
+        return m + infix + d + infix + Y
     }
 
     ymd (timestamp, infix = '-') {
@@ -2779,7 +2804,7 @@ module.exports = class Exchange {
     // ------------------------------------------------------------------------
     // web3 / 0x methods
 
-    decryptAccountFromJSON (json, password) {
+    decryptAccountFromJson (json, password) {
         return this.decryptAccount ((typeof json === 'string') ? JSON.parse (json) : json, password)
     }
 
@@ -2791,48 +2816,46 @@ module.exports = class Exchange {
         return this.web3.eth.accounts.privateKeyToAccount (privateKey)
     }
 
-    getZeroExOrderHash (order) {
-        let unpacked = [
-            order['exchangeContractAddress'],                       // { value: order.exchangeContractAddress, type: types_1.SolidityTypes.Address },
-            order['maker'],                                         // { value: order.maker, type: types_1.SolidityTypes.Address },
-            order['taker'],                                         // { value: order.taker, type: types_1.SolidityTypes.Address },
-            order['makerTokenAddress'],                             // { value: order.makerTokenAddress, type: types_1.SolidityTypes.Address },
-            order['takerTokenAddress'],                             // { value: order.takerTokenAddress, type: types_1.SolidityTypes.Address },
-            order['feeRecipient'],                                  // { value: order.feeRecipient, type: types_1.SolidityTypes.Address },
-            new BigNumber (order['makerTokenAmount']).toFixed (),   // { value: bigNumberToBN(order.makerTokenAmount), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['takerTokenAmount']).toFixed (),   // { value: bigNumberToBN(order.takerTokenAmount), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['makerFee']).toFixed (),           // { value: bigNumberToBN(order.makerFee), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['takerFee']).toFixed (),           // { value: bigNumberToBN(order.takerFee), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['expirationUnixTimestampSec']).toFixed (), // { value: bigNumberToBN(order.expirationUnixTimestampSec), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['salt']).toFixed (),               // { value: bigNumberToBN(order.salt), type: types_1.SolidityTypes.Uint256 },
-        ]
-        let types = [
-            'address', // { value: order.exchangeContractAddress, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.maker, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.taker, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.makerTokenAddress, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.takerTokenAddress, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.feeRecipient, type: types_1.SolidityTypes.Address },
-            'uint256', // { value: bigNumberToBN(order.makerTokenAmount), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.takerTokenAmount), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.makerFee), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.takerFee), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.expirationUnixTimestampSec), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.salt), type: types_1.SolidityTypes.Uint256 },
-        ]
-        return '0x' + ethAbi.soliditySHA3 (types, unpacked).toString ('hex')
+    soliditySha3 (array) {
+        const values = this.solidityValues (array);
+        const types = this.solidityTypes (values);
+        return '0x' +  ethAbi.soliditySHA3 (types, values).toString ('hex')
     }
 
-    signZeroExOrder (order) {
+    soliditySha256 (array) {
+        const values = this.solidityValues (array);
+        const types = this.solidityTypes (values);
+        return '0x' +  ethAbi.soliditySHA256 (types, values).toString ('hex')
+    }
+
+    solidityTypes (array) {
+        return array.map (value => (this.web3.utils.isAddress (value) ? 'address' : 'uint256'))
+    }
+
+    solidityValues (array) {
+        return array.map (value => (this.web3.utils.isAddress (value) ? value : (new BigNumber (value).toFixed ())))
+    }
+
+    getZeroExOrderHash (order) {
+        return this.soliditySha3 ([
+            order['exchangeContractAddress'], // address
+            order['maker'], // address
+            order['taker'], // address
+            order['makerTokenAddress'], // address
+            order['takerTokenAddress'], // address
+            order['feeRecipient'], // address
+            order['makerTokenAmount'], // uint256
+            order['takerTokenAmount'], // uint256
+            order['makerFee'], // uint256
+            order['takerFee'], // uint256
+            order['expirationUnixTimestampSec'], // uint256
+            order['salt'], // uint256
+        ]);
+    }
+
+    signZeroExOrder (order, privateKey) {
         const orderHash = this.getZeroExOrderHash (order);
-        const signature = this.signMessage (orderHash, this.privateKey);
-        // const signature2 = this.signMessage2 (orderHash, this.privateKey);
-        // const log = require ('ololog').unlimited;
-        // log ('----------------------------------------------------------')
-        // log.green ('messageHash:', messageHash)
-        // log.red ('orderHash:', orderHash);
-        // log.red ('signature1:', signature1)
-        // log.yellow ('signature2:', signature2)
+        const signature = this.signMessage (orderHash, privateKey);
         return this.extend (order, {
             'orderHash': orderHash,
             'ecSignature': signature, // todo fix v if needed
@@ -2898,7 +2921,7 @@ module.exports = class Exchange {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./Market":10,"./errors":11,"./functions":12,"bignumber.js":163,"buffer":197,"ethereumjs-abi":271,"ethereumjs-util":274,"fetch-ponyfill":281,"web3":460}],10:[function(require,module,exports){
+},{"./Market":10,"./errors":11,"./functions":12,"bignumber.js":169,"buffer":205,"ethereumjs-abi":278,"ethereumjs-util":281,"fetch-ponyfill":288,"web3":463}],10:[function(require,module,exports){
 "use strict";
 
 module.exports = class Market {
@@ -3086,7 +3109,7 @@ module.exports = {
 
 /*  ------------------------------------------------------------------------ */
 
-},{"./encode":14,"./string":19,"crypto-js":215}],14:[function(require,module,exports){
+},{"./encode":14,"./string":19,"crypto-js":222}],14:[function(require,module,exports){
 "use strict";
 
 /*  ------------------------------------------------------------------------ */
@@ -3127,7 +3150,7 @@ module.exports =
 
 /*  ------------------------------------------------------------------------ */
 
-},{"crypto-js":215,"qs":344}],15:[function(require,module,exports){
+},{"crypto-js":222,"qs":349}],15:[function(require,module,exports){
 "use strict";
 
 /*  ------------------------------------------------------------------------ */
@@ -3742,7 +3765,7 @@ module.exports = {
     isWindows,
 }
 }).call(this,require('_process'))
-},{"_process":335}],19:[function(require,module,exports){
+},{"_process":202}],19:[function(require,module,exports){
 "use strict";
 
 /*  ------------------------------------------------------------------------ */
@@ -3968,6 +3991,477 @@ module.exports =
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
+const { ExchangeError, AuthenticationError } = require ('./base/errors');
+
+//  ---------------------------------------------------------------------------
+
+module.exports = class bcex extends Exchange {
+    describe () {
+        return this.deepExtend (super.describe (), {
+            'id': 'bcex',
+            'name': 'BCEX',
+            'countries': [ 'CN', 'CA' ],
+            'version': '1',
+            'has': {
+                'fetchBalance': true,
+                'fetchMarkets': true,
+                'createOrder': true,
+                'cancelOrder': true,
+                'fetchTicker': true,
+                'fetchTickers': false,
+                'fetchTrades': true,
+                'fetchOrder': true,
+                'fetchOrders': true,
+                'fetchOpenOrders': true,
+            },
+            'urls': {
+                'logo': 'https://user-images.githubusercontent.com/1294454/43362240-21c26622-92ee-11e8-9464-5801ec526d77.jpg',
+                'api': 'https://www.bcex.top',
+                'www': 'https://www.bcex.top',
+                'doc': 'https://www.bcex.top/api_market/market/',
+                'fees': 'http://bcex.udesk.cn/hc/articles/57085',
+                'referral': 'https://www.bcex.top/user/reg/type/2/pid/758978',
+            },
+            'api': {
+                'public': {
+                    'get': [
+                        'Api_Market/getPriceList', // tickers
+                        'Api_Order/ticker', // last ohlcv candle (ticker)
+                        'Api_Order/depth', // orderbook
+                        'Api_Market/getCoinTrade', // ticker
+                        'Api_Order/marketOrder', // trades...
+                    ],
+                    'post': [
+                        'Api_Market/getPriceList', // tickers
+                        'Api_Order/ticker', // last ohlcv candle (ticker)
+                        'Api_Order/depth', // orderbook
+                        'Api_Market/getCoinTrade', // ticker
+                        'Api_Order/marketOrder', // trades...
+                    ],
+                },
+                'private': {
+                    'post': [
+                        'Api_Order/cancel',
+                        'Api_Order/coinTrust', // limit order
+                        'Api_Order/orderList', // open / all orders (my trades?)
+                        'Api_Order/orderInfo',
+                        'Api_Order/tradeList', // open / all orders
+                        'Api_Order/trustList', // ?
+                        'Api_User/userBalance',
+                    ],
+                },
+            },
+            'fees': {
+                'trading': {
+                    'tierBased': false,
+                    'percentage': true,
+                    'bid': 0.0,
+                    'ask': 0.02 / 100,
+                },
+                'funding': {
+                    'tierBased': false,
+                    'percentage': false,
+                    'withdraw': {
+                        'ckusd': 0.0,
+                        'other': 0.05 / 100,
+                    },
+                    'deposit': {},
+                },
+                'exceptions': {
+                    '该币不存在,非法操作': ExchangeError, // { code: 1, msg: "该币不存在,非法操作" } - returned when a required symbol parameter is missing in the request (also, maybe on other types of errors as well)
+                    '公钥不合法': AuthenticationError, // { code: 1, msg: '公钥不合法' } - wrong public key
+                },
+            },
+        });
+    }
+
+    async fetchMarkets () {
+        let response = await this.publicGetApiMarketGetPriceList ();
+        let result = [];
+        let keys = Object.keys (response);
+        for (let i = 0; i < keys.length; i++) {
+            let currentMarketId = keys[i];
+            let currentMarkets = response[currentMarketId];
+            for (let j = 0; j < currentMarkets.length; j++) {
+                let market = currentMarkets[j];
+                let baseId = market['coin_from'];
+                let quoteId = market['coin_to'];
+                let base = baseId.toUpperCase ();
+                let quote = quoteId.toUpperCase ();
+                base = this.commonCurrencyCode (base);
+                quote = this.commonCurrencyCode (quote);
+                let id = baseId + '2' + quoteId;
+                let symbol = base + '/' + quote;
+                let active = true;
+                let precision = {
+                    'amount': undefined, // todo: might need this for proper order placement
+                    'price': undefined, // todo: find a way to get these values
+                };
+                let limits = {
+                    'amount': {
+                        'min': undefined, // todo
+                        'max': undefined,
+                    },
+                    'price': {
+                        'min': undefined, // todo
+                        'max': undefined,
+                    },
+                    'cost': {
+                        'min': undefined, // todo
+                        'max': undefined,
+                    },
+                };
+                result.push ({
+                    'id': id,
+                    'symbol': symbol,
+                    'base': base,
+                    'quote': quote,
+                    'baseId': baseId,
+                    'quoteId': quoteId,
+                    'active': active,
+                    'precision': precision,
+                    'limits': limits,
+                    'info': market,
+                });
+            }
+        }
+        return result;
+    }
+
+    parseTrade (trade, market = undefined) {
+        let symbol = undefined;
+        if (typeof market !== 'undefined') {
+            symbol = market['symbol'];
+        }
+        let timestamp = this.safeInteger2 (trade, 'date', 'created');
+        if (typeof timestamp !== 'undefined') {
+            timestamp = timestamp * 1000;
+        }
+        let id = this.safeString (trade, 'tid');
+        let orderId = this.safeString (trade, 'order_id');
+        let amount = this.safeFloat2 (trade, 'number', 'amount');
+        let price = this.safeFloat (trade, 'price');
+        let cost = undefined;
+        if (typeof price !== 'undefined') {
+            if (typeof amount !== 'undefined') {
+                cost = amount * price;
+            }
+        }
+        let side = this.safeString (trade, 'type');
+        return {
+            'info': trade,
+            'id': id,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'symbol': symbol,
+            'type': undefined,
+            'side': side,
+            'price': price,
+            'amount': amount,
+            'cost': cost,
+            'order': orderId,
+            'fee': undefined,
+        };
+    }
+
+    async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let request = {
+            'symbol': this.marketId (symbol),
+        };
+        if (typeof limit !== 'undefined') {
+            request['limit'] = limit;
+        }
+        let market = this.market (symbol);
+        let response = await this.publicPostApiOrderMarketOrder (this.extend (request, params));
+        return this.parseTrades (response['data'], market, since, limit);
+    }
+
+    async fetchBalance (params = {}) {
+        await this.loadMarkets ();
+        let response = await this.privatePostApiUserUserBalance (params);
+        let data = response['data'];
+        let keys = Object.keys (data);
+        let result = { };
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i];
+            let amount = this.safeFloat (data, key);
+            let parts = key.split ('_');
+            let currencyId = parts[0];
+            let lockOrOver = parts[1];
+            let code = currencyId.toUpperCase ();
+            if (currencyId in this.currencies_by_id) {
+                code = this.currencies_by_id[currencyId]['code'];
+            } else {
+                code = this.commonCurrencyCode (code);
+            }
+            if (!(code in result)) {
+                let account = this.account ();
+                result[code] = account;
+            }
+            if (lockOrOver === 'lock') {
+                result[code]['used'] = parseFloat (amount);
+            } else {
+                result[code]['free'] = parseFloat (amount);
+            }
+        }
+        keys = Object.keys (result);
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i];
+            let total = this.sum (result[key]['used'], result[key]['total']);
+            result[key]['total'] = total;
+        }
+        result['info'] = data;
+        return this.parseBalance (result);
+    }
+
+    async fetchTicker (symbol, params = {}) {
+        await this.loadMarkets ();
+        let market = this.markets[symbol];
+        let request = {
+            'part': market['quoteId'],
+            'coin': market['baseId'],
+        };
+        let response = await this.publicPostApiMarketGetCoinTrade (this.extend (request, params));
+        let timestamp = this.milliseconds ();
+        return {
+            'symbol': symbol,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'high': this.safeFloat (response, 'max'),
+            'low': this.safeFloat (response, 'min'),
+            'bid': this.safeFloat (response, 'buy'),
+            'bidVolume': undefined,
+            'ask': this.safeFloat (response, 'sale'),
+            'askVolume': undefined,
+            'vwap': undefined,
+            'open': undefined,
+            'close': this.safeFloat (response, 'price'),
+            'last': this.safeFloat (response, 'price'),
+            'previousClose': undefined,
+            'change': undefined,
+            'percentage': this.safeFloat (response, 'change_24h'),
+            'average': undefined,
+            'baseVolume': this.safeFloat (response, 'volume_24h'),
+            'quoteVolume': undefined,
+            'info': response,
+        };
+    }
+
+    async fetchOrderBook (symbol, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let marketId = this.marketId (symbol);
+        let request = {
+            'symbol': marketId,
+        };
+        let response = await this.publicPostApiOrderDepth (this.extend (request, params));
+        let data = response['data'];
+        let orderbook = this.parseOrderBook (data, data['date'] * 1000);
+        return orderbook;
+    }
+
+    async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'symbol': market['id'],
+        };
+        let response = await this.privatePostApiOrderOrderList (this.extend (request, params));
+        return this.parseTrades (response['data'], market, since, limit);
+    }
+
+    parseOrderStatus (status) {
+        let statuses = {
+            '0': 'open',
+            '1': 'open', // partially filled
+            '2': 'closed',
+            '3': 'canceled',
+        };
+        if (status in statuses) {
+            return statuses[status];
+        }
+        return status;
+    }
+
+    async fetchOrder (id, symbol = undefined, params = {}) {
+        await this.loadMarkets ();
+        let request = {
+            'symbol': this.marketId (symbol),
+            'trust_id': id,
+        };
+        let response = await this.privatePostApiOrderOrderInfo (this.extend (request, params));
+        let order = response['data'];
+        let timestamp = order['created'] * 1000;
+        let status = this.parseStatus (order['status']);
+        let result = {
+            'info': order,
+            'id': id,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'lastTradeTimestamp': undefined,
+            'symbol': symbol,
+            'type': order['flag'],
+            'side': undefined,
+            'price': order['price'],
+            'cost': undefined,
+            'average': undefined,
+            'amount': order['number'],
+            'filled': order['numberdeal'],
+            'remaining': order['numberover'],
+            'status': status,
+            'fee': undefined,
+        };
+        return result;
+    }
+
+    parseOrder (order, market = undefined) {
+        let id = this.safeString (order, 'id');
+        let timestamp = order['datetime'] * 1000;
+        let iso8601 = this.iso8601 (timestamp);
+        let symbol = market['symbol'];
+        let type = undefined;
+        let side = order['type'];
+        let price = order['price'];
+        let average = order['avg_price'];
+        let amount = order['amount'];
+        let remaining = order['amount_outstanding'];
+        let filled = amount - remaining;
+        let status = this.safeString (order, 'status');
+        status = this.parseOrderStatus (status);
+        let cost = filled * price;
+        let fee = undefined;
+        let result = {
+            'info': order,
+            'id': id,
+            'timestamp': timestamp,
+            'datetime': iso8601,
+            'lastTradeTimestamp': undefined,
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': price,
+            'cost': cost,
+            'average': average,
+            'amount': amount,
+            'filled': filled,
+            'remaining': remaining,
+            'status': status,
+            'fee': fee,
+        };
+        return result;
+    }
+
+    async fetchOrdersByType (type, symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let request = {
+            'type': type,
+        };
+        let market = undefined;
+        if (typeof symbol !== 'undefined') {
+            market = this.market (symbol);
+            request['symbol'] = market['id'];
+        }
+        let response = await this.privatePostApiOrderTradeList (this.extend (request, params));
+        if ('data' in response) {
+            return this.parseOrders (response['data'], market, since, limit);
+        }
+        return [];
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return this.fetchOrdersByType ('open', symbol, since, limit, params);
+    }
+
+    async fetchOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return this.fetchOrdersByType ('all', symbol, since, limit, params);
+    }
+
+    async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
+        await this.loadMarkets ();
+        let order = {
+            'symbol': this.marketId (symbol),
+            'type': side,
+            'price': price,
+            'number': amount,
+        };
+        let response = await this.privatePostApiOrderCoinTrust (this.extend (order, params));
+        let data = response['data'];
+        return {
+            'info': response,
+            'id': this.safeString (data, 'order_id'),
+        };
+    }
+
+    async cancelOrder (id, symbol = undefined, params = {}) {
+        await this.loadMarkets ();
+        let request = {};
+        if (typeof symbol !== 'undefined') {
+            request['symbol'] = symbol;
+        }
+        if (typeof id !== 'undefined') {
+            request['order_id'] = id;
+        }
+        let results = await this.privatePostApiOrderCancel (this.extend (request, params));
+        return results;
+    }
+
+    sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
+        let url = this.urls['api'] + '/' + this.implodeParams (path, params);
+        let query = this.omit (params, this.extractParams (path));
+        if (api === 'public') {
+            if (Object.keys (query).length) {
+                url += '?' + this.urlencode (query);
+            }
+        } else {
+            this.checkRequiredCredentials ();
+            let payload = this.urlencode ({ 'api_key': this.apiKey });
+            if (Object.keys (query).length) {
+                payload += this.urlencode (this.keysort (query));
+            }
+            let auth = payload + '&secret_key=' + this.secret;
+            let signature = this.hash (auth);
+            body = payload + '&sign=' + signature;
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            };
+        }
+        return { 'url': url, 'method': method, 'body': body, 'headers': headers };
+    }
+
+    handleErrors (code, reason, url, method, headers, body) {
+        if (typeof body !== 'string')
+            return; // fallback to default error handler
+        if (body.length < 2)
+            return; // fallback to default error handler
+        if ((body[0] === '{') || (body[0] === '[')) {
+            let response = JSON.parse (body);
+            let feedback = this.id + ' ' + body;
+            let code = this.safeValue (response, 'code');
+            if (typeof code !== 'undefined') {
+                if (code !== 0) {
+                    //
+                    // { code: 1, msg: "该币不存在,非法操作" } - returned when a required symbol parameter is missing in the request (also, maybe on other types of errors as well)
+                    // { code: 1, msg: '公钥不合法' } - wrong public key
+                    //
+                    let message = this.safeString (response, 'msg');
+                    let exceptions = this.exceptions;
+                    if (message in exceptions) {
+                        throw new exceptions[message] (feedback);
+                    } else {
+                        throw new ExchangeError (feedback);
+                    }
+                }
+            }
+        }
+    }
+};
+
+},{"./base/Exchange":9,"./base/errors":11}],24:[function(require,module,exports){
+'use strict';
+
+//  ---------------------------------------------------------------------------
+
+const Exchange = require ('./base/Exchange');
 const { ExchangeError, AuthenticationError, DDoSProtection, ExchangeNotAvailable, InvalidOrder, OrderNotFound, PermissionDenied, InsufficientFunds } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
@@ -4014,6 +4508,7 @@ module.exports = class bibox extends Exchange {
                     'https://github.com/Biboxcom/api_reference/wiki/api_reference',
                 ],
                 'fees': 'https://bibox.zendesk.com/hc/en-us/articles/115004417013-Fee-Structure-on-Bibox',
+                'referral': 'https://www.bibox.com/signPage?id=11114745&lang=en',
             },
             'api': {
                 'public': {
@@ -4062,6 +4557,7 @@ module.exports = class bibox extends Exchange {
             },
             'commonCurrencies': {
                 'KEY': 'Bihu',
+                'PAI': 'PCHAIN',
             },
         });
     }
@@ -4093,7 +4589,6 @@ module.exports = class bibox extends Exchange {
                 'quoteId': quote,
                 'active': true,
                 'info': market,
-                'lot': Math.pow (10, -precision['amount']),
                 'precision': precision,
                 'limits': {
                     'amount': {
@@ -4444,11 +4939,10 @@ module.exports = class bibox extends Exchange {
         let type = (order['order_type'] === 1) ? 'market' : 'limit';
         let timestamp = order['createdAt'];
         let price = this.safeFloat (order, 'price');
-        price = this.safeFloat (order, 'deal_price', price);
+        let average = this.safeFloat (order, 'deal_price');
         let filled = this.safeFloat (order, 'deal_amount');
         let amount = this.safeFloat (order, 'amount');
-        let cost = this.safeFloat (order, 'money');
-        cost = this.safeFloat (order, 'deal_money', cost);
+        let cost = this.safeFloat2 (order, 'deal_money', 'money');
         let remaining = undefined;
         if (typeof filled !== 'undefined') {
             if (typeof amount !== 'undefined')
@@ -4472,6 +4966,7 @@ module.exports = class bibox extends Exchange {
             'price': price,
             'amount': amount,
             'cost': cost ? cost : parseFloat (price) * filled,
+            'average': average,
             'filled': filled,
             'remaining': remaining,
             'status': status,
@@ -4681,7 +5176,7 @@ module.exports = class bibox extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],24:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],25:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -5265,13 +5760,13 @@ module.exports = class bigone extends Exchange {
     }
 
     async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        return this.fetchOrders (symbol, since, limit, this.extend ({
+        return await this.fetchOrders (symbol, since, limit, this.extend ({
             'state': 'PENDING',
         }, params));
     }
 
     async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        return this.fetchOrders (symbol, since, limit, this.extend ({
+        return await this.fetchOrders (symbol, since, limit, this.extend ({
             'state': 'FILLED',
         }, params));
     }
@@ -5336,7 +5831,7 @@ module.exports = class bigone extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],25:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],26:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -5614,6 +6109,7 @@ module.exports = class binance extends Exchange {
                 '-1021': InvalidNonce, // 'your time is ahead of server'
                 '-1022': AuthenticationError, // {"code":-1022,"msg":"Signature for this request is not valid."}
                 '-1100': InvalidOrder, // createOrder(symbol, 1, asdf) -> 'Illegal characters found in parameter 'price'
+                '-1128': ExchangeError, // {"code":-1128,"msg":"Combination of optional parameters invalid."}
                 '-2010': ExchangeError, // generic error code for createOrder -> 'Account has insufficient balance for requested action.', {"code":-2010,"msg":"Rest API trading is not enabled."}, etc...
                 '-2011': OrderNotFound, // cancelOrder(1, 'BTC/USDT') -> 'UNKNOWN_ORDER'
                 '-2013': OrderNotFound, // fetchOrder (1, 'BTC/USDT') -> 'Order does not exist'
@@ -5659,8 +6155,6 @@ module.exports = class binance extends Exchange {
                 'price': market['quotePrecision'],
             };
             let active = (market['status'] === 'TRADING');
-            // lot size is deprecated as of 2018.02.06
-            let lot = -1 * Math.log10 (precision['amount']);
             let entry = {
                 'id': id,
                 'symbol': symbol,
@@ -5669,7 +6163,6 @@ module.exports = class binance extends Exchange {
                 'baseId': baseId,
                 'quoteId': quoteId,
                 'info': market,
-                'lot': lot, // lot size is deprecated as of 2018.02.06
                 'active': active,
                 'precision': precision,
                 'limits': {
@@ -5682,7 +6175,7 @@ module.exports = class binance extends Exchange {
                         'max': undefined,
                     },
                     'cost': {
-                        'min': lot,
+                        'min': -1 * Math.log10 (precision['amount']),
                         'max': undefined,
                     },
                 },
@@ -5698,7 +6191,6 @@ module.exports = class binance extends Exchange {
             if ('LOT_SIZE' in filters) {
                 let filter = filters['LOT_SIZE'];
                 entry['precision']['amount'] = this.precisionFromString (filter['stepSize']);
-                entry['lot'] = this.safeFloat (filter, 'stepSize'); // lot size is deprecated as of 2018.02.06
                 entry['limits']['amount'] = {
                     'min': this.safeFloat (filter, 'minQty'),
                     'max': this.safeFloat (filter, 'maxQty'),
@@ -5912,7 +6404,16 @@ module.exports = class binance extends Exchange {
         // 'fromId': 123,    // ID to get aggregate trades from INCLUSIVE.
         // 'startTime': 456, // Timestamp in ms to get aggregate trades from INCLUSIVE.
         // 'endTime': 789,   // Timestamp in ms to get aggregate trades until INCLUSIVE.
-        // 'limit': 500,     // default = maximum = 500
+        // 'limit': 500,     // default = 500, maximum = 1000
+        //
+        // Caveats:
+        // - default limit (500) applies only if no other parameters set, trades up
+        //   to the maximum limit may be returned to satisfy other parameters
+        // - if both limit and time window is set and time window contains more
+        //   trades than the limit then the last trades from the window are returned
+        // - 'tradeId' accepted and returned by this method is "aggregate" trade id
+        //   which is different from actual trade id
+        // - setting both fromId and time window results in error
         let response = await this.publicGetAggTrades (this.extend (request, params));
         return this.parseTrades (response, market, since, limit);
     }
@@ -6253,7 +6754,7 @@ module.exports = class binance extends Exchange {
             if (body.indexOf ('Price * QTY is zero or less') >= 0)
                 throw new InvalidOrder (this.id + ' order cost = amount * price is zero or less ' + body);
             if (body.indexOf ('LOT_SIZE') >= 0)
-                throw new InvalidOrder (this.id + ' order amount should be evenly divisible by lot size, use this.amountToLots (symbol, amount) ' + body);
+                throw new InvalidOrder (this.id + ' order amount should be evenly divisible by lot size ' + body);
             if (body.indexOf ('PRICE_FILTER') >= 0)
                 throw new InvalidOrder (this.id + ' order price exceeds allowed price precision or invalid, use this.priceToPrecision (symbol, amount) ' + body);
         }
@@ -6311,7 +6812,7 @@ module.exports = class binance extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],26:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],27:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -6388,6 +6889,9 @@ module.exports = class bit2c extends Exchange {
                     'taker': 0.5 / 100,
                 },
             },
+            'options': {
+                'fetchTradesMethod': 'public_get_exchanges_pair_lasttrades',
+            },
         });
     }
 
@@ -6451,7 +6955,8 @@ module.exports = class bit2c extends Exchange {
 
     async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
         let market = this.market (symbol);
-        let response = await this.publicGetExchangesPairTrades (this.extend ({
+        let method = this.options['fetchTradesMethod'];
+        let response = await this[method] (this.extend ({
             'pair': market['id'],
         }, params));
         return this.parseTrades (response, market, since, limit);
@@ -6484,7 +6989,10 @@ module.exports = class bit2c extends Exchange {
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let url = this.urls['api'] + '/' + this.implodeParams (path, params);
         if (api === 'public') {
-            url += '.json';
+            // lasttrades is the only endpoint that doesn't require the .json extension/suffix
+            if (path.indexOf ('lasttrades') < 0) {
+                url += '.json';
+            }
         } else {
             this.checkRequiredCredentials ();
             let nonce = this.nonce ();
@@ -6633,7 +7141,7 @@ module.exports = class bit2c extends Exchange {
 };
 
 
-},{"./base/Exchange":9,"./base/errors":11}],27:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],28:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -7166,7 +7674,7 @@ module.exports = class bitbank extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],28:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],29:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -7517,7 +8025,7 @@ module.exports = class bitbay extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],29:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],30:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -7766,19 +8274,27 @@ module.exports = class bitfinex extends Exchange {
                 },
             },
             'commonCurrencies': {
-                'ATM': 'Atonomi', // issue #3383
+                'ABS': 'ABYSS',
+                'AIO': 'AION',
+                'ATM': 'ATMI',
                 'BCC': 'CST_BCC',
                 'BCU': 'CST_BCU',
                 'CTX': 'CTXC',
+                'DAD': 'DADI',
                 'DAT': 'DATA',
-                'DSH': 'DASH', // Bitfinex names Dash as DSH, instead of DASH
+                'DSH': 'DASH',
                 'HOT': 'Hydro Protocol',
                 'IOS': 'IOST',
                 'IOT': 'IOTA',
+                'IQX': 'IQ',
+                'MIT': 'MITH',
                 'MNA': 'MANA',
+                'NCA': 'NCASH',
                 'ORS': 'ORS Group', // conflict with Origin Sport #3230
+                'POY': 'POLY',
                 'QSH': 'QASH',
                 'QTM': 'QTUM',
+                'SEE': 'SEER',
                 'SNG': 'SNGLS',
                 'SPK': 'SPANK',
                 'STJ': 'STORJ',
@@ -7796,6 +8312,7 @@ module.exports = class bitfinex extends Exchange {
                     'Key price should be a decimal number, e.g. "123.456"': InvalidOrder, // on isNaN (price)
                     'Key amount should be a decimal number, e.g. "123.456"': InvalidOrder, // on isNaN (amount)
                     'ERR_RATE_LIMIT': DDoSProtection,
+                    'Ratelimit': DDoSProtection,
                     'Nonce is too small.': InvalidNonce,
                     'No summary found.': ExchangeError, // fetchTradingFees (summary) endpoint can give this vague error message
                     'Cannot evaluate your available balance, please try again': ExchangeNotAvailable,
@@ -8439,7 +8956,7 @@ module.exports = class bitfinex extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],30:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],31:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -8521,6 +9038,7 @@ module.exports = class bitfinex2 extends bitfinex {
                         'book/{symbol}/P3',
                         'book/{symbol}/R0',
                         'stats1/{key}:{size}:{symbol}:{side}/{section}',
+                        'stats1/{key}:{size}:{symbol}/{section}',
                         'stats1/{key}:{size}:{symbol}:long/last',
                         'stats1/{key}:{size}:{symbol}:long/hist',
                         'stats1/{key}:{size}:{symbol}:short/last',
@@ -8655,7 +9173,6 @@ module.exports = class bitfinex2 extends bitfinex {
                 'active': true,
                 'precision': precision,
                 'limits': limits,
-                'lot': Math.pow (10, -precision['amount']),
                 'info': market,
             });
         }
@@ -8808,13 +9325,16 @@ module.exports = class bitfinex2 extends bitfinex {
     async fetchTrades (symbol, since = undefined, limit = 120, params = {}) {
         await this.loadMarkets ();
         let market = this.market (symbol);
+        let sort = '-1';
         let request = {
             'symbol': market['id'],
-            'sort': '-1',
             'limit': limit, // default = max = 120
         };
-        if (typeof since !== 'undefined')
+        if (typeof since !== 'undefined') {
             request['start'] = since;
+            sort = '1';
+        }
+        request['sort'] = sort;
         let response = await this.publicGetTradesSymbolHist (this.extend (request, params));
         let trades = this.sortBy (response, 1);
         return this.parseTrades (trades, market, undefined, limit);
@@ -8920,7 +9440,7 @@ module.exports = class bitfinex2 extends bitfinex {
     }
 };
 
-},{"./base/errors":11,"./bitfinex.js":29}],31:[function(require,module,exports){
+},{"./base/errors":11,"./bitfinex.js":30}],32:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -9343,7 +9863,576 @@ module.exports = class bitflyer extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],32:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],33:[function(require,module,exports){
+'use strict';
+
+//  ---------------------------------------------------------------------------
+
+const Exchange = require ('./base/Exchange');
+const { ExchangeError, AuthenticationError, OrderNotFound, InsufficientFunds, DDoSProtection } = require ('./base/errors');
+
+//  ---------------------------------------------------------------------------
+
+module.exports = class bitforex extends Exchange {
+    describe () {
+        return this.deepExtend (super.describe (), {
+            'id': 'bitforex',
+            'name': 'Bitforex',
+            'countries': [ 'CN' ],
+            'version': 'v1',
+            'has': {
+                'fetchBalance': true,
+                'fetchMarkets': true,
+                'createOrder': true,
+                'cancelOrder': true,
+                'fetchTicker': true,
+                'fetchTickers': false,
+                'fetchMyTrades': false,
+                'fetchTrades': true,
+                'fetchOrder': true,
+                'fetchOrders': false,
+                'fetchOpenOrders': true,
+                'fetchClosedOrders': true,
+            },
+            'urls': {
+                'logo': 'https://user-images.githubusercontent.com/1294454/44310033-69e9e600-a3d8-11e8-873d-54d74d1bc4e4.jpg',
+                'api': 'https://api.bitforex.com',
+                'www': 'https://www.bitforex.com',
+                'doc': 'https://github.com/bitforexapi/API_Docs/wiki',
+                'fees': 'https://help.bitforex.com/en_us/?cat=13',
+                'referral': 'https://www.bitforex.com/registered?inviterId=1867438',
+            },
+            'api': {
+                'public': {
+                    'get': [
+                        'api/v1/market/symbols',
+                        'api/v1/market/ticker',
+                        'api/v1/market/depth',
+                        'api/v1/market/trades',
+                        'api/v1/market/kline',
+                    ],
+                },
+                'private': {
+                    'post': [
+                        'api/v1/fund/mainAccount',
+                        'api/v1/fund/allAccount',
+                        'api/v1/trade/placeOrder',
+                        'api/v1/trade/cancelOrder',
+                        'api/v1/trade/orderInfo',
+                        'api/v1/trade/orderInfos',
+                    ],
+                },
+            },
+            'fees': {
+                'trading': {
+                    'tierBased': false,
+                    'percentage': true,
+                    'maker': 0.0,
+                    'taker': 0.05 / 100,
+                },
+                'funding': {
+                    'tierBased': false,
+                    'percentage': true,
+                    'deposit': {},
+                    'withdraw': {
+                        'BTC': 0.0005,
+                        'ETH': 0.01,
+                        'BCH': 0.0001,
+                        'LTC': 0.001,
+                        'ETC': 0.005,
+                        'USDT': 5,
+                        'CMCT': 30,
+                        'AION': 3,
+                        'LVT': 0,
+                        'DATA': 40,
+                        'RHP': 50,
+                        'NEO': 0,
+                        'AIDOC': 10,
+                        'BQT': 2,
+                        'R': 2,
+                        'DPY': 0.8,
+                        'GTC': 40,
+                        'AGI': 30,
+                        'DENT': 100,
+                        'SAN': 1,
+                        'SPANK': 8,
+                        'AID': 5,
+                        'OMG': 0.1,
+                        'BFT': 5,
+                        'SHOW': 150,
+                        'TRX': 20,
+                        'ABYSS': 10,
+                        'THM': 25,
+                        'ZIL': 20,
+                        'PPT': 0.2,
+                        'WTC': 0.4,
+                        'LRC': 7,
+                        'BNT': 1,
+                        'CTXC': 1,
+                        'MITH': 20,
+                        'TRUE': 4,
+                        'LYM': 10,
+                        'VEE': 100,
+                        'AUTO': 200,
+                        'REN': 50,
+                        'TIO': 2.5,
+                        'NGC': 1.5,
+                        'PST': 10,
+                        'CRE': 200,
+                        'IPC': 5,
+                        'PTT': 1000,
+                        'XMCT': 20,
+                        'ATMI': 40,
+                        'TERN': 40,
+                        'XLM': 0.01,
+                        'ODE': 15,
+                        'FTM': 100,
+                        'RTE': 100,
+                        'DCC': 100,
+                        'IMT': 500,
+                        'GOT': 3,
+                        'EGT': 500,
+                        'DACC': 1000,
+                        'UBEX': 500,
+                        'ABL': 100,
+                        'OLT': 100,
+                        'DAV': 40,
+                        'THRT': 10,
+                        'RMESH': 3,
+                        'UPP': 20,
+                        'SDT': 0,
+                        'SHR': 10,
+                        'MTV': 3,
+                        'ESS': 100,
+                        'MET': 3,
+                        'TTC': 20,
+                        'LXT': 10,
+                        'XCLP': 100,
+                        'LUK': 100,
+                        'UBC': 100,
+                        'DTX': 10,
+                        'BEAT': 20,
+                        'DEED': 2,
+                        'BGX': 3000,
+                        'PRL': 20,
+                        'ELY': 50,
+                        'CARD': 300,
+                        'SQR': 15,
+                        'VRA': 400,
+                        'BWX': 3500,
+                        'MAS': 75,
+                        'FLP': 0.6,
+                        'UNC': 300,
+                        'CRNC': 15,
+                        'MFG': 70,
+                        'ZXC': 70,
+                        'TRT': 30,
+                        'ZIX': 35,
+                        'XRA': 10,
+                        'AMO': 1600,
+                        'IPG': 3,
+                        'uDoo': 50,
+                        'URB': 30,
+                        'ARCONA': 3,
+                        'CRAD': 5,
+                        'NOBS': 1000,
+                        'ADF': 2,
+                        'ELF': 5,
+                        'LX': 20,
+                        'PATH': 15,
+                        'SILK': 120,
+                        'SKYFT': 50,
+                        'EDN': 50,
+                        'ADE': 50,
+                        'EDR': 10,
+                        'TIME': 0.25,
+                        'SPRK': 20,
+                        'QTUM': 0.01,
+                        'BF': 5,
+                        'ZPR': 100,
+                        'HYB': 10,
+                        'CAN': 30,
+                        'CEL': 10,
+                        'ATS': 50,
+                        'KCASH': 1,
+                        'ACT': 0.01,
+                        'MT': 300,
+                        'DXT': 30,
+                        'WAB': 4000,
+                        'HYDRO': 400,
+                        'LQD': 5,
+                        'OPTC': 200,
+                        'EQUAD': 80,
+                        'LATX': 50,
+                        'LEDU': 100,
+                        'RIT': 70,
+                        'ACDC': 500,
+                        'FSN': 2,
+                    },
+                },
+            },
+            'exceptions': {
+                '4004': OrderNotFound,
+                '1013': AuthenticationError,
+                '1016': AuthenticationError,
+                '3002': InsufficientFunds,
+                '10204': DDoSProtection,
+            },
+        });
+    }
+
+    async fetchMarkets () {
+        let response = await this.publicGetApiV1MarketSymbols ();
+        let data = response['data'];
+        let result = [];
+        for (let i = 0; i < data.length; i++) {
+            let market = data[i];
+            let id = market['symbol'];
+            let symbolParts = id.split ('-');
+            let baseId = symbolParts[2];
+            let quoteId = symbolParts[1];
+            let base = baseId.toUpperCase ();
+            let quote = quoteId.toUpperCase ();
+            base = this.commonCurrencyCode (base);
+            quote = this.commonCurrencyCode (quote);
+            let symbol = base + '/' + quote;
+            let active = true;
+            let precision = {
+                'amount': market['amountPrecision'],
+                'price': market['pricePrecision'],
+            };
+            let limits = {
+                'amount': {
+                    'min': market['minOrderAmount'],
+                    'max': undefined,
+                },
+                'price': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+                'cost': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+            };
+            result.push ({
+                'id': id,
+                'symbol': symbol,
+                'base': base,
+                'quote': quote,
+                'baseId': baseId,
+                'quoteId': quoteId,
+                'active': active,
+                'precision': precision,
+                'limits': limits,
+                'info': market,
+            });
+        }
+        return result;
+    }
+
+    parseTrade (trade, market = undefined) {
+        let symbol = undefined;
+        if (typeof market !== 'undefined') {
+            symbol = market['symbol'];
+        }
+        let timestamp = this.safeInteger (trade, 'time');
+        let id = this.safeString (trade, 'tid');
+        let orderId = undefined;
+        let amount = this.safeFloat (trade, 'amount');
+        let price = this.safeFloat (trade, 'price');
+        let cost = undefined;
+        if (typeof price !== 'undefined') {
+            if (typeof amount !== 'undefined') {
+                cost = amount * price;
+            }
+        }
+        let sideId = this.safeString (trade, 'direction');
+        let side = this.parseSide (sideId);
+        return {
+            'info': trade,
+            'id': id,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'symbol': symbol,
+            'type': undefined,
+            'side': side,
+            'price': price,
+            'amount': amount,
+            'cost': cost,
+            'order': orderId,
+            'fee': undefined,
+        };
+    }
+
+    async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let request = {
+            'symbol': this.marketId (symbol),
+        };
+        if (typeof limit !== 'undefined') {
+            request['size'] = limit;
+        }
+        let market = this.market (symbol);
+        let response = await this.publicGetApiV1MarketTrades (this.extend (request, params));
+        return this.parseTrades (response['data'], market, since, limit);
+    }
+
+    async fetchBalance (params = {}) {
+        await this.loadMarkets ();
+        let response = await this.privatePostApiV1FundAllAccount (params);
+        let data = response['data'];
+        let result = { 'info': response };
+        for (let i = 0; i < data.length; i++) {
+            let current = data[i];
+            let currencyId = current['currency'];
+            let code = currencyId.toUpperCase ();
+            if (currencyId in this.currencies_by_id) {
+                code = this.currencies_by_id[currencyId]['code'];
+            } else {
+                code = this.commonCurrencyCode (code);
+            }
+            let account = this.account ();
+            result[code] = account;
+            result[code]['used'] = this.safeFloat (current, 'frozen');
+            result[code]['free'] = this.safeFloat (current, 'active');
+            result[code]['total'] = this.safeFloat (current, 'fix');
+        }
+        return result;
+    }
+
+    async fetchTicker (symbol, params = {}) {
+        await this.loadMarkets ();
+        let market = this.markets[symbol];
+        let request = {
+            'symbol': market['id'],
+        };
+        let response = await this.publicGetApiV1MarketTicker (this.extend (request, params));
+        let data = response['data'];
+        let timestamp = this.safeInteger (data, 'date');
+        return {
+            'symbol': symbol,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'high': this.safeFloat (data, 'high'),
+            'low': this.safeFloat (data, 'low'),
+            'bid': this.safeFloat (data, 'buy'),
+            'bidVolume': undefined,
+            'ask': this.safeFloat (data, 'sell'),
+            'askVolume': undefined,
+            'vwap': undefined,
+            'open': undefined,
+            'close': this.safeFloat (data, 'last'),
+            'last': this.safeFloat (data, 'last'),
+            'previousClose': undefined,
+            'change': undefined,
+            'percentage': undefined,
+            'average': undefined,
+            'baseVolume': this.safeFloat (data, 'vol'),
+            'quoteVolume': undefined,
+            'info': response,
+        };
+    }
+
+    async fetchOrderBook (symbol, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let marketId = this.marketId (symbol);
+        let request = {
+            'symbol': marketId,
+        };
+        if (typeof limit !== 'undefined') {
+            request['size'] = limit;
+        }
+        let response = await this.publicGetApiV1MarketDepth (this.extend (request, params));
+        let data = response['data'];
+        let timestamp = response['time'];
+        let bidsKey = 'bids';
+        let asksKey = 'asks';
+        let priceKey = 'price';
+        let amountKey = 'amount';
+        let orderbook = this.parseOrderBook (data, timestamp, bidsKey, asksKey, priceKey, amountKey);
+        return orderbook;
+    }
+
+    parseOrderStatus (orderStatusId) {
+        if (orderStatusId === 0 || orderStatusId === 1) {
+            return 'open';
+        } else if (orderStatusId === 2) {
+            return 'closed';
+        } else if (orderStatusId === 3 || orderStatusId === 4) {
+            return 'canceled';
+        } else {
+            return undefined;
+        }
+    }
+
+    parseSide (sideId) {
+        if (sideId === 1) {
+            return 'buy';
+        } else if (sideId === 2) {
+            return 'sell';
+        } else {
+            return undefined;
+        }
+    }
+
+    parseOrder (order, market = undefined) {
+        let id = this.safeString (order, 'orderId');
+        let timestamp = this.safeFloat2 (order, 'createTime');
+        let iso8601 = this.iso8601 (timestamp);
+        let lastTradeTimestamp = this.safeFloat2 (order, 'lastTime');
+        let symbol = market['symbol'];
+        let sideId = this.safeInteger (order, 'tradeType');
+        let side = this.parseSide (sideId);
+        let type = undefined;
+        let price = this.safeFloat (order, 'orderPrice');
+        let average = this.safeFloat (order, 'avgPrice');
+        let amount = this.safeFloat (order, 'orderAmount');
+        let filled = this.safeFloat (order, 'dealAmount');
+        let remaining = amount - filled;
+        let statusId = this.safeInteger (order, 'orderState');
+        let status = this.parseOrderStatus (statusId);
+        let cost = filled * price;
+        let fee = this.safeFloat (order, 'tradeFee');
+        let result = {
+            'info': order,
+            'id': id,
+            'timestamp': timestamp,
+            'datetime': iso8601,
+            'lastTradeTimestamp': lastTradeTimestamp,
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': price,
+            'cost': cost,
+            'average': average,
+            'amount': amount,
+            'filled': filled,
+            'remaining': remaining,
+            'status': status,
+            'fee': fee,
+        };
+        return result;
+    }
+
+    async fetchOrder (id, symbol = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'symbol': this.marketId (symbol),
+            'orderId': id,
+        };
+        let response = await this.privatePostApiV1TradeOrderInfo (this.extend (request, params));
+        let order = this.parseOrder (response['data'], market);
+        return order;
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'symbol': this.marketId (symbol),
+            'state': 0,
+        };
+        let response = await this.privatePostApiV1TradeOrderInfos (this.extend (request, params));
+        return this.parseOrders (response['data'], market, since, limit);
+    }
+
+    async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'symbol': this.marketId (symbol),
+            'state': 1,
+        };
+        let response = await this.privatePostApiV1TradeOrderInfos (this.extend (request, params));
+        return this.parseOrders (response['data'], market, since, limit);
+    }
+
+    async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
+        await this.loadMarkets ();
+        let sideId = undefined;
+        if (side === 'buy') {
+            sideId = 1;
+        } else if (side === 'sell') {
+            sideId = 2;
+        }
+        let request = {
+            'symbol': this.marketId (symbol),
+            'price': price,
+            'amount': amount,
+            'tradeType': sideId,
+        };
+        let response = await this.privatePostApiV1TradePlaceOrder (this.extend (request, params));
+        let data = response['data'];
+        return {
+            'info': response,
+            'id': this.safeString (data, 'orderId'),
+        };
+    }
+
+    async cancelOrder (id, symbol = undefined, params = {}) {
+        await this.loadMarkets ();
+        let request = {
+            'orderId': id,
+        };
+        if (typeof symbol !== 'undefined') {
+            request['symbol'] = this.marketId (symbol);
+        }
+        let results = await this.privatePostApiV1TradeCancelOrder (this.extend (request, params));
+        let success = results['success'];
+        let returnVal = { 'info': results, 'success': success };
+        return returnVal;
+    }
+
+    sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
+        let url = this.urls['api'] + '/' + this.implodeParams (path, params);
+        let query = this.omit (params, this.extractParams (path));
+        if (api === 'public') {
+            if (Object.keys (query).length) {
+                url += '?' + this.urlencode (query);
+            }
+        } else {
+            this.checkRequiredCredentials ();
+            let payload = this.urlencode ({ 'accessKey': this.apiKey });
+            query['nonce'] = this.milliseconds ();
+            if (Object.keys (query).length) {
+                payload += '&' + this.urlencode (this.keysort (query));
+            }
+            // let message = '/' + 'api/' + this.version + '/' + path + '?' + payload;
+            let message = '/' + path + '?' + payload;
+            let signature = this.hmac (message, this.secret);
+            body = payload + '&signData=' + signature;
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            };
+        }
+        return { 'url': url, 'method': method, 'body': body, 'headers': headers };
+    }
+
+    handleErrors (code, reason, url, method, headers, body) {
+        if (typeof body !== 'string') {
+            return; // fallback to default error handler
+        }
+        if ((body[0] === '{') || (body[0] === '[')) {
+            let response = JSON.parse (body);
+            let feedback = this.id + ' ' + body;
+            let success = this.safeValue (response, 'success');
+            if (typeof success !== 'undefined') {
+                if (!success) {
+                    let code = this.safeString (response, 'code');
+                    if (code in this.exceptions) {
+                        throw new this.exceptions[code] (feedback);
+                    } else {
+                        throw new ExchangeError (feedback);
+                    }
+                }
+            }
+        }
+    }
+};
+
+},{"./base/Exchange":9,"./base/errors":11}],34:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -9433,7 +10522,6 @@ module.exports = class bithumb extends Exchange {
                     'base': base,
                     'quote': quote,
                     'info': market,
-                    'lot': undefined,
                     'active': true,
                     'precision': {
                         'amount': undefined,
@@ -9726,7 +10814,7 @@ module.exports = class bithumb extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],33:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],35:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -9754,7 +10842,7 @@ module.exports = class bitkk extends zb {
     }
 };
 
-},{"./zb.js":143}],34:[function(require,module,exports){
+},{"./zb.js":146}],36:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -10106,7 +11194,7 @@ module.exports = class bitlish extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],35:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],37:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -10402,7 +11490,7 @@ module.exports = class bitmarket extends Exchange {
         let result = {
             'info': response,
         };
-        if ('id' in response['order'])
+        if ('id' in response['data'])
             result['id'] = response['id'];
         return result;
     }
@@ -10478,7 +11566,7 @@ module.exports = class bitmarket extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],36:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],38:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -10628,14 +11716,14 @@ module.exports = class bitmex extends Exchange {
             let market = markets[p];
             let active = (market['state'] !== 'Unlisted');
             let id = market['symbol'];
-            let base = market['underlying'];
-            let quote = market['quoteCurrency'];
+            let baseId = market['underlying'];
+            let quoteId = market['quoteCurrency'];
             let type = undefined;
             let future = false;
             let prediction = false;
-            let basequote = base + quote;
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            let basequote = baseId + quoteId;
+            let base = this.commonCurrencyCode (baseId);
+            let quote = this.commonCurrencyCode (quoteId);
             let swap = (id === basequote);
             let symbol = id;
             if (swap) {
@@ -10661,6 +11749,8 @@ module.exports = class bitmex extends Exchange {
                 'symbol': symbol,
                 'base': base,
                 'quote': quote,
+                'baseId': baseId,
+                'quoteId': quoteId,
                 'active': active,
                 'precision': precision,
                 'limits': {
@@ -11108,7 +12198,7 @@ module.exports = class bitmex extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],37:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],39:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -11260,7 +12350,6 @@ module.exports = class bitsane extends Exchange {
                 'amount': parseInt (market['precision']),
                 'price': 8,
             };
-            let lot = Math.pow (10, -precision['amount']);
             result.push ({
                 'id': id,
                 'symbol': symbol,
@@ -11269,7 +12358,6 @@ module.exports = class bitsane extends Exchange {
                 'baseId': market['base'],
                 'quoteId': market['quote'],
                 'active': true,
-                'lot': lot,
                 'precision': precision,
                 'limits': {
                     'amount': {
@@ -11536,11 +12624,13 @@ module.exports = class bitsane extends Exchange {
             body = this.extend ({
                 'nonce': this.nonce (),
             }, params);
-            body = this.stringToBase64 (this.json (body));
+            let payload = this.json (body);
+            let payload64 = this.stringToBase64 (this.encode (payload));
+            body = this.decode (payload64);
             headers = {
                 'X-BS-APIKEY': this.apiKey,
                 'X-BS-PAYLOAD': body,
-                'X-BS-SIGNATURE': this.hmac (this.encode (body), this.encode (this.secret), 'sha384'),
+                'X-BS-SIGNATURE': this.hmac (payload64, this.encode (this.secret), 'sha384'),
             };
         }
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
@@ -11570,7 +12660,7 @@ module.exports = class bitsane extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],38:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],40:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -11687,14 +12777,12 @@ module.exports = class bitso extends Exchange {
                 'amount': this.precisionFromString (market['minimum_amount']),
                 'price': this.precisionFromString (market['minimum_price']),
             };
-            let lot = limits['amount']['min'];
             result.push ({
                 'id': id,
                 'symbol': symbol,
                 'base': base,
                 'quote': quote,
                 'info': market,
-                'lot': lot,
                 'limits': limits,
                 'precision': precision,
             });
@@ -12091,7 +13179,7 @@ module.exports = class bitso extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],39:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],41:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -12112,7 +13200,7 @@ module.exports = class bitstamp extends Exchange {
             'has': {
                 'CORS': true,
                 'fetchDepositAddress': true,
-                'fetchOrder': true,
+                'fetchOrder': 'emulated',
                 'fetchOpenOrders': true,
                 'fetchMyTrades': true,
                 'withdraw': true,
@@ -12261,7 +13349,6 @@ module.exports = class bitstamp extends Exchange {
             let cost = parts[0];
             // let [ cost, currency ] = market['minimum_order'].split (' ');
             let active = (market['trading'] === 'Enabled');
-            let lot = Math.pow (10, -precision['amount']);
             result.push ({
                 'id': id,
                 'symbol': symbol,
@@ -12271,12 +13358,11 @@ module.exports = class bitstamp extends Exchange {
                 'quoteId': quoteId,
                 'symbolId': symbolId,
                 'info': market,
-                'lot': lot,
                 'active': active,
                 'precision': precision,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': Math.pow (10, -precision['amount']),
                         'max': undefined,
                     },
                     'price': {
@@ -12753,7 +13839,7 @@ module.exports = class bitstamp extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],40:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],42:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -13014,7 +14100,7 @@ module.exports = class bitstamp1 extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],41:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],43:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -13833,7 +14919,7 @@ module.exports = class bittrex extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],42:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],44:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -14275,7 +15361,7 @@ module.exports = class bitz extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],43:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],45:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -14485,7 +15571,7 @@ module.exports = class bl3p extends Exchange {
     }
 };
 
-},{"./base/Exchange":9}],44:[function(require,module,exports){
+},{"./base/Exchange":9}],46:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -14617,7 +15703,6 @@ module.exports = class bleutrade extends bittrex {
                 'quoteId': quoteId,
                 'active': active,
                 'info': market,
-                'lot': Math.pow (10, -precision['amount']),
                 'precision': precision,
                 'limits': {
                     'amount': {
@@ -14693,7 +15778,7 @@ module.exports = class bleutrade extends bittrex {
     }
 };
 
-},{"./base/errors":11,"./bittrex.js":41}],45:[function(require,module,exports){
+},{"./base/errors":11,"./bittrex.js":43}],47:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -14749,6 +15834,7 @@ module.exports = class braziliex extends Exchange {
             },
             'commonCurrencies': {
                 'EPC': 'Epacoin',
+                'ABC': 'Anti Bureaucracy Coin',
             },
             'fees': {
                 'trading': {
@@ -14844,7 +15930,6 @@ module.exports = class braziliex extends Exchange {
                 'amount': 8,
                 'price': 8,
             };
-            let lot = Math.pow (10, -precision['amount']);
             result.push ({
                 'id': id,
                 'symbol': symbol.toUpperCase (),
@@ -14853,11 +15938,10 @@ module.exports = class braziliex extends Exchange {
                 'baseId': baseId,
                 'quoteId': quoteId,
                 'active': active,
-                'lot': lot,
                 'precision': precision,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': Math.pow (10, -precision['amount']),
                         'max': Math.pow (10, precision['amount']),
                     },
                     'price': {
@@ -15164,7 +16248,7 @@ module.exports = class braziliex extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],46:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],48:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -15285,14 +16369,12 @@ module.exports = class btcalpha extends Exchange {
                 'amount': 8,
                 'price': parseInt (market['price_precision']),
             };
-            let lot = Math.pow (10, -precision['amount']);
             result.push ({
                 'id': id,
                 'symbol': symbol,
                 'base': base,
                 'quote': quote,
                 'active': true,
-                'lot': lot,
                 'precision': precision,
                 'limits': {
                     'amount': {
@@ -15576,7 +16658,7 @@ module.exports = class btcalpha extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],47:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],49:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -15915,7 +16997,7 @@ module.exports = class btcbox extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],48:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],50:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -16252,7 +17334,7 @@ module.exports = class btcchina extends Exchange {
     }
 };
 
-},{"./base/Exchange":9}],49:[function(require,module,exports){
+},{"./base/Exchange":9}],51:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -16284,7 +17366,7 @@ module.exports = class btcexchange extends btcturk {
     }
 };
 
-},{"./btcturk.js":53}],50:[function(require,module,exports){
+},{"./btcturk.js":55}],52:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -16318,7 +17400,7 @@ module.exports = class btcmarkets extends Exchange {
                     'private': 'https://api.btcmarkets.net',
                     'web': 'https://btcmarkets.net/data',
                 },
-                'www': 'https://btcmarkets.net/',
+                'www': 'https://btcmarkets.net',
                 'doc': 'https://github.com/BTCMarkets/API',
             },
             'api': {
@@ -16327,6 +17409,7 @@ module.exports = class btcmarkets extends Exchange {
                         'market/{id}/tick',
                         'market/{id}/orderbook',
                         'market/{id}/trades',
+                        'v2/market/active',
                     ],
                 },
                 'private': {
@@ -16352,19 +17435,6 @@ module.exports = class btcmarkets extends Exchange {
                     ],
                 },
             },
-            'markets': {
-                'BTC/AUD': { 'id': 'BTC/AUD', 'symbol': 'BTC/AUD', 'base': 'BTC', 'quote': 'AUD', 'maker': 0.0085, 'taker': 0.0085, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}, 'precision': { 'price': 2 }},
-                'LTC/AUD': { 'id': 'LTC/AUD', 'symbol': 'LTC/AUD', 'base': 'LTC', 'quote': 'AUD', 'maker': 0.0085, 'taker': 0.0085, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}, 'precision': { 'price': 2 }},
-                'ETH/AUD': { 'id': 'ETH/AUD', 'symbol': 'ETH/AUD', 'base': 'ETH', 'quote': 'AUD', 'maker': 0.0085, 'taker': 0.0085, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}, 'precision': { 'price': 2 }},
-                'ETC/AUD': { 'id': 'ETC/AUD', 'symbol': 'ETC/AUD', 'base': 'ETC', 'quote': 'AUD', 'maker': 0.0085, 'taker': 0.0085, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}, 'precision': { 'price': 2 }},
-                'XRP/AUD': { 'id': 'XRP/AUD', 'symbol': 'XRP/AUD', 'base': 'XRP', 'quote': 'AUD', 'maker': 0.0085, 'taker': 0.0085, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}, 'precision': { 'price': 2 }},
-                'BCH/AUD': { 'id': 'BCH/AUD', 'symbol': 'BCH/AUD', 'base': 'BCH', 'quote': 'AUD', 'maker': 0.0085, 'taker': 0.0085, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}, 'precision': { 'price': 2 }},
-                'LTC/BTC': { 'id': 'LTC/BTC', 'symbol': 'LTC/BTC', 'base': 'LTC', 'quote': 'BTC', 'maker': 0.0022, 'taker': 0.0022, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}},
-                'ETH/BTC': { 'id': 'ETH/BTC', 'symbol': 'ETH/BTC', 'base': 'ETH', 'quote': 'BTC', 'maker': 0.0022, 'taker': 0.0022, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}},
-                'ETC/BTC': { 'id': 'ETC/BTC', 'symbol': 'ETC/BTC', 'base': 'ETC', 'quote': 'BTC', 'maker': 0.0022, 'taker': 0.0022, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}},
-                'XRP/BTC': { 'id': 'XRP/BTC', 'symbol': 'XRP/BTC', 'base': 'XRP', 'quote': 'BTC', 'maker': 0.0022, 'taker': 0.0022, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}},
-                'BCH/BTC': { 'id': 'BCH/BTC', 'symbol': 'BCH/BTC', 'base': 'BCH', 'quote': 'BTC', 'maker': 0.0022, 'taker': 0.0022, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}},
-            },
             'timeframes': {
                 '1m': 'minute',
                 '1h': 'hour',
@@ -16375,6 +17445,65 @@ module.exports = class btcmarkets extends Exchange {
                 '6': DDoSProtection,
             },
         });
+    }
+
+    async fetchMarkets () {
+        let response = await this.publicGetV2MarketActive ();
+        let result = [];
+        let markets = response['markets'];
+        for (let i = 0; i < markets.length; i++) {
+            let market = markets[i];
+            let baseId = market['instrument'];
+            let quoteId = market['currency'];
+            let id = baseId + '/' + quoteId;
+            let base = this.commonCurrencyCode (baseId);
+            let quote = this.commonCurrencyCode (quoteId);
+            let symbol = base + '/' + quote;
+            let fee = (quote === 'AUD') ? 0.0085 : 0.0022;
+            let pricePrecision = 2;
+            let amountPrecision = 4;
+            let minAmount = 0.001; // where does it come from?
+            let minPrice = undefined;
+            if (quote === 'AUD') {
+                if ((base === 'XRP') || (base === 'OMG')) {
+                    pricePrecision = 4;
+                }
+                amountPrecision = -Math.log10 (minAmount);
+                minPrice = Math.pow (10, -pricePrecision);
+            }
+            let precision = {
+                'amount': amountPrecision,
+                'price': pricePrecision,
+            };
+            let limits = {
+                'amount': {
+                    'min': minAmount,
+                    'max': undefined,
+                },
+                'price': {
+                    'min': minPrice,
+                    'max': undefined,
+                },
+                'cost': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+            };
+            result.push ({
+                'info': market,
+                'id': id,
+                'symbol': symbol,
+                'base': base,
+                'quote': quote,
+                'baseId': baseId,
+                'quoteId': quoteId,
+                'maker': fee,
+                'taker': fee,
+                'limits': limits,
+                'precision': precision,
+            });
+        }
+        return result;
     }
 
     async fetchBalance (params = {}) {
@@ -16531,6 +17660,26 @@ module.exports = class btcmarkets extends Exchange {
     async cancelOrder (id, symbol = undefined, params = {}) {
         await this.loadMarkets ();
         return await this.cancelOrders ([ id ]);
+    }
+
+    calculateFee (symbol, type, side, amount, price, takerOrMaker = 'taker', params = {}) {
+        let market = this.markets[symbol];
+        let rate = market[takerOrMaker];
+        let currency = undefined;
+        let cost = undefined;
+        if (market['quote'] === 'AUD') {
+            currency = market['quote'];
+            cost = parseFloat (this.costToPrecision (symbol, amount * price));
+        } else {
+            currency = market['base'];
+            cost = parseFloat (this.amountToPrecision (symbol, amount));
+        }
+        return {
+            'type': takerOrMaker,
+            'currency': currency,
+            'rate': rate,
+            'cost': parseFloat (this.feeToPrecision (symbol, rate * cost)),
+        };
     }
 
     parseMyTrade (trade, market) {
@@ -16721,14 +17870,9 @@ module.exports = class btcmarkets extends Exchange {
             }
         }
     }
-
-    async request (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
-        let response = await this.fetch2 (path, api, method, params, headers, body);
-        return response;
-    }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],51:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],53:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -16794,7 +17938,7 @@ module.exports = class btctradeim extends coinegg {
     }
 };
 
-},{"./base/errors":11,"./coinegg.js":64}],52:[function(require,module,exports){
+},{"./base/errors":11,"./coinegg.js":66}],54:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -17137,7 +18281,7 @@ module.exports = class btctradeua extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],53:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],55:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -17430,7 +18574,7 @@ module.exports = class btcturk extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],54:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],56:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -17609,7 +18753,7 @@ module.exports = class btcx extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],55:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],57:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -17694,16 +18838,20 @@ module.exports = class bxinth extends Exchange {
         for (let p = 0; p < keys.length; p++) {
             let market = markets[keys[p]];
             let id = market['pairing_id'].toString ();
-            let base = market['secondary_currency'];
-            let quote = market['primary_currency'];
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            let baseId = market['secondary_currency'];
+            let quoteId = market['primary_currency'];
+            let active = market['active'];
+            let base = this.commonCurrencyCode (baseId);
+            let quote = this.commonCurrencyCode (quoteId);
             let symbol = base + '/' + quote;
             result.push ({
                 'id': id,
                 'symbol': symbol,
                 'base': base,
                 'quote': quote,
+                'baseId': baseId,
+                'quoteId': quoteId,
+                'active': active,
                 'info': market,
             });
         }
@@ -17917,7 +19065,7 @@ module.exports = class bxinth extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],56:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],58:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -18258,7 +19406,7 @@ module.exports = class ccex extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],57:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],59:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -18377,6 +19525,7 @@ module.exports = class cex extends Exchange {
             },
             'options': {
                 'fetchOHLCVWarning': true,
+                'createMarketBuyOrderRequiresPrice': true,
             },
         });
     }
@@ -18395,10 +19544,9 @@ module.exports = class cex extends Exchange {
                 'symbol': symbol,
                 'base': base,
                 'quote': quote,
-                'lot': market['minLotSize'],
                 'precision': {
                     'price': this.precisionFromString (market['minPrice']),
-                    'amount': -1 * Math.log10 (market['minLotSize']),
+                    'amount': -Math.log10 (market['minLotSize']),
                 },
                 'limits': {
                     'amount': {
@@ -18585,25 +19733,30 @@ module.exports = class cex extends Exchange {
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
+        if (type === 'market') {
+            // for market buy it requires the amount of quote currency to spend
+            if (side === 'buy') {
+                if (this.options['createMarketBuyOrderRequiresPrice']) {
+                    if (typeof price === 'undefined') {
+                        throw new InvalidOrder (this.id + " createOrder() requires the price argument with market buy orders to calculate total order cost (amount to spend), where cost = amount * price. Supply a price argument to createOrder() call if you want the cost to be calculated for you from price and amount, or, alternatively, add .options['createMarketBuyOrderRequiresPrice'] = false to supply the cost in the amount argument (the exchange-specific behaviour)");
+                    } else {
+                        amount = amount * price;
+                    }
+                }
+            }
+        }
         await this.loadMarkets ();
-        let order = {
+        let request = {
             'pair': this.marketId (symbol),
             'type': side,
             'amount': amount,
         };
         if (type === 'limit') {
-            order['price'] = price;
+            request['price'] = price;
         } else {
-            // for market buy CEX.io requires the amount of quote currency to spend
-            if (side === 'buy') {
-                if (!price) {
-                    throw new InvalidOrder ('For market buy orders ' + this.id + " requires the amount of quote currency to spend, to calculate proper costs call createOrder (symbol, 'market', 'buy', amount, price)");
-                }
-                order['amount'] = amount * price;
-            }
-            order['order_type'] = type;
+            request['order_type'] = type;
         }
-        let response = await this.privatePostPlaceOrderPair (this.extend (order, params));
+        let response = await this.privatePostPlaceOrderPair (this.extend (request, params));
         return {
             'info': response,
             'id': response['id'],
@@ -18810,7 +19963,7 @@ module.exports = class cex extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],58:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],60:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -18873,7 +20026,7 @@ module.exports = class chbtc extends zb {
     }
 };
 
-},{"./base/errors":11,"./zb.js":143}],59:[function(require,module,exports){
+},{"./base/errors":11,"./zb.js":146}],61:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -18907,7 +20060,7 @@ module.exports = class chilebit extends foxbit {
     }
 };
 
-},{"./foxbit.js":87}],60:[function(require,module,exports){
+},{"./foxbit.js":89}],62:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -18935,6 +20088,8 @@ module.exports = class cobinhood extends Exchange {
                 'fetchOrder': true,
                 'fetchDepositAddress': true,
                 'createDepositAddress': true,
+                'fetchDeposits': true,
+                'fetchWithdrawals': true,
                 'withdraw': false,
                 'fetchMyTrades': true,
             },
@@ -19052,6 +20207,7 @@ module.exports = class cobinhood extends Exchange {
             },
             'commonCurrencies': {
                 'SMT': 'SocialMedia.Market',
+                'MTN': 'Motion Token',
             },
         });
     }
@@ -19150,11 +20306,18 @@ module.exports = class cobinhood extends Exchange {
     }
 
     parseTicker (ticker, market = undefined) {
+        let symbol = undefined;
         if (typeof market === 'undefined') {
             let marketId = this.safeString (ticker, 'trading_pair_id');
-            market = this.findMarket (marketId);
+            if (marketId in this.markets_by_id) {
+                market = this.markets_by_id[marketId];
+            } else {
+                let [ baseId, quoteId ] = marketId.split ('-');
+                let base = this.commonCurrencyCode (baseId);
+                let quote = this.commonCurrencyCode (quoteId);
+                symbol = base + '/' + quote;
+            }
         }
-        let symbol = undefined;
         if (typeof market !== 'undefined')
             symbol = market['symbol'];
         let timestamp = this.safeInteger (ticker, 'timestamp');
@@ -19223,7 +20386,7 @@ module.exports = class cobinhood extends Exchange {
         let price = this.safeFloat (trade, 'price');
         let amount = this.safeFloat (trade, 'size');
         let cost = price * amount;
-        let side = trade['maker_side'] === 'bid' ? 'sell' : 'buy';
+        let side = (trade['maker_side'] === 'bid') ? 'sell' : 'buy';
         return {
             'info': trade,
             'timestamp': timestamp,
@@ -19478,6 +20641,106 @@ module.exports = class cobinhood extends Exchange {
         };
     }
 
+    async withdraw (code, amount, address, params = {}) {
+        await this.loadMarkets ();
+        let currency = this.currency (code);
+        let response = await this.privatePostWalletWithdrawals (this.extend ({
+            'currency': currency['id'],
+            'amount': amount,
+            'address': address,
+        }, params));
+        return {
+            'id': response['result']['withdrawal_id'],
+            'info': response,
+        };
+    }
+
+    async fetchDeposits (code = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        if (typeof code === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchDeposits() requires a currency code arguemnt');
+        }
+        let currency = this.currency (code);
+        let request = {
+            'currency': currency['id'],
+        };
+        let response = await this.privateGetWalletDeposits (this.extend (request, params));
+        return this.parseTransactions (response['result']['deposits'], currency);
+    }
+
+    async fetchWithdrawals (code = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        if (typeof code === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchWithdrawals() requires a currency code arguemnt');
+        }
+        let currency = this.currency (code);
+        let request = {
+            'currency': currency['id'],
+        };
+        let response = await this.privateGetWalletWithdrawals (this.extend (request, params));
+        return this.parseTransactions (response['result']['withdrawals'], currency);
+    }
+
+    parseTransactionStatus (status) {
+        let statuses = {
+            'tx_pending_two_factor_auth': 'pending',
+            'tx_pending_email_auth': 'pending',
+            'tx_pending_approval': 'pending',
+            'tx_approved': 'pending',
+            'tx_processing': 'pending',
+            'tx_pending': 'pending',
+            'tx_sent': 'pending',
+            'tx_cancelled': 'canceled',
+            'tx_timeout': 'error',
+            'tx_invalid': 'error',
+            'tx_rejected': 'error',
+            'tx_confirmed': 'ok',
+        };
+        return (status in statuses) ? statuses[status] : status.toLowerCase ();
+    }
+
+    parseTransaction (transaction, currency = undefined) {
+        let timestamp = this.safeInteger (transaction, 'created_at');
+        let datetime = undefined;
+        if (typeof timestamp !== 'undefined') {
+            datetime = this.iso8601 (timestamp);
+        }
+        let code = undefined;
+        if (typeof currency === 'undefined') {
+            let currencyId = this.safeString (transaction, 'currency');
+            if (currencyId in this.currencies_by_id) {
+                currency = this.currencies_by_id[currencyId];
+            } else {
+                code = this.commonCurrencyCode (currencyId);
+            }
+        }
+        if (typeof currency !== 'undefined') {
+            code = currency['code'];
+        }
+        let type = this.safeString (transaction, 'type');
+        if (typeof type !== 'undefined') {
+            let typeParts = type.split ('_');
+            type = typeParts[0];
+        }
+        return {
+            'info': transaction,
+            'id': this.safeString (transaction, 'withdrawal_id'),
+            'txid': this.safeString (transaction, 'txhash'),
+            'timestamp': timestamp,
+            'datetime': datetime,
+            'address': undefined, // or is it defined?
+            'type': type, // direction of the transaction, ('deposit' | 'withdraw')
+            'amount': this.safeFloat (transaction, 'amount'),
+            'currency': code,
+            'status': this.parseTransactionStatus (transaction['status']),
+            'updated': undefined,
+            'fee': {
+                'cost': this.safeFloat (transaction, 'fee'),
+                'rate': undefined,
+            },
+        };
+    }
+
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let url = this.urls['api'] + '/' + this.version + '/' + this.implodeParams (path, params);
         let query = this.omit (params, this.extractParams (path));
@@ -19530,7 +20793,7 @@ module.exports = class cobinhood extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],61:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],63:[function(require,module,exports){
 'use strict';
 
 // ----------------------------------------------------------------------------
@@ -19889,7 +21152,7 @@ module.exports = class coinbase extends Exchange {
 };
 
 
-},{"./base/Exchange":9,"./base/errors":11}],62:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],64:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -19917,7 +21180,7 @@ module.exports = class coinbasepro extends gdax {
     }
 };
 
-},{"./gdax.js":92}],63:[function(require,module,exports){
+},{"./gdax.js":94}],65:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -20166,7 +21429,7 @@ module.exports = class coincheck extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],64:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],66:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -20313,6 +21576,9 @@ module.exports = class coinegg extends Exchange {
             'options': {
                 'quoteIds': [ 'btc', 'eth', 'usc', 'usdt' ],
             },
+            'commonCurrencies': {
+                'JBC': 'JubaoCoin',
+            },
         });
     }
 
@@ -20343,7 +21609,6 @@ module.exports = class coinegg extends Exchange {
                     'amount': 8,
                     'price': 8,
                 };
-                let lot = Math.pow (10, -precision['amount']);
                 result.push ({
                     'id': id,
                     'symbol': symbol,
@@ -20352,11 +21617,10 @@ module.exports = class coinegg extends Exchange {
                     'baseId': baseId,
                     'quoteId': quoteId,
                     'active': true,
-                    'lot': lot,
                     'precision': precision,
                     'limits': {
                         'amount': {
-                            'min': lot,
+                            'min': Math.pow (10, -precision['amount']),
                             'max': Math.pow (10, precision['amount']),
                         },
                         'price': {
@@ -20701,7 +21965,7 @@ module.exports = class coinegg extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],65:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],67:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -20814,6 +22078,9 @@ module.exports = class coinex extends Exchange {
             'precision': {
                 'amount': 8,
                 'price': 8,
+            },
+            'options': {
+                'createMarketBuyOrderRequiresPrice': true,
             },
         });
     }
@@ -20955,9 +22222,11 @@ module.exports = class coinex extends Exchange {
 
     parseTrade (trade, market = undefined) {
         // this method parses both public and private trades
-        let timestamp = this.safeInteger (trade, 'create_time') * 1000;
+        let timestamp = this.safeInteger (trade, 'create_time');
         if (typeof timestamp === 'undefined') {
             timestamp = this.safeInteger (trade, 'date_ms');
+        } else {
+            timestamp = timestamp * 1000;
         }
         let tradeId = this.safeString (trade, 'id');
         let orderId = this.safeString (trade, 'order_id');
@@ -21107,17 +22376,30 @@ module.exports = class coinex extends Exchange {
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
+        amount = parseFloat (amount); // this line is deprecated
+        if (type === 'market') {
+            // for market buy it requires the amount of quote currency to spend
+            if (side === 'buy') {
+                if (this.options['createMarketBuyOrderRequiresPrice']) {
+                    if (typeof price === 'undefined') {
+                        throw new InvalidOrder (this.id + " createOrder() requires the price argument with market buy orders to calculate total order cost (amount to spend), where cost = amount * price. Supply a price argument to createOrder() call if you want the cost to be calculated for you from price and amount, or, alternatively, add .options['createMarketBuyOrderRequiresPrice'] = false to supply the cost in the amount argument (the exchange-specific behaviour)");
+                    } else {
+                        price = parseFloat (price); // this line is deprecated
+                        amount = amount * price;
+                    }
+                }
+            }
+        }
         await this.loadMarkets ();
         let method = 'privatePostOrder' + this.capitalize (type);
         let market = this.market (symbol);
-        amount = parseFloat (amount);
         let request = {
             'market': market['id'],
             'amount': this.amountToPrecision (symbol, amount),
             'type': side,
         };
         if (type === 'limit') {
-            price = parseFloat (price);
+            price = parseFloat (price); // this line is deprecated
             request['price'] = this.priceToPrecision (symbol, price);
         }
         let response = await this[method] (this.extend (request, params));
@@ -21138,6 +22420,9 @@ module.exports = class coinex extends Exchange {
     }
 
     async fetchOrder (id, symbol = undefined, params = {}) {
+        if (typeof symbol === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchOrder requires a symbol argument');
+        }
         await this.loadMarkets ();
         let market = this.market (symbol);
         let response = await this.privateGetOrder (this.extend ({
@@ -21147,7 +22432,10 @@ module.exports = class coinex extends Exchange {
         return this.parseOrder (response['data'], market);
     }
 
-    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+    async fetchOrdersByStatus (status, symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        if (typeof symbol === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchOrders requires a symbol argument');
+        }
         await this.loadMarkets ();
         let market = this.market (symbol);
         let request = {
@@ -21155,23 +22443,23 @@ module.exports = class coinex extends Exchange {
         };
         if (typeof limit !== 'undefined')
             request['limit'] = limit;
-        let response = await this.privateGetOrderPending (this.extend (request, params));
+        let method = 'privateGetOrder' + this.capitalize (status);
+        let response = await this[method] (this.extend (request, params));
         return this.parseOrders (response['data']['data'], market);
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return await this.fetchOrdersByStatus ('pending', symbol, since, limit, params);
     }
 
     async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        let market = this.market (symbol);
-        let request = {
-            'market': market['id'],
-        };
-        if (typeof limit !== 'undefined')
-            request['limit'] = limit;
-        let response = await this.privateGetOrderFinished (this.extend (request, params));
-        return this.parseOrders (response['data']['data'], market);
+        return await this.fetchOrdersByStatus ('finished', symbol, since, limit, params);
     }
 
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        if (typeof symbol === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchMyTrades requires a symbol argument');
+        }
         await this.loadMarkets ();
         let market = this.market (symbol);
         let response = await this.privateGetOrderUserDeals (this.extend ({
@@ -21241,7 +22529,7 @@ module.exports = class coinex extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],66:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],68:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -21962,7 +23250,7 @@ module.exports = class coinexchange extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],67:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],69:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -22017,8 +23305,9 @@ module.exports = class coinfalcon extends Exchange {
             },
             'fees': {
                 'trading': {
-                    'maker': 0.0025,
-                    'taker': 0.0025,
+                    'tierBased': true,
+                    'maker': 0.0,
+                    'taker': 0.002, // tiered fee starts at 0.2%
                 },
             },
             'precision': {
@@ -22333,7 +23622,7 @@ module.exports = class coinfalcon extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],68:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],70:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -22596,7 +23885,7 @@ module.exports = class coinfloor extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],69:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],71:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -22713,19 +24002,17 @@ module.exports = class coingi extends Exchange {
                 'amount': 8,
                 'price': 8,
             };
-            let lot = Math.pow (10, -precision['amount']);
             result.push ({
                 'id': id,
                 'symbol': symbol,
                 'base': base,
                 'quote': quote,
                 'info': id,
-                'lot': lot,
                 'active': true,
                 'precision': precision,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': Math.pow (10, -precision['amount']),
                         'max': Math.pow (10, precision['amount']),
                     },
                     'price': {
@@ -22918,7 +24205,7 @@ module.exports = class coingi extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],70:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],72:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -23020,13 +24307,14 @@ module.exports = class coinmarketcap extends Exchange {
             'BlazeCoin': 'BlazeCoin',
             'BlockCAT': 'BlockCAT',
             'Catcoin': 'Catcoin',
-            'Content and AD Network': 'Content and AD Network', // conflict with CAN (Content and AD Network)
+            'CanYaCoin': 'CanYaCoin', // conflict with CAN (Content and AD Network)
             'Comet': 'Comet', // conflict with CMT (CyberMiles)
             'CPChain': 'CPChain',
             'Cubits': 'Cubits', // conflict with QBT (Qbao)
             'DAO.Casino': 'DAO.Casino', // conflict with BET (BetaCoin)
             'ENTCash': 'ENTCash', // conflict with ENT (Eternity)
             'FairGame': 'FairGame',
+            'Fabric Token': 'Fabric Token',
             'GET Protocol': 'GET Protocol',
             'Global Tour Coin': 'Global Tour Coin', // conflict with GTC (Game.com)
             'GuccioneCoin': 'GuccioneCoin', // conflict with GCC (Global Cryptocurrency)
@@ -23038,8 +24326,9 @@ module.exports = class coinmarketcap extends Exchange {
             'KingN Coin': 'KingN Coin', // conflict with KNC (Kyber Network)
             'LiteBitcoin': 'LiteBitcoin', // conflict with LBTC (LightningBitcoin)
             'Maggie': 'Maggie',
-            'MIOTA': 'IOTA', // a special case, most exchanges list it as IOTA, therefore we change just the Coinmarketcap instead of changing them all
+            'IOTA': 'IOTA', // a special case, most exchanges list it as IOTA, therefore we change just the Coinmarketcap instead of changing them all
             'NetCoin': 'NetCoin',
+            'PCHAIN': 'PCHAIN', // conflict with PAI (Project Pai)
             'Polcoin': 'Polcoin',
             'PutinCoin': 'PutinCoin', // conflict with PUT (Profile Utility Token)
             'Rcoin': 'Rcoin', // conflict with RCN (Ripio Credit Network)
@@ -23233,7 +24522,7 @@ module.exports = class coinmarketcap extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],71:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],73:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -23452,7 +24741,7 @@ module.exports = class coinmate extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],72:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],74:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -23837,7 +25126,7 @@ module.exports = class coinnest extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],73:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],75:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -24098,6 +25387,9 @@ module.exports = class coinone extends Exchange {
         let method = 'privatePostOrder' + this.capitalize (type) + this.capitalize (side);
         let response = await this[method] (this.extend (request, params));
         let id = this.safeString (response, 'orderId');
+        if (typeof id !== 'undefined') {
+            id = id.toUpperCase ();
+        }
         let timestamp = this.milliseconds ();
         let cost = price * amount;
         let order = {
@@ -24171,6 +25463,9 @@ module.exports = class coinone extends Exchange {
     parseOrder (order, market = undefined) {
         let info = this.safeValue (order, 'info');
         let id = this.safeString (info, 'orderId');
+        if (typeof id !== 'undefined') {
+            id = id.toUpperCase ();
+        }
         let timestamp = parseInt (info['timestamp']) * 1000;
         let status = this.safeString (order, 'status');
         status = this.parseOrderStatus (status);
@@ -24324,7 +25619,7 @@ module.exports = class coinone extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],74:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],76:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -24663,7 +25958,7 @@ module.exports = class coinsecure extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],75:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],77:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -24827,7 +26122,7 @@ module.exports = class coinspot extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],76:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],78:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -24943,6 +26238,10 @@ module.exports = class cointiger extends huobipro {
                 '100002': ExchangeNotAvailable,
                 '100003': ExchangeError,
                 '100005': AuthenticationError,
+            },
+            'commonCurrencies': {
+                'FGC': 'FoundGameCoin',
+                'TCT': 'The Tycoon Chain Token',
             },
         });
     }
@@ -25725,7 +27024,7 @@ module.exports = class cointiger extends huobipro {
     }
 };
 
-},{"./base/errors":11,"./base/functions/number":17,"./huobipro.js":100}],77:[function(require,module,exports){
+},{"./base/errors":11,"./base/functions/number":17,"./huobipro.js":102}],79:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -25793,7 +27092,7 @@ module.exports = class coolcoin extends coinegg {
     }
 };
 
-},{"./coinegg.js":64}],78:[function(require,module,exports){
+},{"./coinegg.js":66}],80:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -26207,7 +27506,7 @@ module.exports = class crypton extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],79:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],81:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -26309,12 +27608,13 @@ module.exports = class cryptopia extends Exchange {
                 'BEAN': 'BITB', // rebranding, see issue #3380
                 'BLZ': 'BlazeCoin',
                 'BTG': 'Bitgem',
-                'CAN': 'CanYa',
+                'CAN': 'CanYaCoin',
                 'CAT': 'Catcoin',
                 'CC': 'CCX',
                 'CMT': 'Comet',
                 'EPC': 'ExperienceCoin',
                 'FCN': 'Facilecoin',
+                'FT': 'Fabric Token',
                 'FUEL': 'FC2', // FuelCoin != FUEL
                 'HAV': 'Havecoin',
                 'KARM': 'KARMA',
@@ -26322,6 +27622,7 @@ module.exports = class cryptopia extends Exchange {
                 'LDC': 'LADACoin',
                 'MARKS': 'Bitmark',
                 'NET': 'NetCoin',
+                'PLC': 'Polcoin',
                 'RED': 'RedCoin',
                 'STC': 'StopTrumpCoin',
                 'QBT': 'Cubits',
@@ -26340,7 +27641,7 @@ module.exports = class cryptopia extends Exchange {
         for (let i = 0; i < markets.length; i++) {
             let market = markets[i];
             let numericId = market['Id'];
-            // let symbol = market['Label'];
+            let label = market['Label'];
             let baseId = market['Symbol'];
             let quoteId = market['BaseSymbol'];
             let base = this.commonCurrencyCode (baseId);
@@ -26380,10 +27681,10 @@ module.exports = class cryptopia extends Exchange {
                 'info': market,
                 'maker': market['TradeFee'] / 100,
                 'taker': market['TradeFee'] / 100,
-                'lot': limits['amount']['min'],
                 'active': active,
                 'precision': precision,
                 'limits': limits,
+                'label': label,
             });
         }
         this.options['marketsByLabel'] = this.indexBy (result, 'label');
@@ -26987,6 +28288,9 @@ module.exports = class cryptopia extends Exchange {
                             if (error.indexOf ('Invalid trade amount') >= 0) {
                                 throw new InvalidOrder (feedback);
                             }
+                            if (error.indexOf ('No matching trades found') >= 0) {
+                                throw new OrderNotFound (feedback);
+                            }
                             if (error.indexOf ('does not exist') >= 0) {
                                 throw new OrderNotFound (feedback);
                             }
@@ -27020,7 +28324,7 @@ module.exports = class cryptopia extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],80:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],82:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -27436,7 +28740,7 @@ module.exports = class deribit extends Exchange {
                 auth += '&' + this.urlencode (params);
             }
             let hash = this.hash (this.encode (auth), 'sha256', 'base64');
-            let signature = this.apiKey + '.' + nonce + '.' + hash;
+            let signature = this.apiKey + '.' + nonce + '.' + this.decode (hash);
             headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'x-deribit-sig': signature,
@@ -27447,7 +28751,7 @@ module.exports = class deribit extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],81:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],83:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -27604,7 +28908,7 @@ module.exports = class dsx extends liqui {
     }
 };
 
-},{"./liqui.js":111}],82:[function(require,module,exports){
+},{"./liqui.js":113}],84:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -27667,7 +28971,7 @@ module.exports = class ethfinex extends bitfinex {
     }
 };
 
-},{"./bitfinex.js":29}],83:[function(require,module,exports){
+},{"./bitfinex.js":30}],85:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -28342,7 +29646,7 @@ module.exports = class exmo extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],84:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],86:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -28359,6 +29663,7 @@ module.exports = class exx extends Exchange {
             'name': 'EXX',
             'countries': [ 'CN' ],
             'rateLimit': 1000 / 10,
+            'userAgent': this.userAgents['chrome'],
             'has': {
                 'fetchOrder': true,
                 'fetchTickers': true,
@@ -28373,6 +29678,7 @@ module.exports = class exx extends Exchange {
                 'www': 'https://www.exx.com/',
                 'doc': 'https://www.exx.com/help/restApi',
                 'fees': 'https://www.exx.com/help/rate',
+                'referral': 'https://www.exx.com/r/fde4260159e53ab8a58cc9186d35501f',
             },
             'api': {
                 'public': {
@@ -28426,7 +29732,7 @@ module.exports = class exx extends Exchange {
                 },
             },
             'commonCurrencies': {
-                'CAN': 'Content and AD Network',
+                'TV': 'TIV', // Ti-Value
             },
             'exceptions': {
                 '103': AuthenticationError,
@@ -28452,7 +29758,6 @@ module.exports = class exx extends Exchange {
                 'amount': parseInt (market['amountScale']),
                 'price': parseInt (market['priceScale']),
             };
-            let lot = Math.pow (10, -precision['amount']);
             result.push ({
                 'id': id,
                 'symbol': symbol,
@@ -28461,11 +29766,10 @@ module.exports = class exx extends Exchange {
                 'baseId': baseId,
                 'quoteId': quoteId,
                 'active': active,
-                'lot': lot,
                 'precision': precision,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': Math.pow (10, -precision['amount']),
                         'max': Math.pow (10, precision['amount']),
                     },
                     'price': {
@@ -28712,6 +30016,9 @@ module.exports = class exx extends Exchange {
             }, params)));
             let signature = this.hmac (this.encode (query), this.encode (this.secret), 'sha512');
             url += '?' + query + '&signature=' + signature;
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            };
         }
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
@@ -28753,7 +30060,7 @@ module.exports = class exx extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],85:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],87:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -28849,6 +30156,7 @@ module.exports = class fcoin extends Exchange {
                 'amount': { 'min': 0.01, 'max': 100000 },
             },
             'options': {
+                'createMarketBuyOrderRequiresPrice': true,
                 'limits': {
                     'BTM/USDT': { 'amount': { 'min': 0.1, 'max': 10000000 }},
                     'ETC/USDT': { 'amount': { 'min': 0.001, 'max': 400000 }},
@@ -28875,6 +30183,10 @@ module.exports = class fcoin extends Exchange {
                 '3008': InvalidOrder,
                 '6004': InvalidNonce,
                 '6005': AuthenticationError, // Illegal API Signature
+            },
+            'commonCurrencies': {
+                'DAG': 'DAGX',
+                'PAI': 'PCHAIN',
             },
         });
     }
@@ -29076,19 +30388,30 @@ module.exports = class fcoin extends Exchange {
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
+        if (type === 'market') {
+            // for market buy it requires the amount of quote currency to spend
+            if (side === 'buy') {
+                if (this.options['createMarketBuyOrderRequiresPrice']) {
+                    if (typeof price === 'undefined') {
+                        throw new InvalidOrder (this.id + " createOrder() requires the price argument with market buy orders to calculate total order cost (amount to spend), where cost = amount * price. Supply a price argument to createOrder() call if you want the cost to be calculated for you from price and amount, or, alternatively, add .options['createMarketBuyOrderRequiresPrice'] = false to supply the cost in the amount argument (the exchange-specific behaviour)");
+                    } else {
+                        amount = amount * price;
+                    }
+                }
+            }
+        }
         await this.loadMarkets ();
         let orderType = type;
-        amount = this.amountToPrecision (symbol, amount);
-        let order = {
+        let request = {
             'symbol': this.marketId (symbol),
-            'amount': amount,
+            'amount': this.amountToPrecision (symbol, amount),
             'side': side,
             'type': orderType,
         };
         if (type === 'limit') {
-            order['price'] = this.priceToPrecision (symbol, price);
+            request['price'] = this.priceToPrecision (symbol, price);
         }
-        let result = await this.privatePostOrders (this.extend (order, params));
+        let result = await this.privatePostOrders (this.extend (request, params));
         return {
             'info': result,
             'id': result['data'],
@@ -29305,7 +30628,7 @@ module.exports = class fcoin extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],86:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],88:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -29568,7 +30891,7 @@ module.exports = class flowbtc extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],87:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],89:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -29789,7 +31112,7 @@ module.exports = class foxbit extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],88:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],90:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -29967,7 +31290,7 @@ module.exports = class fybse extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],89:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],91:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -29998,7 +31321,7 @@ module.exports = class fybsg extends fybse {
     }
 };
 
-},{"./fybse.js":88}],90:[function(require,module,exports){
+},{"./fybse.js":90}],92:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -30701,7 +32024,7 @@ module.exports = class gatecoin extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],91:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],93:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -31318,7 +32641,7 @@ module.exports = class gateio extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],92:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],94:[function(require,module,exports){
 'use strict';
 
 // ----------------------------------------------------------------------------
@@ -31608,6 +32931,8 @@ module.exports = class gdax extends Exchange {
         // GDAX returns inverted side to fetchMyTrades vs fetchTrades
         if (typeof orderId !== 'undefined')
             side = (trade['side'] === 'buy') ? 'buy' : 'sell';
+        let price = this.safeFloat (trade, 'price');
+        let amount = this.safeFloat (trade, 'size');
         return {
             'id': id,
             'order': orderId,
@@ -31617,20 +32942,23 @@ module.exports = class gdax extends Exchange {
             'symbol': symbol,
             'type': type,
             'side': side,
-            'price': this.safeFloat (trade, 'price'),
-            'amount': this.safeFloat (trade, 'size'),
+            'price': price,
+            'amount': amount,
             'fee': fee,
+            'cost': price * amount,
         };
     }
 
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        let market = undefined;
-        let request = {};
-        if (typeof symbol !== 'undefined') {
-            market = this.market (symbol);
-            request['product_id'] = market['id'];
+        // as of 2018-08-23
+        if (typeof symbol === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchMyTrades requires a symbol argument');
         }
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'product_id': market['id'],
+        };
         if (typeof limit !== 'undefined')
             request['limit'] = limit;
         let response = await this.privateGetFills (this.extend (request, params));
@@ -31830,10 +33158,11 @@ module.exports = class gdax extends Exchange {
         return response;
     }
 
-    async deposit (currency, amount, address, params = {}) {
+    async deposit (code, amount, address, params = {}) {
         await this.loadMarkets ();
+        let currency = this.currency (code);
         let request = {
-            'currency': currency,
+            'currency': currency['id'],
             'amount': amount,
         };
         let method = 'privatePostDeposits';
@@ -31858,11 +33187,12 @@ module.exports = class gdax extends Exchange {
         };
     }
 
-    async withdraw (currency, amount, address, tag = undefined, params = {}) {
+    async withdraw (code, amount, address, tag = undefined, params = {}) {
         this.checkAddress (address);
+        let currency = this.currency (code);
         await this.loadMarkets ();
         let request = {
-            'currency': currency,
+            'currency': currency['id'],
             'amount': amount,
         };
         let method = 'privatePostWithdrawals';
@@ -31880,6 +33210,81 @@ module.exports = class gdax extends Exchange {
         return {
             'info': response,
             'id': response['id'],
+        };
+    }
+
+    async fetchTransactions (code = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        if (typeof code === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchTransactions() requires a currency code argument');
+        }
+        let currency = this.currency (code);
+        let accountId = undefined;
+        let accounts = await this.privateGetAccounts ();
+        for (let i = 0; i < accounts.length; i++) {
+            let account = accounts[i];
+            // todo: use unified common currencies below
+            if (account['currency'] === currency['id']) {
+                accountId = account['id'];
+                break;
+            }
+        }
+        if (typeof accountId === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchTransactions() could not find account id for ' + code);
+        }
+        let request = {
+            'limit': limit,
+            'id': accountId,
+        };
+        let response = await this.privateGetAccountsIdTransfers (this.extend (request, params));
+        for (let i = 0; i < response.length; i++) {
+            response[i]['currency'] = code;
+        }
+        return this.parseTransactions (response);
+    }
+
+    parseTransactionStatus (transaction) {
+        if (transaction['canceled_at']) {
+            return 'canceled';
+        } else if (transaction['completed_at']) {
+            return 'ok';
+        } else if (transaction['procesed_at']) {
+            return 'pending';
+        } else {
+            return 'failed';
+        }
+    }
+
+    parseTransaction (transaction, currency = undefined) {
+        let timestamp = this.safeInteger (transaction, 'created_at');
+        let datetime = undefined;
+        if (typeof timestamp !== 'undefined') {
+            datetime = this.iso8601 (timestamp);
+        }
+        let code = undefined;
+        let currencyId = this.safeString (transaction, 'currency');
+        if (currencyId in this.currencies_by_id) {
+            currency = this.currencies_by_id[currencyId];
+        }
+        if (typeof currency !== 'undefined') {
+            code = currency['code'];
+        }
+        return {
+            'info': transaction,
+            'id': this.safeString (transaction, 'id'),
+            'txid': this.safeString (transaction['details'], 'crypto_transaction_hash'),
+            'timestamp': timestamp,
+            'datetime': datetime,
+            'address': undefined, // or is it defined?
+            'type': this.safeString (transaction, 'type'), // direction of the transaction, ('deposit' | 'withdraw')
+            'amount': this.safeFloat (transaction, 'amount'),
+            'currency': code,
+            'status': this.parseTransactionStatus (transaction),
+            'updated': undefined,
+            'fee': {
+                'cost': undefined,
+                'rate': undefined,
+            },
         };
     }
 
@@ -31978,7 +33383,7 @@ module.exports = class gdax extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],93:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],95:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -32007,7 +33412,11 @@ module.exports = class gemini extends Exchange {
                 'fetchOrders': false,
                 'fetchOpenOrders': true,
                 'fetchClosedOrders': false,
+                'createMarketOrder': false,
                 'withdraw': true,
+                'fetchTransactions': true,
+                'fetchWithdrawals': false,
+                'fetchDeposits': false,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27816857-ce7be644-6096-11e7-82d6-3c257263229c.jpg',
@@ -32044,6 +33453,7 @@ module.exports = class gemini extends Exchange {
                         'orders',
                         'mytrades',
                         'tradevolume',
+                        'transfers',
                         'balances',
                         'deposit/{currency}/newAddress',
                         'withdraw/{currency}',
@@ -32324,6 +33734,59 @@ module.exports = class gemini extends Exchange {
         };
     }
 
+    nonce () {
+        return this.milliseconds ();
+    }
+
+    async fetchTransactions (code = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let request = {};
+        let response = await this.privatePostTransfers (this.extend (request, params));
+        return this.parseTransactions (response);
+    }
+
+    parseTransaction (transaction, currency = undefined) {
+        let timestamp = this.safeInteger (transaction, 'timestampms');
+        let datetime = undefined;
+        if (typeof timestamp !== 'undefined')
+            datetime = this.iso8601 (timestamp);
+        let code = undefined;
+        if (typeof currency === 'undefined') {
+            let currencyId = this.safeString (transaction, 'currency');
+            if (currencyId in this.currencies_by_id) {
+                currency = this.currencies_by_id[currencyId];
+            }
+        }
+        if (typeof currency !== 'undefined') {
+            code = currency['code'];
+        }
+        let type = this.safeString (transaction, 'type');
+        if (typeof type !== 'undefined') {
+            type = type.toLowerCase ();
+        }
+        let status = 'pending';
+        // When deposits show as Advanced or Complete they are available for trading.
+        if (transaction['status'])
+            status = 'ok';
+        return {
+            'info': transaction,
+            'id': this.safeString (transaction, 'eid'),
+            'txid': this.safeString (transaction, 'txHash'),
+            'timestamp': timestamp,
+            'datetime': datetime,
+            'address': undefined, // or is it defined?
+            'type': type, // direction of the transaction, ('deposit' | 'withdraw')
+            'amount': this.safeFloat (transaction, 'amount'),
+            'currency': code,
+            'status': status,
+            'updated': undefined,
+            'fee': {
+                'cost': undefined,
+                'rate': undefined,
+            },
+        };
+    }
+
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let url = '/' + this.version + '/' + this.implodeParams (path, params);
         let query = this.omit (params, this.extractParams (path));
@@ -32375,7 +33838,7 @@ module.exports = class gemini extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],94:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],96:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -32408,15 +33871,15 @@ module.exports = class getbtc extends _1btcxe {
                 },
             },
             'markets': {
-                'BTC/USD': { 'lot': 1e-08, 'symbol': 'BTC/USD', 'quote': 'USD', 'base': 'BTC', 'precision': { 'amount': 8, 'price': 8 }, 'id': 'USD', 'limits': { 'amount': { 'max': undefined, 'min': 1e-08 }, 'price': { 'max': 'undefined', 'min': 1e-08 }}},
-                'BTC/EUR': { 'lot': 1e-08, 'symbol': 'BTC/EUR', 'quote': 'EUR', 'base': 'BTC', 'precision': { 'amount': 8, 'price': 8 }, 'id': 'EUR', 'limits': { 'amount': { 'max': undefined, 'min': 1e-08 }, 'price': { 'max': 'undefined', 'min': 1e-08 }}},
-                'BTC/RUB': { 'lot': 1e-08, 'symbol': 'BTC/RUB', 'quote': 'RUB', 'base': 'BTC', 'precision': { 'amount': 8, 'price': 8 }, 'id': 'RUB', 'limits': { 'amount': { 'max': undefined, 'min': 1e-08 }, 'price': { 'max': 'undefined', 'min': 1e-08 }}},
+                'BTC/USD': { 'symbol': 'BTC/USD', 'quote': 'USD', 'base': 'BTC', 'precision': { 'amount': 8, 'price': 8 }, 'id': 'USD', 'limits': { 'amount': { 'max': undefined, 'min': 1e-08 }, 'price': { 'max': undefined, 'min': 1e-08 }}},
+                'BTC/EUR': { 'symbol': 'BTC/EUR', 'quote': 'EUR', 'base': 'BTC', 'precision': { 'amount': 8, 'price': 8 }, 'id': 'EUR', 'limits': { 'amount': { 'max': undefined, 'min': 1e-08 }, 'price': { 'max': undefined, 'min': 1e-08 }}},
+                'BTC/RUB': { 'symbol': 'BTC/RUB', 'quote': 'RUB', 'base': 'BTC', 'precision': { 'amount': 8, 'price': 8 }, 'id': 'RUB', 'limits': { 'amount': { 'max': undefined, 'min': 1e-08 }, 'price': { 'max': undefined, 'min': 1e-08 }}},
             },
         });
     }
 };
 
-},{"./_1btcxe.js":4}],95:[function(require,module,exports){
+},{"./_1btcxe.js":4}],97:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -32500,7 +33963,7 @@ module.exports = class hadax extends huobipro {
     }
 };
 
-},{"./base/errors":11,"./huobipro.js":100}],96:[function(require,module,exports){
+},{"./base/errors":11,"./huobipro.js":102}],98:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -33456,7 +34919,7 @@ module.exports = class hitbtc extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],97:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],99:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -34623,7 +36086,7 @@ module.exports = class hitbtc2 extends hitbtc {
     }
 };
 
-},{"./base/errors":11,"./hitbtc":96}],98:[function(require,module,exports){
+},{"./base/errors":11,"./hitbtc":98}],100:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -34881,7 +36344,7 @@ module.exports = class huobi extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],99:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],101:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -34909,7 +36372,7 @@ module.exports = class huobicny extends huobipro {
     }
 };
 
-},{"./huobipro.js":100}],100:[function(require,module,exports){
+},{"./huobipro.js":102}],102:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -35029,6 +36492,7 @@ module.exports = class huobipro extends Exchange {
                 'order-limitorder-amount-min-error': InvalidOrder, // limit order amount error, min: `0.001`
                 'order-marketorder-amount-min-error': InvalidOrder, // market order amount error, min: `0.01`
                 'order-limitorder-price-min-error': InvalidOrder, // limit order price error
+                'order-limitorder-price-max-error': InvalidOrder, // limit order price error
                 'order-orderstate-error': OrderNotFound, // canceling an already canceled order
                 'order-queryorder-invalid': OrderNotFound, // querying a non-existent order
                 'order-update-error': ExchangeNotAvailable, // undocumented error
@@ -35103,7 +36567,6 @@ module.exports = class huobipro extends Exchange {
                 'amount': market['amount-precision'],
                 'price': market['price-precision'],
             };
-            let lot = Math.pow (10, -precision['amount']);
             let maker = (base === 'OMG') ? 0 : 0.2 / 100;
             let taker = (base === 'OMG') ? 0 : 0.2 / 100;
             result.push ({
@@ -35113,14 +36576,13 @@ module.exports = class huobipro extends Exchange {
                 'quote': quote,
                 'baseId': baseId,
                 'quoteId': quoteId,
-                'lot': lot,
                 'active': true,
                 'precision': precision,
                 'taker': taker,
                 'maker': maker,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': Math.pow (10, -precision['amount']),
                         'max': Math.pow (10, precision['amount']),
                     },
                     'price': {
@@ -35248,16 +36710,25 @@ module.exports = class huobipro extends Exchange {
             side = typeParts[0];
             type = typeParts[1];
         }
+        let price = this.safeFloat (trade, 'price');
         let amount = this.safeFloat2 (trade, 'filled-amount', 'amount');
+        let cost = undefined;
+        if (typeof price !== 'undefined') {
+            if (typeof amount !== 'undefined') {
+                cost = amount * price;
+            }
+        }
         let fee = undefined;
         let feeCost = this.safeFloat (trade, 'filled-fees');
         let feeCurrency = undefined;
-        if (typeof feeCost !== 'undefined') {
+        if (typeof market !== 'undefined') {
             feeCurrency = (side === 'buy') ? market['base'] : market['quote'];
-        } else {
-            feeCost = this.safeFloat (trade, 'filled-points');
-            if (typeof feeCost !== 'undefined') {
-                feeCurrency = 'HBPOINT';
+        }
+        let filledPoints = this.safeFloat (trade, 'filled-points');
+        if (typeof filledPoints !== 'undefined') {
+            if ((typeof feeCost === 'undefined') || (feeCost === 0.0)) {
+                feeCost = filledPoints;
+                feeCurrency = this.commonCurrencyCode ('HBPOINT');
             }
         }
         if (typeof feeCost !== 'undefined') {
@@ -35275,8 +36746,9 @@ module.exports = class huobipro extends Exchange {
             'symbol': symbol,
             'type': type,
             'side': side,
-            'price': this.safeFloat (trade, 'price'),
+            'price': price,
             'amount': amount,
+            'cost': cost,
             'fee': fee,
         };
     }
@@ -35509,6 +36981,7 @@ module.exports = class huobipro extends Exchange {
     }
 
     parseOrder (order, market = undefined) {
+        let id = this.safeString (order, 'id');
         let side = undefined;
         let type = undefined;
         let status = undefined;
@@ -35516,7 +36989,7 @@ module.exports = class huobipro extends Exchange {
             let orderType = order['type'].split ('-');
             side = orderType[0];
             type = orderType[1];
-            status = this.parseOrderStatus (order['state']);
+            status = this.parseOrderStatus (this.safeString (order, 'state'));
         }
         let symbol = undefined;
         if (typeof market === 'undefined') {
@@ -35527,20 +37000,29 @@ module.exports = class huobipro extends Exchange {
                 }
             }
         }
-        if (market)
+        if (typeof market !== 'undefined') {
             symbol = market['symbol'];
-        let timestamp = order['created-at'];
+        }
+        let timestamp = this.safeInteger (order, 'created-at');
         let amount = this.safeFloat (order, 'amount');
-        let filled = parseFloat (order['field-amount']);
-        let remaining = amount - filled;
+        let filled = this.safeFloat (order, 'field-amount'); // typo in their API, filled amount
         let price = this.safeFloat (order, 'price');
-        let cost = parseFloat (order['field-cash-amount']);
-        let average = 0;
-        if (filled)
-            average = parseFloat (cost / filled);
+        let cost = this.safeFloat (order, 'field-cash-amount'); // same typo
+        let remaining = undefined;
+        let average = undefined;
+        if (typeof filled !== 'undefined') {
+            average = 0;
+            if (typeof amount !== 'undefined') {
+                remaining = amount - filled;
+            }
+            // if cost is defined and filled is not zero
+            if ((typeof cost !== 'undefined') && (filled > 0)) {
+                average = cost / filled;
+            }
+        }
         let result = {
             'info': order,
-            'id': order['id'].toString (),
+            'id': id,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
             'lastTradeTimestamp': undefined,
@@ -35563,7 +37045,7 @@ module.exports = class huobipro extends Exchange {
         await this.loadMarkets ();
         await this.loadAccounts ();
         let market = this.market (symbol);
-        let order = {
+        let request = {
             'account-id': this.accounts[0]['id'],
             'amount': this.amountToPrecision (symbol, amount),
             'symbol': market['id'],
@@ -35574,14 +37056,15 @@ module.exports = class huobipro extends Exchange {
                 if (typeof price === 'undefined') {
                     throw new InvalidOrder (this.id + " market buy order requires price argument to calculate cost (total amount of quote currency to spend for buying, amount * price). To switch off this warning exception and specify cost in the amount argument, set .options['createMarketBuyOrderRequiresPrice'] = false. Make sure you know what you're doing.");
                 } else {
-                    order['amount'] = this.priceToPrecision (symbol, parseFloat (amount) * parseFloat (price));
+                    request['amount'] = this.priceToPrecision (symbol, parseFloat (amount) * parseFloat (price));
                 }
             }
         }
-        if (type === 'limit')
-            order['price'] = this.priceToPrecision (symbol, price);
+        if (type === 'limit') {
+            request['price'] = this.priceToPrecision (symbol, price);
+        }
         let method = this.options['createOrderMethod'];
-        let response = await this[method] (this.extend (order, params));
+        let response = await this[method] (this.extend (request, params));
         let timestamp = this.milliseconds ();
         return {
             'info': response,
@@ -35604,7 +37087,17 @@ module.exports = class huobipro extends Exchange {
     }
 
     async cancelOrder (id, symbol = undefined, params = {}) {
-        return await this.privatePostOrderOrdersIdSubmitcancel ({ 'id': id });
+        let response = await this.privatePostOrderOrdersIdSubmitcancel ({ 'id': id });
+        //
+        //     let response = {
+        //         'status': 'ok',
+        //         'data': '10138899000',
+        //     };
+        //
+        return this.extend (this.parseOrder (response), {
+            'id': id,
+            'status': 'canceled',
+        });
     }
 
     async fetchDepositAddress (code, params = {}) {
@@ -35734,7 +37227,7 @@ module.exports = class huobipro extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],101:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],103:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -35881,7 +37374,6 @@ module.exports = class ice3x extends Exchange {
                 'baseId': baseId,
                 'quoteId': quoteId,
                 'active': true,
-                'lot': undefined,
                 'info': market,
             });
         }
@@ -36173,7 +37665,7 @@ module.exports = class ice3x extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],102:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],104:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -36441,6 +37933,9 @@ module.exports = class independentreserve extends Exchange {
     async fetchMyTrades (symbol = undefined, since = undefined, limit = 50, params = {}) {
         await this.loadMarkets ();
         let pageIndex = this.safeInteger (params, 'pageIndex', 1);
+        if (typeof limit === 'undefined') {
+            limit = 50;
+        }
         const request = this.ordered ({
             'pageIndex': pageIndex,
             'pageSize': limit,
@@ -36544,22 +38039,27 @@ module.exports = class independentreserve extends Exchange {
             let keys = Object.keys (params);
             for (let i = 0; i < keys.length; i++) {
                 let key = keys[i];
-                auth.push (key + '=' + params[key]);
+                let value = params[key].toString ();
+                auth.push (key + '=' + value);
             }
             let message = auth.join (',');
             let signature = this.hmac (this.encode (message), this.encode (this.secret));
-            body = this.json ({
-                'apiKey': this.apiKey,
-                'nonce': nonce,
-                'signature': signature.toUpperCase (),
-            });
+            let query = this.ordered ({});
+            query['apiKey'] = this.apiKey;
+            query['nonce'] = nonce;
+            query['signature'] = signature.toUpperCase ();
+            for (let i = 0; i < keys.length; i++) {
+                let key = keys[i];
+                query[key] = params[key];
+            }
+            body = this.json (query);
             headers = { 'Content-Type': 'application/json' };
         }
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
 };
 
-},{"./base/Exchange":9}],103:[function(require,module,exports){
+},{"./base/Exchange":9}],105:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -36626,15 +38126,21 @@ module.exports = class indodax extends Exchange {
                 'BCD/IDR': { 'id': 'bcd_idr', 'symbol': 'BCD/IDR', 'base': 'BCD', 'quote': 'IDR', 'baseId': 'bcd', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': undefined, 'max': undefined }}},
                 'BCH/IDR': { 'id': 'bch_idr', 'symbol': 'BCH/IDR', 'base': 'BCH', 'quote': 'IDR', 'baseId': 'bch', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }}},
                 'BTG/IDR': { 'id': 'btg_idr', 'symbol': 'BTG/IDR', 'base': 'BTG', 'quote': 'IDR', 'baseId': 'btg', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.01, 'max': undefined }}},
+                'BTS/IDR': { 'id': 'bts_idr', 'symbol': 'BTS/IDR', 'base': 'BTS', 'quote': 'IDR', 'baseId': 'bts', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.01, 'max': undefined }}},
+                'DASH/IDR': { 'id': 'drk_idr', 'symbol': 'DASH/IDR', 'base': 'DASH', 'quote': 'IDR', 'baseId': 'drk', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.01, 'max': undefined }}},
+                'DOGE/IDR': { 'id': 'doge_idr', 'symbol': 'DOGE/IDR', 'base': 'DOGE', 'quote': 'IDR', 'baseId': 'doge', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 1000, 'max': undefined }}},
                 'ETH/IDR': { 'id': 'eth_idr', 'symbol': 'ETH/IDR', 'base': 'ETH', 'quote': 'IDR', 'baseId': 'eth', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.01, 'max': undefined }}},
                 'ETC/IDR': { 'id': 'etc_idr', 'symbol': 'ETC/IDR', 'base': 'ETC', 'quote': 'IDR', 'baseId': 'etc', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.1, 'max': undefined }}},
+                'GSC/IDR': { 'id': 'gsc_idr', 'symbol': 'GSC/IDR', 'base': 'GSC', 'quote': 'IDR', 'baseId': 'gsc', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.1, 'max': undefined }}},
                 'IGNIS/IDR': { 'id': 'ignis_idr', 'symbol': 'IGNIS/IDR', 'base': 'IGNIS', 'quote': 'IDR', 'baseId': 'ignis', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 1, 'max': undefined }}},
                 'LTC/IDR': { 'id': 'ltc_idr', 'symbol': 'LTC/IDR', 'base': 'LTC', 'quote': 'IDR', 'baseId': 'ltc', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.01, 'max': undefined }}},
-                'STQ/IDR': { 'id': 'stq_idr', 'symbol': 'STQ/IDR', 'base': 'STQ', 'quote': 'IDR', 'baseId': 'stq', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': undefined, 'max': undefined }}},
+                'NPXS/IDR': { 'id': 'npxs_idr', 'symbol': 'NPXS/IDR', 'base': 'NPXS', 'quote': 'IDR', 'baseId': 'npxs', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 1, 'max': undefined }}},
                 'NXT/IDR': { 'id': 'nxt_idr', 'symbol': 'NXT/IDR', 'base': 'NXT', 'quote': 'IDR', 'baseId': 'nxt', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 5, 'max': undefined }}},
+                'STQ/IDR': { 'id': 'stq_idr', 'symbol': 'STQ/IDR', 'base': 'STQ', 'quote': 'IDR', 'baseId': 'stq', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': undefined, 'max': undefined }}},
                 'TEN/IDR': { 'id': 'ten_idr', 'symbol': 'TEN/IDR', 'base': 'TEN', 'quote': 'IDR', 'baseId': 'ten', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 5, 'max': undefined }}},
                 'TRX/IDR': { 'id': 'trx_idr', 'symbol': 'TRX/IDR', 'base': 'TRX', 'quote': 'IDR', 'baseId': 'trx', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': undefined, 'max': undefined }}},
                 'WAVES/IDR': { 'id': 'waves_idr', 'symbol': 'WAVES/IDR', 'base': 'WAVES', 'quote': 'IDR', 'baseId': 'waves', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.1, 'max': undefined }}},
+                'XEM/IDR': { 'id': 'nem_btc', 'symbol': 'XEM/IDR', 'base': 'XEM', 'quote': 'IDR', 'baseId': 'nem', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 1, 'max': undefined }}},
                 'XLM/IDR': { 'id': 'str_idr', 'symbol': 'XLM/IDR', 'base': 'XLM', 'quote': 'IDR', 'baseId': 'str', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 20, 'max': undefined }}},
                 'XRP/IDR': { 'id': 'xrp_idr', 'symbol': 'XRP/IDR', 'base': 'XRP', 'quote': 'IDR', 'baseId': 'xrp', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 10, 'max': undefined }}},
                 'XZC/IDR': { 'id': 'xzc_idr', 'symbol': 'XZC/IDR', 'base': 'XZC', 'quote': 'IDR', 'baseId': 'xzc', 'quoteId': 'idr', 'precision': { 'amount': 8, 'price': 0 }, 'limits': { 'amount': { 'min': 0.1, 'max': undefined }}},
@@ -37013,7 +38519,7 @@ module.exports = class indodax extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],104:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],106:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -37332,7 +38838,7 @@ module.exports = class itbit extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],105:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],107:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -37385,7 +38891,7 @@ module.exports = class jubi extends btcbox {
     }
 };
 
-},{"./btcbox.js":47}],106:[function(require,module,exports){
+},{"./btcbox.js":49}],108:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -37586,6 +39092,7 @@ module.exports = class kraken extends Exchange {
                 'EAPI:Rate limit exceeded': DDoSProtection,
                 'EQuery:Unknown asset': ExchangeError,
                 'EGeneral:Internal error': ExchangeNotAvailable,
+                'EGeneral:Temporary lockout': DDoSProtection,
             },
         });
     }
@@ -38323,13 +39830,14 @@ module.exports = class kraken extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],107:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],109:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, InvalidNonce, InvalidOrder, AuthenticationError, InsufficientFunds, OrderNotFound } = require ('./base/errors');
+const { TRUNCATE, DECIMAL_PLACES } = require ('./base/functions/number');
 
 //  ---------------------------------------------------------------------------
 
@@ -38502,169 +40010,179 @@ module.exports = class kucoin extends Exchange {
                 'limits': {
                     'amount': {
                         'min': {
-                            'BTC': 0.00001,
-                            'ETH': 0.00001,
-                            'BCH': 0.00001,
-                            'GAS': 0.1,
-                            'NEO': 0.01,
-                            'KCS': 1,
-                            'TMT': 1,
-                            'TFD': 1,
-                            'LALA': 1,
-                            'CS': 1,
-                            'DOCK': 1,
-                            'ETN': 1,
-                            'IHT': 1,
-                            'KICK': 1,
-                            'WAN': 1,
+                            'ABT': 1,
+                            'ACAT': 1,
                             'ACT': 1,
+                            'ADB': 1,
+                            'AGI': 10,
+                            'AION': 1,
+                            'AIX': 1,
+                            'AMB': 1,
+                            'AOA': 1,
                             'APH': 1,
-                            'BAX': 1,
-                            'DATX': 1,
-                            'DEB': 1,
-                            'ELEC': 1,
-                            'GO': 1,
-                            'HSR': 1,
-                            'IOTX': 1,
-                            'LOOM': 1,
-                            'LYM': 1,
-                            'MOBI': 1,
-                            'OMX': 1,
-                            'ONT': 1,
-                            'OPEN': 1,
-                            'QKC': 1,
-                            'SHL': 1,
-                            'SOUL': 1,
-                            'SPHTX': 1,
-                            'SRN': 1,
-                            'TKY': 1,
-                            'TOMO': 1,
-                            'TRAC': 1,
-                            'COV': 1,
-                            'DADI': 1,
-                            'ELF': 1,
-                            'LTC': 1,
-                            'MAN': 1,
-                            'PRL': 1,
-                            'STK': 1,
-                            'ZIL': 1,
-                            'ZPT': 1,
-                            'BPT': 1,
-                            'CAPP': 1,
-                            'POLY': 1,
-                            'TNC': 1,
-                            'XRB': 0.1,
+                            'ARN': 1,
+                            'ARY': 1,
                             'AXP': 1,
+                            'BAX': 1,
+                            'BCD': 0.001,
+                            'BCH': 0.00001,
+                            'BCPT': 1,
+                            'BNTY': 1,
+                            'BOS': 1,
+                            'BPT': 1,
+                            'BRD': 1,
+                            'BTC': 0.00001,
+                            'BTG': 0.001,
+                            'BTM': 1,
+                            'CAG': 1,
+                            'CanYaCoin': 1,
+                            'CAPP': 1,
+                            'CAT': 1,
+                            'CBC': 1,
+                            'CHP': 1,
+                            'CHSB': 1,
                             'COFI': 1,
+                            'COV': 1,
+                            'CPC': 1,
+                            'CS': 1,
+                            'CV': 10,
+                            'CVC': 0.1,
                             'CXO': 1,
+                            'DACC': 1,
+                            'DADI': 1,
+                            'DAG': 1,
+                            'DASH': 0.01,
+                            'DAT': 1,
+                            'DATX': 1,
+                            'DBC': 1,
+                            'DCC': 1,
+                            'DEB': 1,
+                            'DENT': 1,
+                            'DGB': 1,
+                            'DNA': 1,
+                            'DOCK': 1,
                             'DRGN': 1,
                             'DTA': 1,
-                            'ING': 1,
-                            'MTN': 1,
-                            'OCN': 10,
-                            'PARETO': 1,
-                            'SNC': 1,
-                            'TEL': 10,
-                            'WAX': 1,
-                            'ADB': 1,
-                            'BOS': 1,
-                            'HAT': 1,
-                            'HKN': 1,
-                            'HPB': 1,
-                            'IOST': 1,
-                            'ARY': 1,
-                            'DBC': 1,
-                            'KEY': 1,
-                            'GAT': 1,
-                            'RPX': 1,
-                            'ACAT': 1,
-                            'CV': 10,
-                            'QLC': 1,
-                            'R': 1,
-                            'TIO': 1,
-                            'ITC': 1,
-                            'AGI': 10,
-                            'EXY': 1,
-                            'MWAT': 1,
-                            'DENT': 1,
-                            'J8T': 1,
-                            'LOCI': 1,
-                            'CAT': 1,
-                            'ARN': 1,
-                            'CAN': 1,
-                            'EOS': 0.1,
-                            'ETC': 0.1,
-                            'JNT': 1,
-                            'PLAY': 1,
-                            'CHP': 1,
-                            'DASH': 0.01,
-                            'DNA': 1,
                             'EBTC': 1,
-                            'FOTA': 1,
-                            'PURA': 0.1,
-                            'UTK': 1,
-                            'CAG': 1,
-                            'GLA': 1,
-                            'HAV': 1,
-                            'SPF': 1,
-                            'TIME': 1,
-                            'ABT': 1,
-                            'BNTY': 1,
+                            'EDR': 1,
+                            'EGT': 1,
+                            'ELA': 1,
+                            'ELEC': 1,
+                            'ELF': 1,
                             'ELIX': 1,
                             'ENJ': 1,
-                            'AIX': 1,
-                            'VEN': 1,
-                            'AION': 1,
-                            'DAT': 1,
-                            'QTUM': 0.1,
-                            'WTC': 0.1,
-                            'DGB': 1,
-                            'SNOV': 1,
-                            'BRD': 1,
-                            'AMB': 1,
-                            'BTM': 1,
-                            'MANA': 1,
-                            'RHOC': 1,
-                            'XLR': 1,
-                            'XAS': 0.1,
-                            'CHSB': 1,
-                            'UKG': 1,
-                            'POLL': 1,
+                            'EOS': 0.1,
+                            'ETC': 0.1,
+                            'ETH': 0.00001,
+                            'ETN': 1,
+                            'EXY': 1,
                             'FLIXX': 0.1,
-                            'INS': 1,
-                            'OMG': 0.1,
-                            'TFL': 1,
-                            'WPR': 1,
-                            'LEND': 1,
-                            'KNC': 0.001,
-                            'BCD': 0.001,
-                            'LA': 1,
-                            'ONION': 1,
-                            'POWR': 0.1,
-                            'SNM': 1,
-                            'BTG': 0.001,
-                            'PBL': 1,
-                            'MOD': 0.1,
-                            'PPT': 0.1,
-                            'BCPT': 1,
+                            'FOTA': 1,
+                            'GAS': 0.1,
+                            'GAT': 1,
+                            'GLA': 1,
+                            'GO': 1,
                             'GVT': 0.1,
+                            'HAV': 1,
+                            'HKN': 1,
+                            'HPB': 1,
                             'HST': 0.1,
-                            'SNT': 0.1,
-                            'SUB': 0.1,
-                            'NEBL': 0.1,
-                            'CVC': 0.1,
+                            'IHT': 1,
+                            'ING': 1,
+                            'INS': 1,
+                            'IOST': 1,
+                            'IOTX': 1,
+                            'ITC': 1,
+                            'J8T': 1,
+                            'JNT': 1,
+                            'KCS': 1,
+                            'KEY': 1,
+                            'KICK': 1,
+                            'KNC': 0.001,
+                            'LA': 1,
+                            'LALA': 1,
+                            'LEND': 1,
+                            'LOCI': 1,
+                            'LOOM': 1,
+                            'LTC': 1,
+                            'LYM': 1,
+                            'MAN': 1,
+                            'MANA': 1,
+                            'MOBI': 1,
+                            'MOD': 0.1,
                             'MTH': 1,
+                            'MTN': 1,
+                            'MWAT': 1,
+                            'NANO': 0.1,
+                            'NEBL': 0.1,
+                            'NEO': 0.01,
                             'NULS': 0.1,
+                            'NUSD': 1,
+                            'OCN': 10,
+                            'OLT': 1,
+                            'OMG': 0.1,
+                            'OMX': 1,
+                            'ONION': 1,
+                            'ONT': 1,
+                            'OPEN': 1,
+                            'PARETO': 1,
                             'PAY': 0.1,
+                            'PBL': 1,
+                            'PLAY': 1,
+                            'POLL': 1,
+                            'POLY': 1,
+                            'POWR': 0.1,
+                            'PPT': 0.1,
+                            'PRL': 1,
+                            'PURA': 0.1,
+                            'QKC': 1,
+                            'QLC': 1,
+                            'QSP': 0.1,
+                            'QTUM': 0.1,
+                            'R': 1,
                             'RDN': 1,
                             'REQ': 1,
-                            'QSP': 0.1,
+                            'RHOC': 1,
+                            'RPX': 1,
+                            'SHL': 1,
+                            'SNC': 1,
+                            'SNM': 1,
+                            'SNOV': 1,
+                            'SNT': 0.1,
+                            'SOUL': 1,
+                            'SPF': 1,
+                            'SPHTX': 1,
+                            'SRN': 1,
+                            'STK': 1,
+                            'SUB': 0.1,
+                            'TEL': 10,
+                            'TFD': 1,
+                            'TFL': 1,
+                            'TIME': 1,
+                            'TIO': 1,
+                            'TKY': 1,
+                            'TMT': 1,
+                            'TNC': 1,
+                            'TOMO': 1,
+                            'TRAC': 1,
+                            'UKG': 1,
+                            'UTK': 1,
+                            'WAN': 1,
+                            'WAX': 1,
+                            'WPR': 1,
+                            'WTC': 0.1,
+                            'XAS': 0.1,
+                            'XLM': 1,
+                            'XLR': 1,
+                            'ZIL': 1,
+                            'ZINC': 1,
+                            'ZPT': 1,
                         },
                     },
                 },
             },
             'commonCurrencies': {
-                'CAN': 'CanYa',
+                'CAN': 'CanYaCoin',
                 'XRB': 'NANO',
             },
         });
@@ -38731,7 +40249,6 @@ module.exports = class kucoin extends Exchange {
                 'taker': this.safeFloat (market, 'feeRate'),
                 'maker': this.safeFloat (market, 'feeRate'),
                 'info': market,
-                'lot': Math.pow (10, -precision['amount']),
                 'precision': precision,
                 'limits': {
                     'amount': {
@@ -38896,10 +40413,14 @@ module.exports = class kucoin extends Exchange {
         let timestamp = this.safeValue (order, 'createdAt');
         let remaining = this.safeFloat (order, 'pendingAmount');
         let status = undefined;
-        if (this.safeValue (order, 'isActive', true)) {
-            status = 'open';
+        if ('status' in order) {
+            status = order['status'];
         } else {
-            status = 'closed';
+            if (this.safeValue (order, 'isActive', true)) {
+                status = 'open';
+            } else {
+                status = 'closed';
+            }
         }
         let filled = this.safeFloat (order, 'dealAmount');
         let amount = this.safeFloat (order, 'amount');
@@ -39121,8 +40642,8 @@ module.exports = class kucoin extends Exchange {
         let request = {
             'symbol': market['id'],
             'type': side.toUpperCase (),
-            'price': this.truncate (price, this.currencies[quote]['precision']),
-            'amount': this.truncate (amount, this.currencies[base]['precision']),
+            'price': this.decimalToPrecision (price, TRUNCATE, this.currencies[quote]['precision'], DECIMAL_PLACES),
+            'amount': this.decimalToPrecision (amount, TRUNCATE, this.currencies[base]['precision'], DECIMAL_PLACES),
         };
         price = parseFloat (price);
         amount = parseFloat (amount);
@@ -39359,6 +40880,9 @@ module.exports = class kucoin extends Exchange {
 
     async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
         await this.loadMarkets ();
+        if (typeof limit === 'undefined') {
+            limit = 100; // default to 100 even if it was explicitly set to undefined by the user
+        }
         let market = this.market (symbol);
         let response = await this.publicGetOpenDealOrders (this.extend ({
             'symbol': market['id'],
@@ -39530,7 +41054,7 @@ module.exports = class kucoin extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],108:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],110:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -39591,13 +41115,13 @@ module.exports = class kuna extends acx {
 
     async fetchMarkets () {
         let predefinedMarkets = [
-            { 'id': 'btcuah', 'symbol': 'BTC/UAH', 'base': 'BTC', 'quote': 'UAH', 'baseId': 'btc', 'quoteId': 'uah', 'precision': { 'amount': 6, 'price': 0 }, 'lot': 0.000001, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 1, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
-            { 'id': 'ethuah', 'symbol': 'ETH/UAH', 'base': 'ETH', 'quote': 'UAH', 'baseId': 'eth', 'quoteId': 'uah', 'precision': { 'amount': 6, 'price': 0 }, 'lot': 0.000001, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 1, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
-            { 'id': 'gbguah', 'symbol': 'GBG/UAH', 'base': 'GBG', 'quote': 'UAH', 'baseId': 'gbg', 'quoteId': 'uah', 'precision': { 'amount': 3, 'price': 2 }, 'lot': 0.001, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 0.01, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}}, // Golos Gold (GBG != GOLOS)
-            { 'id': 'kunbtc', 'symbol': 'KUN/BTC', 'base': 'KUN', 'quote': 'BTC', 'baseId': 'kun', 'quoteId': 'btc', 'precision': { 'amount': 6, 'price': 6 }, 'lot': 0.000001, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 0.000001, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
-            { 'id': 'bchbtc', 'symbol': 'BCH/BTC', 'base': 'BCH', 'quote': 'BTC', 'baseId': 'bch', 'quoteId': 'btc', 'precision': { 'amount': 6, 'price': 6 }, 'lot': 0.000001, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 0.000001, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
-            { 'id': 'bchuah', 'symbol': 'BCH/UAH', 'base': 'BCH', 'quote': 'UAH', 'baseId': 'bch', 'quoteId': 'uah', 'precision': { 'amount': 6, 'price': 0 }, 'lot': 0.000001, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 1, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
-            { 'id': 'wavesuah', 'symbol': 'WAVES/UAH', 'base': 'WAVES', 'quote': 'UAH', 'baseId': 'waves', 'quoteId': 'uah', 'precision': { 'amount': 6, 'price': 0 }, 'lot': 0.000001, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 1, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
+            { 'id': 'btcuah', 'symbol': 'BTC/UAH', 'base': 'BTC', 'quote': 'UAH', 'baseId': 'btc', 'quoteId': 'uah', 'precision': { 'amount': 6, 'price': 0 }, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 1, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
+            { 'id': 'ethuah', 'symbol': 'ETH/UAH', 'base': 'ETH', 'quote': 'UAH', 'baseId': 'eth', 'quoteId': 'uah', 'precision': { 'amount': 6, 'price': 0 }, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 1, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
+            { 'id': 'gbguah', 'symbol': 'GBG/UAH', 'base': 'GBG', 'quote': 'UAH', 'baseId': 'gbg', 'quoteId': 'uah', 'precision': { 'amount': 3, 'price': 2 }, 'limits': { 'amount': { 'min': 0.001, 'max': undefined }, 'price': { 'min': 0.01, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}}, // Golos Gold (GBG != GOLOS)
+            { 'id': 'kunbtc', 'symbol': 'KUN/BTC', 'base': 'KUN', 'quote': 'BTC', 'baseId': 'kun', 'quoteId': 'btc', 'precision': { 'amount': 6, 'price': 6 }, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 0.000001, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
+            { 'id': 'bchbtc', 'symbol': 'BCH/BTC', 'base': 'BCH', 'quote': 'BTC', 'baseId': 'bch', 'quoteId': 'btc', 'precision': { 'amount': 6, 'price': 6 }, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 0.000001, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
+            { 'id': 'bchuah', 'symbol': 'BCH/UAH', 'base': 'BCH', 'quote': 'UAH', 'baseId': 'bch', 'quoteId': 'uah', 'precision': { 'amount': 6, 'price': 0 }, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 1, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
+            { 'id': 'wavesuah', 'symbol': 'WAVES/UAH', 'base': 'WAVES', 'quote': 'UAH', 'baseId': 'waves', 'quoteId': 'uah', 'precision': { 'amount': 6, 'price': 0 }, 'limits': { 'amount': { 'min': 0.000001, 'max': undefined }, 'price': { 'min': 1, 'max': undefined }, 'cost': { 'min': 0.000001, 'max': undefined }}},
             { 'id': 'arnbtc', 'symbol': 'ARN/BTC', 'base': 'ARN', 'quote': 'BTC', 'baseId': 'arn', 'quoteId': 'btc' },
             { 'id': 'b2bbtc', 'symbol': 'B2B/BTC', 'base': 'B2B', 'quote': 'BTC', 'baseId': 'b2b', 'quoteId': 'btc' },
             { 'id': 'evrbtc', 'symbol': 'EVR/BTC', 'base': 'EVR', 'quote': 'BTC', 'baseId': 'evr', 'quoteId': 'btc' },
@@ -39716,7 +41240,7 @@ module.exports = class kuna extends acx {
     }
 };
 
-},{"./acx.js":5,"./base/errors":11}],109:[function(require,module,exports){
+},{"./acx.js":5,"./base/errors":11}],111:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -39987,7 +41511,7 @@ module.exports = class lakebtc extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],110:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],112:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -40051,6 +41575,10 @@ module.exports = class lbank extends Exchange {
                         'cancel_order',
                         'orders_info',
                         'orders_info_history',
+                        'withdraw',
+                        'withdrawCancel',
+                        'withdraws',
+                        'withdrawConfigs',
                     ],
                 },
             },
@@ -40450,6 +41978,26 @@ module.exports = class lbank extends Exchange {
         return closed + cancelled;
     }
 
+    async withdraw (code, amount, address, tag = undefined, params = {}) {
+        // mark and fee are optional params, mark is a note and must be less than 255 characters
+        this.checkAddress (address);
+        await this.loadMarkets ();
+        let currency = this.currency (code);
+        let request = {
+            'assetCode': currency['id'],
+            'amount': amount,
+            'account': address,
+        };
+        if (typeof tag !== 'undefined') {
+            request['memo'] = tag;
+        }
+        let response = this.privatePostWithdraw (this.extend (request, params));
+        return {
+            'id': response['id'],
+            'info': response,
+        };
+    }
+
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let query = this.omit (params, this.extractParams (path));
         let url = this.urls['api'] + '/' + this.version + '/' + this.implodeParams (path, params);
@@ -40498,6 +42046,7 @@ module.exports = class lbank extends Exchange {
                 '10018': 'order inquiry can not be more than 50 less than one',
                 '10019': 'withdrawal orders can not be more than 3 less than one',
                 '10020': 'less than the minimum amount of the transaction limit of 0.001',
+                '10022': 'Insufficient key authority',
             }, errorCode, this.json (response));
             let ErrorClass = this.safeValue ({
                 '10002': AuthenticationError,
@@ -40513,6 +42062,7 @@ module.exports = class lbank extends Exchange {
                 '10014': InvalidOrder,
                 '10015': InvalidOrder,
                 '10016': InvalidOrder,
+                '10022': AuthenticationError,
             }, errorCode, ExchangeError);
             throw new ErrorClass (message);
         }
@@ -40520,7 +42070,7 @@ module.exports = class lbank extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],111:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],113:[function(require,module,exports){
 'use strict';
 
 const Exchange = require ('./base/Exchange');
@@ -40886,6 +42436,12 @@ module.exports = class liqui extends Exchange {
             request['limit'] = limit;
         }
         let response = await this.publicGetTradesPair (this.extend (request, params));
+        if (Array.isArray (response)) {
+            let numElements = response.length;
+            if (numElements === 0) {
+                return [];
+            }
+        }
         return this.parseTrades (response[market['id']], market, since, limit);
     }
 
@@ -41289,7 +42845,7 @@ module.exports = class liqui extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],112:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],114:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -41971,7 +43527,7 @@ module.exports = class livecoin extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],113:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],115:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -41993,6 +43549,11 @@ module.exports = class luno extends Exchange {
                 'CORS': false,
                 'fetchTickers': true,
                 'fetchOrder': true,
+                'fetchOrders': true,
+                'fetchOpenOrders': true,
+                'fetchClosedOrders': true,
+                'fetchMyTrades': true,
+                'fetchTradingFees': true,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766607-8c1a69d8-5ede-11e7-930c-540b5eb9be24.jpg',
@@ -42008,6 +43569,7 @@ module.exports = class luno extends Exchange {
                 'public': {
                     'get': [
                         'orderbook',
+                        'orderbook_top',
                         'ticker',
                         'tickers',
                         'trades',
@@ -42075,17 +43637,18 @@ module.exports = class luno extends Exchange {
     async fetchBalance (params = {}) {
         await this.loadMarkets ();
         let response = await this.privateGetBalance ();
-        let balances = response['balance'];
+        let wallets = response['balance'];
         let result = { 'info': response };
-        for (let b = 0; b < balances.length; b++) {
-            let balance = balances[b];
-            let currency = this.commonCurrencyCode (balance['asset']);
-            let reserved = parseFloat (balance['reserved']);
-            let unconfirmed = parseFloat (balance['unconfirmed']);
+        for (let b = 0; b < wallets.length; b++) {
+            let wallet = wallets[b];
+            let currency = this.commonCurrencyCode (wallet['asset']);
+            let reserved = parseFloat (wallet['reserved']);
+            let unconfirmed = parseFloat (wallet['unconfirmed']);
+            let balance = parseFloat (wallet['balance']);
             let account = {
                 'free': 0.0,
                 'used': this.sum (reserved, unconfirmed),
-                'total': parseFloat (balance['balance']),
+                'total': this.sum (balance, unconfirmed),
             };
             account['free'] = account['total'] - account['used'];
             result[currency] = account;
@@ -42095,7 +43658,13 @@ module.exports = class luno extends Exchange {
 
     async fetchOrderBook (symbol, limit = undefined, params = {}) {
         await this.loadMarkets ();
-        let orderbook = await this.publicGetOrderbook (this.extend ({
+        let method = 'publicGetOrderbook';
+        if (typeof limit !== 'undefined') {
+            if (limit <= 100) {
+                method += 'Top'; // get just the top of the orderbook when limit is low
+            }
+        }
+        let orderbook = await this[method] (this.extend ({
             'pair': this.marketId (symbol),
         }, params));
         let timestamp = orderbook['timestamp'];
@@ -42106,13 +43675,21 @@ module.exports = class luno extends Exchange {
         let timestamp = order['creation_timestamp'];
         let status = (order['state'] === 'PENDING') ? 'open' : 'closed';
         let side = (order['type'] === 'ASK') ? 'sell' : 'buy';
-        let symbol = undefined;
-        if (market)
-            symbol = market['symbol'];
+        if (typeof market === 'undefined')
+            market = this.findMarket (order['pair']);
+        let symbol = market['symbol'];
         let price = this.safeFloat (order, 'limit_price');
         let amount = this.safeFloat (order, 'limit_volume');
         let quoteFee = this.safeFloat (order, 'fee_counter');
         let baseFee = this.safeFloat (order, 'fee_base');
+        let filled = this.safeFloat (order, 'base');
+        let cost = this.safeFloat (order, 'counter');
+        let remaining = undefined;
+        if (typeof amount !== 'undefined') {
+            if (typeof filled !== 'undefined') {
+                remaining = Math.max (0, amount - filled);
+            }
+        }
         let fee = { 'currency': undefined };
         if (quoteFee) {
             fee['side'] = 'quote';
@@ -42132,8 +43709,9 @@ module.exports = class luno extends Exchange {
             'side': side,
             'price': price,
             'amount': amount,
-            'filled': undefined,
-            'remaining': undefined,
+            'filled': filled,
+            'cost': cost,
+            'remaining': remaining,
             'trades': undefined,
             'fee': fee,
             'info': order,
@@ -42146,6 +43724,34 @@ module.exports = class luno extends Exchange {
             'id': id,
         }, params));
         return this.parseOrder (response);
+    }
+
+    async fetchOrdersByState (state = undefined, symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let request = {};
+        let market = undefined;
+        if (typeof state !== 'undefined') {
+            request['state'] = state;
+        }
+        if (typeof symbol !== 'undefined') {
+            market = this.market (symbol);
+            request['pair'] = market['id'];
+        }
+        let response = await this.privateGetListorders (this.extend (request, params));
+        let orders = this.safeValue (response, 'orders', []);
+        return this.parseOrders (orders, market, since, limit);
+    }
+
+    async fetchOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return await this.fetchOrdersByState (undefined, symbol, since, limit, params);
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return await this.fetchOrdersByState ('PENDING', symbol, since, limit, params);
+    }
+
+    async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return await this.fetchOrdersByState ('COMPLETE', symbol, since, limit, params);
     }
 
     parseTicker (ticker, market = undefined) {
@@ -42205,17 +43811,38 @@ module.exports = class luno extends Exchange {
 
     parseTrade (trade, market) {
         let side = (trade['is_buy']) ? 'buy' : 'sell';
+        let feeBase = this.safeFloat (trade, 'fee_base');
+        let feeCounter = this.safeFloat (trade, 'fee_counter');
+        let feeCurrency = undefined;
+        let feeCost = undefined;
+        if (typeof feeBase !== 'undefined') {
+            if (feeBase !== 0.0) {
+                feeCurrency = market['base'];
+                feeCost = feeBase;
+            }
+        } else if (typeof feeCounter !== 'undefined') {
+            if (feeCounter !== 0.0) {
+                feeCurrency = market['quote'];
+                feeCost = feeCounter;
+            }
+        }
         return {
             'info': trade,
-            'id': undefined,
-            'order': undefined,
+            'id': this.safeString (trade, 'order_id'),
             'timestamp': trade['timestamp'],
             'datetime': this.iso8601 (trade['timestamp']),
             'symbol': market['symbol'],
+            'order': undefined,
             'type': undefined,
             'side': side,
             'price': this.safeFloat (trade, 'price'),
             'amount': this.safeFloat (trade, 'volume'),
+            // Does not include potential fee costs
+            'cost': this.safeFloat (trade, 'counter'),
+            'fee': {
+                'cost': feeCost,
+                'currency': feeCurrency,
+            },
         };
     }
 
@@ -42228,7 +43855,35 @@ module.exports = class luno extends Exchange {
         if (typeof since !== 'undefined')
             request['since'] = since;
         let response = await this.publicGetTrades (this.extend (request, params));
-        return this.parseTrades (response['trades'], market, since, limit);
+        let trades = this.safeValue (response, 'trades', []);
+        return this.parseTrades (trades, market, since, limit);
+    }
+
+    async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        if (typeof symbol === 'undefined')
+            throw new ExchangeError (this.id + ' fetchMyTrades requires a symbol argument');
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'pair': market['id'],
+        };
+        if (typeof since !== 'undefined')
+            request['since'] = since;
+        if (typeof limit !== 'undefined')
+            request['limit'] = limit;
+        let response = await this.privateGetListtrades (this.extend (request, params));
+        let trades = this.safeValue (response, 'trades', []);
+        return this.parseTrades (trades, market, since, limit);
+    }
+
+    async fetchTradingFees (params = {}) {
+        await this.loadMarkets ();
+        let response = await this.privateGetFeeInfo (params);
+        return {
+            'info': response,
+            'maker': this.safeFloat (response, 'maker_fee'),
+            'taker': this.safeFloat (response, 'taker_fee'),
+        };
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
@@ -42285,7 +43940,7 @@ module.exports = class luno extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],114:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],116:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -42429,15 +44084,33 @@ module.exports = class lykke extends Exchange {
 
     async fetchMarkets () {
         let markets = await this.publicGetAssetPairs ();
+        //
+        //     [ {                Id: "AEBTC",
+        //                      Name: "AE/BTC",
+        //                  Accuracy:  6,
+        //          InvertedAccuracy:  8,
+        //               BaseAssetId: "6f75280b-a005-4016-a3d8-03dc644e8912",
+        //            QuotingAssetId: "BTC",
+        //                 MinVolume:  0.4,
+        //         MinInvertedVolume:  0.0001                                 },
+        //       {                Id: "AEETH",
+        //                      Name: "AE/ETH",
+        //                  Accuracy:  6,
+        //          InvertedAccuracy:  8,
+        //               BaseAssetId: "6f75280b-a005-4016-a3d8-03dc644e8912",
+        //            QuotingAssetId: "ETH",
+        //                 MinVolume:  0.4,
+        //         MinInvertedVolume:  0.001                                  } ]
+        //
         let result = [];
         for (let i = 0; i < markets.length; i++) {
             let market = markets[i];
             let id = market['Id'];
-            let base = market['BaseAssetId'];
-            let quote = market['QuotingAssetId'];
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
-            let symbol = market['Name'];
+            let name = market['Name'];
+            let [ baseId, quoteId ] = name.split ('/');
+            let base = this.commonCurrencyCode (baseId);
+            let quote = this.commonCurrencyCode (quoteId);
+            let symbol = base + '/' + quote;
             let precision = {
                 'amount': market['Accuracy'],
                 'price': market['InvertedAccuracy'],
@@ -42449,7 +44122,6 @@ module.exports = class lykke extends Exchange {
                 'quote': quote,
                 'active': true,
                 'info': market,
-                'lot': Math.pow (10, -precision['amount']),
                 'precision': precision,
                 'limits': {
                     'amount': {
@@ -42459,6 +44131,10 @@ module.exports = class lykke extends Exchange {
                     'price': {
                         'min': Math.pow (10, -precision['price']),
                         'max': Math.pow (10, precision['price']),
+                    },
+                    'cost': {
+                        'min': undefined,
+                        'max': undefined,
                     },
                 },
             });
@@ -42658,7 +44334,7 @@ module.exports = class lykke extends Exchange {
     }
 };
 
-},{"./base/Exchange":9}],115:[function(require,module,exports){
+},{"./base/Exchange":9}],117:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -42973,7 +44649,7 @@ module.exports = class mercado extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],116:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],118:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -43162,7 +44838,7 @@ module.exports = class mixcoins extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],117:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],119:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -43512,7 +45188,7 @@ module.exports = class negociecoins extends Exchange {
     }
 };
 
-},{"./base/Exchange":9}],118:[function(require,module,exports){
+},{"./base/Exchange":9}],120:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -43747,7 +45423,7 @@ module.exports = class nova extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],119:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],121:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -43786,7 +45462,7 @@ module.exports = class okcoincny extends okcoinusd {
     }
 };
 
-},{"./okcoinusd.js":120}],120:[function(require,module,exports){
+},{"./okcoinusd.js":122}],122:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -43833,6 +45509,8 @@ module.exports = class okcoinusd extends Exchange {
             'api': {
                 'web': {
                     'get': [
+                        'futures/pc/market/marketOverview', // todo: merge in fetchMarkets
+                        'spot/markets/index-tickers', // todo: add fetchTickers
                         'spot/markets/currencies',
                         'spot/markets/products',
                         'spot/markets/tickers',
@@ -43853,7 +45531,7 @@ module.exports = class okcoinusd extends Exchange {
                         'kline',
                         'otcs',
                         'ticker',
-                        'tickers',
+                        'tickers', // todo: add fetchTickers
                         'trades',
                     ],
                 },
@@ -43941,6 +45619,154 @@ module.exports = class okcoinusd extends Exchange {
                 '10009': OrderNotFound, // for spot markets, "Order does not exist"
                 '20015': OrderNotFound, // for future markets
                 '10008': ExchangeError, // Illegal URL parameter
+                // todo: sort out below
+                // 10000 Required parameter is empty
+                // 10001 Request frequency too high to exceed the limit allowed
+                // 10002 Authentication failure
+                // 10002 System error
+                // 10003 This connection has requested other user data
+                // 10004 Request failed
+                // 10005 api_key or sign is invalid, 'SecretKey' does not exist
+                // 10006 'Api_key' does not exist
+                // 10007 Signature does not match
+                // 10008 Illegal parameter, Parameter erorr
+                // 10009 Order does not exist
+                // 10010 Insufficient funds
+                // 10011 Amount too low
+                // 10012 Only btc_usd ltc_usd supported
+                // 10013 Only support https request
+                // 10014 Order price must be between 0 and 1,000,000
+                // 10015 Order price differs from current market price too much / Channel subscription temporally not available
+                // 10016 Insufficient coins balance
+                // 10017 API authorization error / WebSocket authorization error
+                // 10018 borrow amount less than lower limit [usd:100,btc:0.1,ltc:1]
+                // 10019 loan agreement not checked
+                // 1002 The transaction amount exceed the balance
+                // 10020 rate cannot exceed 1%
+                // 10021 rate cannot less than 0.01%
+                // 10023 fail to get latest ticker
+                // 10024 balance not sufficient
+                // 10025 quota is full, cannot borrow temporarily
+                // 10026 Loan (including reserved loan) and margin cannot be withdrawn
+                // 10027 Cannot withdraw within 24 hrs of authentication information modification
+                // 10028 Withdrawal amount exceeds daily limit
+                // 10029 Account has unpaid loan, please cancel/pay off the loan before withdraw
+                // 1003 The transaction amount is less than the minimum requirement
+                // 10031 Deposits can only be withdrawn after 6 confirmations
+                // 10032 Please enabled phone/google authenticator
+                // 10033 Fee higher than maximum network transaction fee
+                // 10034 Fee lower than minimum network transaction fee
+                // 10035 Insufficient BTC/LTC
+                // 10036 Withdrawal amount too low
+                // 10037 Trade password not set
+                // 1004 The transaction amount is less than 0
+                // 10040 Withdrawal cancellation fails
+                // 10041 Withdrawal address not exsit or approved
+                // 10042 Admin password error
+                // 10043 Account equity error, withdrawal failure
+                // 10044 fail to cancel borrowing order
+                // 10047 this function is disabled for sub-account
+                // 10048 withdrawal information does not exist
+                // 10049 User can not have more than 50 unfilled small orders (amount<0.15BTC)
+                // 10050 can't cancel more than once
+                // 10051 order completed transaction
+                // 10052 not allowed to withdraw
+                // 10064 after a USD deposit, that portion of assets will not be withdrawable for the next 48 hours
+                // 1007 No trading market information
+                // 1008 No latest market information
+                // 1009 No order
+                // 1010 Different user of the cancelled order and the original order
+                // 10100 User account frozen
+                // 10101 order type is wrong
+                // 10102 incorrect ID
+                // 10103 the private otc order's key incorrect
+                // 10106 API key domain not matched
+                // 1011 No documented user
+                // 1013 No order type
+                // 1014 No login
+                // 1015 No market depth information
+                // 1017 Date error
+                // 1018 Order failed
+                // 1019 Undo order failed
+                // 10216 Non-available API / non-public API
+                // 1024 Currency does not exist
+                // 1025 No chart type
+                // 1026 No base currency quantity
+                // 1027 Incorrect parameter may exceeded limits
+                // 1028 Reserved decimal failed
+                // 1029 Preparing
+                // 1030 Account has margin and futures, transactions can not be processed
+                // 1031 Insufficient Transferring Balance
+                // 1032 Transferring Not Allowed
+                // 1035 Password incorrect
+                // 1036 Google Verification code Invalid
+                // 1037 Google Verification code incorrect
+                // 1038 Google Verification replicated
+                // 1039 Message Verification Input exceed the limit
+                // 1040 Message Verification invalid
+                // 1041 Message Verification incorrect
+                // 1042 Wrong Google Verification Input exceed the limit
+                // 1043 Login password cannot be same as the trading password
+                // 1044 Old password incorrect
+                // 1045 2nd Verification Needed
+                // 1046 Please input old password
+                // 1048 Account Blocked
+                // 1050 Orders have been withdrawn or withdrawn
+                // 1051 Order completed
+                // 1201 Account Deleted at 00: 00
+                // 1202 Account Not Exist
+                // 1203 Insufficient Balance
+                // 1204 Invalid currency
+                // 1205 Invalid Account
+                // 1206 Cash Withdrawal Blocked
+                // 1207 Transfer Not Support
+                // 1208 No designated account
+                // 1209 Invalid api
+                // 1216 Market order temporarily suspended. Please send limit order
+                // 1217 Order was sent at ±5% of the current market price. Please resend
+                // 1218 Place order failed. Please try again later
+                // 20001 User does not exist
+                // 20002 Account frozen
+                // 20003 Account frozen due to forced liquidation
+                // 20004 Contract account frozen
+                // 20005 User contract account does not exist
+                // 20006 Required field missing
+                // 20007 Illegal parameter
+                // 20008 Contract account balance is too low
+                // 20009 Contract status error
+                // 20010 Risk rate ratio does not exist
+                // 20011 Risk rate lower than 90%/80% before opening BTC position with 10x/20x leverage. or risk rate lower than 80%/60% before opening LTC position with 10x/20x leverage
+                // 20012 Risk rate lower than 90%/80% after opening BTC position with 10x/20x leverage. or risk rate lower than 80%/60% after opening LTC position with 10x/20x leverage
+                // 20013 Temporally no counter party price
+                // 20014 System error
+                // 20015 Order does not exist
+                // 20016 Close amount bigger than your open positions, liquidation quantity bigger than holding
+                // 20017 Not authorized/illegal operation/illegal order ID
+                // 20018 Order price cannot be more than 103-105% or less than 95-97% of the previous minute price
+                // 20019 IP restricted from accessing the resource
+                // 20020 Secret key does not exist
+                // 20021 Index information does not exist
+                // 20022 Wrong API interface (Cross margin mode shall call cross margin API, fixed margin mode shall call fixed margin API)
+                // 20023 Account in fixed-margin mode
+                // 20024 Signature does not match
+                // 20025 Leverage rate error
+                // 20026 API Permission Error
+                // 20027 no transaction record
+                // 20028 no such contract
+                // 20029 Amount is large than available funds
+                // 20030 Account still has debts
+                // 20038 Due to regulation, this function is not availavle in the country/region your currently reside in.
+                // 20049 Request frequency too high
+                // 20100 request time out
+                // 20101 the format of data is error
+                // 20102 invalid login
+                // 20103 event type error
+                // 20104 subscription type error
+                // 20107 JSON format error
+                // 20115 The quote is not match
+                // 20116 Param not match
+                // 21020 Contracts are being delivered, orders cannot be placed
+                // 21021 Contracts are being settled, contracts cannot be placed
             },
             'options': {
                 'marketBuyPrice': false,
@@ -43980,7 +45806,6 @@ module.exports = class okcoinusd extends Exchange {
                 'amount': markets[i]['maxSizeDigit'],
                 'price': markets[i]['maxPriceDigit'],
             };
-            let lot = Math.pow (10, -precision['amount']);
             let minAmount = markets[i]['minTradeSize'];
             let minPrice = Math.pow (10, -precision['price']);
             let active = (markets[i]['online'] !== 0);
@@ -43999,7 +45824,6 @@ module.exports = class okcoinusd extends Exchange {
                 'type': 'spot',
                 'spot': true,
                 'future': false,
-                'lot': lot,
                 'active': active,
                 'precision': precision,
                 'limits': {
@@ -44084,8 +45908,16 @@ module.exports = class okcoinusd extends Exchange {
         if (typeof market === 'undefined') {
             if ('symbol' in ticker) {
                 let marketId = ticker['symbol'];
-                if (marketId in this.markets_by_id)
+                if (marketId in this.markets_by_id) {
                     market = this.markets_by_id[marketId];
+                } else {
+                    let [ baseId, quoteId ] = ticker['symbol'].split ('_');
+                    let base = baseId.toUpperCase ();
+                    let quote = quoteId.toUpperCase ();
+                    base = this.commonCurrencyCode (base);
+                    quote = this.commonCurrencyCode (quote);
+                    symbol = base + '/' + quote;
+                }
             }
         }
         if (typeof market !== 'undefined') {
@@ -44613,7 +46445,7 @@ module.exports = class okcoinusd extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],121:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],123:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -44645,7 +46477,6 @@ module.exports = class okex extends okcoinusd {
                 'fees': 'https://www.okex.com/fees.html',
             },
             'commonCurrencies': {
-                'CAN': 'Content And AD Network',
                 'FAIR': 'FairGame',
                 'HOT': 'Hydro Protocol',
                 'MAG': 'Maggie',
@@ -44701,13 +46532,7 @@ module.exports = class okex extends okcoinusd {
         let result = {};
         for (let i = 0; i < tickers.length; i++) {
             let ticker = tickers[i];
-            let market = undefined;
-            if ('symbol' in ticker) {
-                let marketId = ticker['symbol'];
-                if (marketId in this.markets_by_id)
-                    market = this.markets_by_id[marketId];
-            }
-            ticker = this.parseTicker (this.extend (tickers[i], { 'timestamp': timestamp }), market);
+            ticker = this.parseTicker (this.extend (tickers[i], { 'timestamp': timestamp }));
             let symbol = ticker['symbol'];
             result[symbol] = ticker;
         }
@@ -44735,7 +46560,7 @@ module.exports = class okex extends okcoinusd {
     }
 };
 
-},{"./okcoinusd.js":120}],122:[function(require,module,exports){
+},{"./okcoinusd.js":122}],124:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -44952,13 +46777,13 @@ module.exports = class paymium extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],123:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],125:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, ExchangeNotAvailable, RequestTimeout, AuthenticationError, DDoSProtection, InsufficientFunds, OrderNotFound, OrderNotCached, InvalidOrder, AccountSuspended, CancelPending, InvalidNonce } = require ('./base/errors');
+const { ExchangeError, ExchangeNotAvailable, RequestTimeout, AuthenticationError, PermissionDenied, DDoSProtection, InsufficientFunds, OrderNotFound, OrderNotCached, InvalidOrder, AccountSuspended, CancelPending, InvalidNonce } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -45053,10 +46878,12 @@ module.exports = class poloniex extends Exchange {
                     ],
                 },
             },
+            // Fees are tier-based. More info: https://poloniex.com/fees/
+            // Rates below are highest possible.
             'fees': {
                 'trading': {
-                    'maker': 0.0015,
-                    'taker': 0.0025,
+                    'maker': 0.001,
+                    'taker': 0.002,
                 },
                 'funding': {},
             },
@@ -45106,6 +46933,15 @@ module.exports = class poloniex extends Exchange {
                         },
                     },
                 },
+            },
+            'exceptions': {
+                'Invalid order number, or you are not the person who placed the order.': OrderNotFound,
+                'Permission denied': PermissionDenied,
+                'Connection timed out. Please try again.': RequestTimeout,
+                'Internal error. Please try again.': ExchangeNotAvailable,
+                'Order not found, or you are not the person who placed it.': OrderNotFound,
+                'Invalid API key/secret pair.': AuthenticationError,
+                'Please do not make more than 8 API calls per second.': DDoSProtection,
             },
         });
     }
@@ -45290,8 +47126,18 @@ module.exports = class poloniex extends Exchange {
         let result = {};
         for (let i = 0; i < ids.length; i++) {
             let id = ids[i];
-            let market = this.markets_by_id[id];
-            let symbol = market['symbol'];
+            let symbol = undefined;
+            let market = undefined;
+            if (id in this.markets_by_id) {
+                let market = this.markets_by_id[id];
+                symbol = market['symbol'];
+            } else {
+                let [ quoteId, baseId ] = id.split ('_');
+                let base = this.commonCurrencyCode (baseId);
+                let quote = this.commonCurrencyCode (quoteId);
+                symbol = base + '/' + quote;
+                market = { 'symbol': symbol };
+            }
             let ticker = tickers[id];
             result[symbol] = this.parseTicker (ticker, market);
         }
@@ -45804,21 +47650,13 @@ module.exports = class poloniex extends Exchange {
             // syntax error, resort to default error handler
             return;
         }
+        // {"error":"Permission denied."}
         if ('error' in response) {
             const message = response['error'];
             const feedback = this.id + ' ' + this.json (response);
-            if (message === 'Invalid order number, or you are not the person who placed the order.') {
-                throw new OrderNotFound (feedback);
-            } else if (message === 'Connection timed out. Please try again.') {
-                throw new RequestTimeout (feedback);
-            } else if (message === 'Internal error. Please try again.') {
-                throw new ExchangeNotAvailable (feedback);
-            } else if (message === 'Order not found, or you are not the person who placed it.') {
-                throw new OrderNotFound (feedback);
-            } else if (message === 'Invalid API key/secret pair.') {
-                throw new AuthenticationError (feedback);
-            } else if (message === 'Please do not make more than 8 API calls per second.') {
-                throw new DDoSProtection (feedback);
+            let exceptions = this.exceptions;
+            if (message in exceptions) {
+                throw new exceptions[message] (feedback);
             } else if (message.indexOf ('Total must be at least') >= 0) {
                 throw new InvalidOrder (feedback);
             } else if (message.indexOf ('This account is frozen.') >= 0) {
@@ -45836,7 +47674,7 @@ module.exports = class poloniex extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],124:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],126:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -46372,7 +48210,7 @@ module.exports = class qryptos extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],125:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],127:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -46685,7 +48523,7 @@ module.exports = class quadrigacx extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],126:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],128:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -46720,7 +48558,7 @@ module.exports = class quoinex extends qryptos {
     }
 };
 
-},{"./qryptos.js":124}],127:[function(require,module,exports){
+},{"./qryptos.js":126}],129:[function(require,module,exports){
 'use strict';
 
 const Exchange = require ('./base/Exchange');
@@ -47486,7 +49324,7 @@ module.exports = class rightbtc extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],128:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],130:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -47822,7 +49660,7 @@ module.exports = class southxchange extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],129:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],131:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -47856,11 +49694,11 @@ module.exports = class surbitcoin extends foxbit {
     }
 };
 
-},{"./foxbit.js":87}],130:[function(require,module,exports){
+},{"./foxbit.js":89}],132:[function(require,module,exports){
 'use strict';
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, AuthenticationError, InvalidOrder, OrderNotFound, NotSupported, OrderImmediatelyFillable, OrderNotFillable } = require ('./base/errors');
+const { ExchangeError, AuthenticationError, InvalidOrder, OrderNotFound, NotSupported, OrderImmediatelyFillable, OrderNotFillable, InvalidAddress } = require ('./base/errors');
 const { ROUND } = require ('./base/functions/number');
 
 module.exports = class theocean extends Exchange {
@@ -47886,10 +49724,13 @@ module.exports = class theocean extends Exchange {
                 'fetchTickers': true,
                 'fetchOHLCV': false,
                 'fetchOrder': true,
+                'fetchOrders': true,
+                'fetchOpenOrders': true,
+                'fetchClosedOrders': true,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/43103756-d56613ce-8ed7-11e8-924e-68f9d4bcacab.jpg',
-                'api': 'https://api.staging.theocean.trade/api',
+                'api': 'https://api.theocean.trade/api',
                 'www': 'https://theocean.trade',
                 'doc': 'https://docs.theocean.trade',
                 'fees': 'https://theocean.trade/fees',
@@ -47897,6 +49738,7 @@ module.exports = class theocean extends Exchange {
             'api': {
                 'public': {
                     'get': [
+                        'fee_components',
                         'token_pairs',
                         'ticker',
                         'tickers',
@@ -47933,7 +49775,6 @@ module.exports = class theocean extends Exchange {
             },
             'options': {
                 'fetchOrderMethod': 'fetch_order_from_history',
-                'filledField': 'confirmed',
             },
         });
     }
@@ -48084,6 +49925,9 @@ module.exports = class theocean extends Exchange {
     }
 
     async fetchBalanceByCode (code, params = {}) {
+        if (!this.walletAddress || (this.walletAddress.indexOf ('0x') !== 0)) {
+            throw new InvalidAddress (this.id + ' checkWalletAddress() requires the .walletAddress to be a "0x"-prefixed hexstring like "0xbF2d65B3b2907214EEA3562f21B80f6Ed7220377"');
+        }
         await this.loadMarkets ();
         let currency = this.currency (code);
         let request = {
@@ -48100,16 +49944,19 @@ module.exports = class theocean extends Exchange {
         return {
             'free': balance,
             'used': 0,
-            'total': balance,
+            'total': undefined,
         };
     }
 
     async fetchBalance (params = {}) {
-        await this.loadMarkets ();
+        if (!this.walletAddress || (this.walletAddress.indexOf ('0x') !== 0)) {
+            throw new InvalidAddress (this.id + ' checkWalletAddress() requires the .walletAddress to be a "0x"-prefixed hexstring like "0xbF2d65B3b2907214EEA3562f21B80f6Ed7220377"');
+        }
         const codes = this.safeValue (params, 'codes');
         if ((typeof codes === 'undefined') || (!Array.isArray (codes))) {
             throw new ExchangeError (this.id + ' fetchBalance requires a `codes` parameter (an array of currency codes)');
         }
+        await this.loadMarkets ();
         let result = {};
         for (let i = 0; i < codes.length; i++) {
             const code = codes[i];
@@ -48338,10 +50185,16 @@ module.exports = class theocean extends Exchange {
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
-        await this.loadMarkets ();
-        if (!(this.walletAddress && this.privateKey)) {
-            throw new ExchangeError (this.id + ' createOrder() requires `exchange.walletAddress` and `exchange.privateKey`. The .walletAddress should be a hex-string like "0xbF2d65B3b2907214EEA3562f21B80f6Ed7220377". The .privateKey for that wallet should be a hex string like "0xe4f40d465efa94c98aec1a51f574329344c772c1bce33be07fa20a56795fdd09".');
+        const errorMessage = this.id + ' createOrder() requires `exchange.walletAddress` and `exchange.privateKey`. The .walletAddress should be a "0x"-prefixed hexstring like "0xbF2d65B3b2907214EEA3562f21B80f6Ed7220377". The .privateKey for that wallet should be a "0x"-prefixed hexstring like "0xe4f40d465efa94c98aec1a51f574329344c772c1bce33be07fa20a56795fdd09".';
+        if (!this.walletAddress || (this.walletAddress.indexOf ('0x') !== 0)) {
+            throw new InvalidAddress (errorMessage);
         }
+        if (!this.privateKey || (this.privateKey.indexOf ('0x') !== 0)) {
+            throw new InvalidAddress (errorMessage);
+        }
+        this.checkWalletAddress ();
+        this.checkPrivateKey ();
+        await this.loadMarkets ();
         const makerOrTaker = this.safeString (params, 'makerOrTaker');
         const isMarket = (type === 'market');
         const isLimit = (type === 'limit');
@@ -48473,7 +50326,7 @@ module.exports = class theocean extends Exchange {
         let signedTargetOrder = undefined;
         if ((isMarket && isMakerOrTakerUndefined) || isTaker) {
             if (isUnsignedMatchingOrderDefined) {
-                signedMatchingOrder = this.signZeroExOrder (this.extend (unsignedMatchingOrder, makerAddress));
+                signedMatchingOrder = this.signZeroExOrder (this.extend (unsignedMatchingOrder, makerAddress), this.privateKey);
                 placeRequest = this.extend (placeRequest, {
                     'signedMatchingOrder': signedMatchingOrder,
                     'matchingOrderID': reserveResponse['matchingOrderID'],
@@ -48484,7 +50337,7 @@ module.exports = class theocean extends Exchange {
         }
         if ((isLimit && isMakerOrTakerUndefined) || isMaker) {
             if (isUnsignedTargetOrderDefined) {
-                signedTargetOrder = this.signZeroExOrder (this.extend (unsignedTargetOrder, makerAddress));
+                signedTargetOrder = this.signZeroExOrder (this.extend (unsignedTargetOrder, makerAddress), this.privateKey);
                 placeRequest['signedTargetOrder'] = signedTargetOrder;
             } else if (isMaker) {
                 throw new OrderImmediatelyFillable (this.id + ' createOrder() ' + type + ' order to ' + side + ' ' + symbol + ' is not fillable as a maker order');
@@ -48577,7 +50430,13 @@ module.exports = class theocean extends Exchange {
         //       }
         //     }
         //
-        return response;
+        let market = undefined;
+        if (typeof symbol !== 'undefined') {
+            market = this.market (symbol);
+        }
+        return this.extend (this.parseOrder (response['canceledOrder'], market), {
+            'status': 'canceled',
+        });
     }
 
     async cancelAllOrders (params = {}) {
@@ -48681,6 +50540,8 @@ module.exports = class theocean extends Exchange {
         //                                        txHash: "0x043488fdc3f995bf9e632a32424441ed126de90f8cb340a1ff006c2a74ca8336",
         //                                   blockNumber: "8094822",
         //                                     timestamp: "1532261686"                                                          }  ] }
+        //
+        //
         //
         let zeroExOrder = this.safeValue (order, 'zeroExOrder');
         let id = this.safeString (order, 'orderHash');
@@ -48918,6 +50779,17 @@ module.exports = class theocean extends Exchange {
         return this.parseOrders (response, undefined, since, limit);
     }
 
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return await this.fetchOrders (symbol, since, limit, this.extend ({
+            'openAmount': this.fromWei ('1'),
+        }, params));
+    }
+
+    async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        const orders = await this.fetchOrders (symbol, since, limit, params);
+        return this.filterBy (orders, 'status', 'closed');
+    }
+
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let url = this.urls['api'] + '/' + this.version + '/' + this.implodeParams (path, params);
         let query = this.omit (params, this.extractParams (path));
@@ -48995,7 +50867,7 @@ module.exports = class theocean extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],131:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],133:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -49278,7 +51150,7 @@ module.exports = class therock extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],132:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],134:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -49705,7 +51577,7 @@ module.exports = class tidebit extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],133:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],135:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -49872,7 +51744,1002 @@ module.exports = class tidex extends liqui {
     }
 };
 
-},{"./liqui.js":111}],134:[function(require,module,exports){
+},{"./liqui.js":113}],136:[function(require,module,exports){
+'use strict';
+
+//  ---------------------------------------------------------------------------
+
+const Exchange = require ('./base/Exchange');
+const { ExchangeError, ExchangeNotAvailable, AuthenticationError, InvalidOrder, InsufficientFunds, OrderNotFound, PermissionDenied } = require ('./base/errors');
+const { ROUND, TRUNCATE } = require ('./base/functions/number');
+
+//  ---------------------------------------------------------------------------
+
+module.exports = class uex extends Exchange {
+    describe () {
+        return this.deepExtend (super.describe (), {
+            'id': 'uex',
+            'name': 'UEX',
+            'countries': [ 'SG', 'US' ],
+            'version': 'v1.0.3',
+            'rateLimit': 1000,
+            'certified': false,
+            // new metainfo interface
+            'has': {
+                'CORS': false,
+                'fetchMyTrades': true,
+                'fetchOHLCV': true,
+                'fetchOrder': true,
+                'fetchOpenOrders': true,
+                'fetchClosedOrders': true,
+            },
+            'timeframes': {
+                '1m': '1',
+                '5m': '5',
+                '15m': '15',
+                '30m': '30',
+                '1h': '60',
+                '2h': '120',
+                '3h': '180',
+                '4h': '240',
+                '6h': '360',
+                '12h': '720',
+                '1d': '1440',
+            },
+            'urls': {
+                'logo': 'https://user-images.githubusercontent.com/1294454/43999923-051d9884-9e1f-11e8-965a-76948cb17678.jpg',
+                'api': 'https://open-api.uex.com/open/api',
+                'www': 'https://www.uex.com',
+                'doc': 'https://download.uex.com/doc/UEX-API-English-1.0.3.pdf',
+                'fees': 'https://www.uex.com/footer/ufees.html',
+                'referral': 'https://www.uex.com/signup.html?code=VAGQLL',
+            },
+            'api': {
+                'public': {
+                    'get': [
+                        'common/symbols',
+                        'get_records', // ohlcvs
+                        'get_ticker',
+                        'get_trades',
+                        'market_dept', // dept here is not a typo... they mean depth
+                    ],
+                },
+                'private': {
+                    'get': [
+                        'user/account',
+                        'market', // an assoc array of market ids to corresponding prices traded most recently (prices of last trades per market)
+                        'order_info',
+                        'new_order', // open orders
+                        'all_order',
+                        'all_trade',
+                    ],
+                    'post': [
+                        'create_order',
+                        'cancel_order',
+                    ],
+                },
+            },
+            'fees': {
+                'trading': {
+                    'tierBased': false,
+                    'percentage': true,
+                    'maker': 0.0001,
+                    'taker': 0.0005,
+                },
+            },
+            'exceptions': {
+                // descriptions from ↓ exchange
+                // '0': 'no error', // succeed
+                '4': InsufficientFunds, // {"code":"4","msg":"余额不足:0E-16","data":null}
+                '5': InvalidOrder, // fail to order {"code":"5","msg":"Price fluctuates more than1000.0%","data":null}
+                '6': InvalidOrder, // the quantity value less than the minimum one {"code":"6","msg":"数量小于最小值:0.001","data":null}
+                '7': InvalidOrder, // the quantity value more than the maximum one {"code":"7","msg":"数量大于最大值:10000","data":null}
+                '8': InvalidOrder, // fail to cancel order
+                '9': ExchangeError, // transaction be frozen
+                '13': ExchangeError, // Sorry, the program made an error, please contact with the manager.
+                '19': InsufficientFunds, // Available balance is insufficient.
+                '22': OrderNotFound, // The order does not exist. {"code":"22","msg":"not exist order","data":null}
+                '23': InvalidOrder, // Lack of parameters of numbers of transaction
+                '24': InvalidOrder, // Lack of parameters of transaction price
+                '100001': ExchangeError, // System is abnormal
+                '100002': ExchangeNotAvailable, // Update System
+                '100004': ExchangeError, // {"code":"100004","msg":"request parameter illegal","data":null}
+                '100005': AuthenticationError, // {"code":"100005","msg":"request sign illegal","data":null}
+                '100007': PermissionDenied, // illegal IP
+                '110002': ExchangeError, // unknown currency code
+                '110003': AuthenticationError, // fund password error
+                '110004': AuthenticationError, // fund password error
+                '110005': InsufficientFunds, // Available balance is insufficient.
+                '110020': AuthenticationError, // Username does not exist.
+                '110023': AuthenticationError, // Phone number is registered.
+                '110024': AuthenticationError, // Email box is registered.
+                '110025': PermissionDenied, // Account is locked by background manager
+                '110032': PermissionDenied, // The user has no authority to do this operation.
+                '110033': ExchangeError, // fail to recharge
+                '110034': ExchangeError, // fail to withdraw
+                '-100': ExchangeError, // {"code":"-100","msg":"Your request path is not exist or you can try method GET/POST.","data":null}
+            },
+            'requiredCredentials': {
+                'apiKey': true,
+                'secret': true,
+            },
+            'options': {
+                'createMarketBuyOrderRequiresPrice': true,
+                'limits': {
+                    'BTC/USDT': { 'amount': { 'min': 0.001 }, 'price': { 'min': 0.01 }},
+                    'ETH/USDT': { 'amount': { 'min': 0.001 }, 'price': { 'min': 0.01 }},
+                    'BCH/USDT': { 'amount': { 'min': 0.001 }, 'price': { 'min': 0.01 }},
+                    'ETH/BTC': { 'amount': { 'min': 0.001 }, 'price': { 'min': 0.000001 }},
+                    'BCH/BTC': { 'amount': { 'min': 0.001 }, 'price': { 'min': 0.000001 }},
+                    'LEEK/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'CTXC/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'COSM/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'MANA/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'LBA/BTC': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'OLT/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'DTA/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'KNT/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'REN/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'LBA/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'EXC/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'ZIL/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'RATING/ETH': { 'amount': { 'min': 100 }, 'price': { 'min': 100 }},
+                    'CENNZ/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                    'TTC/ETH': { 'amount': { 'min': 10 }, 'price': { 'min': 10 }},
+                },
+            },
+        });
+    }
+
+    costToPrecision (symbol, cost) {
+        return this.decimalToPrecision (cost, ROUND, this.markets[symbol]['precision']['price']);
+    }
+
+    priceToPrecision (symbol, price) {
+        return this.decimalToPrecision (price, ROUND, this.markets[symbol]['precision']['price']);
+    }
+
+    amountToPrecision (symbol, amount) {
+        return this.decimalToPrecision (amount, TRUNCATE, this.markets[symbol]['precision']['amount']);
+    }
+
+    feeToPrecision (currency, fee) {
+        return this.decimalToPrecision (fee, ROUND, this.currencies[currency]['precision']);
+    }
+
+    calculateFee (symbol, type, side, amount, price, takerOrMaker = 'taker', params = {}) {
+        let market = this.markets[symbol];
+        let key = 'quote';
+        let rate = market[takerOrMaker];
+        let cost = parseFloat (this.costToPrecision (symbol, amount * rate));
+        if (side === 'sell') {
+            cost *= price;
+        } else {
+            key = 'base';
+        }
+        return {
+            'type': takerOrMaker,
+            'currency': market[key],
+            'rate': rate,
+            'cost': parseFloat (this.feeToPrecision (market[key], cost)),
+        };
+    }
+
+    async fetchMarkets () {
+        let response = await this.publicGetCommonSymbols ();
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: [ {           symbol: "btcusdt",
+        //                       count_coin: "usdt",
+        //                 amount_precision:  3,
+        //                        base_coin: "btc",
+        //                  price_precision:  2         },
+        //               {           symbol: "ethusdt",
+        //                       count_coin: "usdt",
+        //                 amount_precision:  3,
+        //                        base_coin: "eth",
+        //                  price_precision:  2         },
+        //               {           symbol: "ethbtc",
+        //                       count_coin: "btc",
+        //                 amount_precision:  3,
+        //                        base_coin: "eth",
+        //                  price_precision:  6        }]}
+        //
+        let result = [];
+        let markets = response['data'];
+        for (let i = 0; i < markets.length; i++) {
+            let market = markets[i];
+            let id = market['symbol'];
+            let baseId = market['base_coin'];
+            let quoteId = market['count_coin'];
+            let base = baseId.toUpperCase ();
+            let quote = quoteId.toUpperCase ();
+            base = this.commonCurrencyCode (base);
+            quote = this.commonCurrencyCode (quote);
+            let symbol = base + '/' + quote;
+            let precision = {
+                'amount': market['amount_precision'],
+                'price': market['price_precision'],
+            };
+            let active = true;
+            let defaultLimits = this.safeValue (this.options['limits'], symbol, {});
+            let limits = this.deepExtend ({
+                'amount': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+                'price': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+                'cost': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+            }, defaultLimits);
+            result.push ({
+                'id': id,
+                'symbol': symbol,
+                'base': base,
+                'quote': quote,
+                'baseId': baseId,
+                'quoteId': quoteId,
+                'active': active,
+                'info': market,
+                'precision': precision,
+                'limits': limits,
+            });
+        }
+        return result;
+    }
+
+    async fetchBalance (params = {}) {
+        await this.loadMarkets ();
+        let response = await this.privateGetUserAccount (params);
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: { total_asset:   "0.00000000",
+        //                 coin_list: [ {      normal: "0.00000000",
+        //                                btcValuatin: "0.00000000",
+        //                                     locked: "0.00000000",
+        //                                       coin: "usdt"        },
+        //                              {      normal: "0.00000000",
+        //                                btcValuatin: "0.00000000",
+        //                                     locked: "0.00000000",
+        //                                       coin: "btc"         },
+        //                              {      normal: "0.00000000",
+        //                                btcValuatin: "0.00000000",
+        //                                     locked: "0.00000000",
+        //                                       coin: "eth"         },
+        //                              {      normal: "0.00000000",
+        //                                btcValuatin: "0.00000000",
+        //                                     locked: "0.00000000",
+        //                                       coin: "ren"         }]}}
+        //
+        let balances = response['data']['coin_list'];
+        let result = { 'info': balances };
+        for (let i = 0; i < balances.length; i++) {
+            let balance = balances[i];
+            let currencyId = balance['coin'];
+            let code = currencyId.toUpperCase ();
+            if (currencyId in this.currencies_by_id) {
+                code = this.currencies_by_id[currencyId]['code'];
+            } else {
+                code = this.commonCurrencyCode (code);
+            }
+            let account = this.account ();
+            let free = parseFloat (balance['normal']);
+            let used = parseFloat (balance['locked']);
+            let total = this.sum (free, used);
+            account['free'] = free;
+            account['used'] = used;
+            account['total'] = total;
+            result[code] = account;
+        }
+        return this.parseBalance (result);
+    }
+
+    async fetchOrderBook (symbol, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let response = await this.publicGetMarketDept (this.extend ({
+            'symbol': this.marketId (symbol),
+            'type': 'step0', // step1, step2 from most detailed to least detailed
+        }, params));
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: { tick: { asks: [ ["0.05824200", 9.77],
+        //                               ["0.05830000", 7.81],
+        //                               ["0.05832900", 8.59],
+        //                               ["0.10000000", 0.001]  ],
+        //                       bids: [ ["0.05780000", 8.25],
+        //                               ["0.05775000", 8.12],
+        //                               ["0.05773200", 8.57],
+        //                               ["0.00010000", 0.79]   ],
+        //                       time:    1533412622463            } } }
+        //
+        let timestamp = this.safeInteger (response['data']['tick'], 'time');
+        return this.parseOrderBook (response['data']['tick'], timestamp);
+    }
+
+    parseTicker (ticker, market = undefined) {
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: { symbol: "ETHBTC",
+        //                 high:  0.058426,
+        //                  vol:  19055.875,
+        //                 last:  0.058019,
+        //                  low:  0.055802,
+        //               change:  0.03437271,
+        //                  buy: "0.05780000",
+        //                 sell: "0.05824200",
+        //                 time:  1533413083184 } }
+        //
+        let timestamp = this.safeInteger (ticker, 'time');
+        let symbol = undefined;
+        if (typeof market === 'undefined') {
+            let marketId = this.safeString (ticker, 'symbol');
+            marketId = marketId.toLowerCase ();
+            if (marketId in this.markets_by_id) {
+                market = this.markets_by_id[marketId];
+            }
+        }
+        if (typeof market !== 'undefined') {
+            symbol = market['symbol'];
+        }
+        let last = this.safeFloat (ticker, 'last');
+        let change = this.safeFloat (ticker, 'change');
+        let percentage = change * 100;
+        return {
+            'symbol': symbol,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'high': this.safeFloat (ticker, 'high'),
+            'low': this.safeFloat (ticker, 'low'),
+            'bid': this.safeFloat (ticker, 'buy'),
+            'bidVolume': undefined,
+            'ask': this.safeFloat (ticker, 'sell'),
+            'askVolume': undefined,
+            'vwap': undefined,
+            'open': undefined,
+            'close': last,
+            'last': last,
+            'previousClose': undefined,
+            'change': undefined,
+            'percentage': percentage,
+            'average': undefined,
+            'baseVolume': this.safeFloat (ticker, 'vol'),
+            'quoteVolume': undefined,
+            'info': ticker,
+        };
+    }
+
+    async fetchTicker (symbol, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let response = await this.publicGetGetTicker (this.extend ({
+            'symbol': market['id'],
+        }, params));
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: { symbol: "ETHBTC",
+        //                 high:  0.058426,
+        //                  vol:  19055.875,
+        //                 last:  0.058019,
+        //                  low:  0.055802,
+        //               change:  0.03437271,
+        //                  buy: "0.05780000",
+        //                 sell: "0.05824200",
+        //                 time:  1533413083184 } }
+        //
+        return this.parseTicker (response['data'], market);
+    }
+
+    parseTrade (trade, market = undefined) {
+        //
+        // public fetchTrades
+        //
+        //   {      amount:  0.88,
+        //     create_time:  1533414358000,
+        //           price:  0.058019,
+        //              id:  406531,
+        //            type: "sell"          },
+        //
+        // private fetchMyTrades, fetchOrder, fetchOpenOrders, fetchClosedOrders
+        //
+        //   {     volume: "0.010",
+        //           side: "SELL",
+        //        feeCoin: "BTC",
+        //          price: "0.05816200",
+        //            fee: "0.00000029",
+        //          ctime:  1533616674000,
+        //     deal_price: "0.00058162",
+        //             id:  415779,
+        //           type: "卖出",
+        //         bid_id:  3669539, // only in fetchMyTrades
+        //         ask_id:  3669583, // only in fetchMyTrades
+        //   }
+        //
+        let timestamp = this.safeInteger2 (trade, 'create_time', 'ctime');
+        if (typeof timestamp === 'undefined') {
+            let timestring = this.safeString (trade, 'created_at');
+            if (typeof timestring !== 'undefined') {
+                timestamp = this.parse8601 ('2018-' + timestring + ':00Z');
+            }
+        }
+        let side = this.safeString2 (trade, 'side', 'type');
+        if (typeof side !== 'undefined') {
+            side = side.toLowerCase ();
+        }
+        let id = this.safeString (trade, 'id');
+        let symbol = undefined;
+        if (typeof market !== 'undefined') {
+            symbol = market['symbol'];
+        }
+        let price = this.safeFloat2 (trade, 'deal_price', 'price');
+        let amount = this.safeFloat2 (trade, 'volume', 'amount');
+        let cost = undefined;
+        if (typeof amount !== 'undefined') {
+            if (typeof price !== 'undefined') {
+                cost = amount * price;
+            }
+        }
+        let fee = undefined;
+        let feeCost = this.safeFloat2 (trade, 'fee', 'deal_fee');
+        if (typeof feeCost !== 'undefined') {
+            let feeCurrency = this.safeString (trade, 'feeCoin');
+            if (typeof feeCurrency !== 'undefined') {
+                let currencyId = feeCurrency.toLowerCase ();
+                if (currencyId in this.currencies_by_id) {
+                    feeCurrency = this.currencies_by_id[currencyId]['code'];
+                }
+            }
+            fee = {
+                'cost': feeCost,
+                'currency': feeCurrency,
+            };
+        }
+        let orderIdField = (side === 'sell') ? 'ask_id' : 'bid_id';
+        let orderId = this.safeString (trade, orderIdField);
+        return {
+            'id': id,
+            'info': trade,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'symbol': symbol,
+            'order': orderId,
+            'type': undefined,
+            'side': side,
+            'price': price,
+            'amount': amount,
+            'cost': cost,
+            'fee': fee,
+        };
+    }
+
+    async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let response = await this.publicGetGetTrades (this.extend ({
+            'symbol': market['id'],
+        }, params));
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: [ {      amount:  0.88,
+        //                 create_time:  1533414358000,
+        //                       price:  0.058019,
+        //                          id:  406531,
+        //                        type: "sell"          },
+        //               {      amount:  4.88,
+        //                 create_time:  1533414331000,
+        //                       price:  0.058019,
+        //                          id:  406530,
+        //                        type: "buy"           },
+        //               {      amount:  0.5,
+        //                 create_time:  1533414311000,
+        //                       price:  0.058019,
+        //                          id:  406529,
+        //                        type: "sell"          } ] }
+        //
+        return this.parseTrades (response['data'], market, since, limit);
+    }
+
+    parseOHLCV (ohlcv, market = undefined, timeframe = '1d', since = undefined, limit = undefined) {
+        return [
+            ohlcv[0] * 1000, // timestamp
+            ohlcv[1], // open
+            ohlcv[2], // high
+            ohlcv[3], // low
+            ohlcv[4], // close
+            ohlcv[5], // volume
+        ];
+    }
+
+    async fetchOHLCV (symbol, timeframe = '1m', since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'symbol': market['id'],
+            'period': this.timeframes[timeframe], // in minutes
+        };
+        let response = await this.publicGetGetRecords (this.extend (request, params));
+        //
+        //     { code: '0',
+        //        msg: 'suc',
+        //       data:
+        //        [ [ 1533402420, 0.057833, 0.057833, 0.057833, 0.057833, 18.1 ],
+        //          [ 1533402480, 0.057833, 0.057833, 0.057833, 0.057833, 29.88 ],
+        //          [ 1533402540, 0.057833, 0.057833, 0.057833, 0.057833, 29.06 ] ] }
+        //
+        return this.parseOHLCVs (response['data'], market, timeframe, since, limit);
+    }
+
+    async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
+        if (type === 'market') {
+            // for market buy it requires the amount of quote currency to spend
+            if (side === 'buy') {
+                if (this.options['createMarketBuyOrderRequiresPrice']) {
+                    if (typeof price === 'undefined') {
+                        throw new InvalidOrder (this.id + " createOrder() requires the price argument with market buy orders to calculate total order cost (amount to spend), where cost = amount * price. Supply a price argument to createOrder() call if you want the cost to be calculated for you from price and amount, or, alternatively, add .options['createMarketBuyOrderRequiresPrice'] = false to supply the cost in the amount argument (the exchange-specific behaviour)");
+                    } else {
+                        amount = amount * price;
+                    }
+                }
+            }
+        }
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let orderType = (type === 'limit') ? '1' : '2';
+        let orderSide = side.toUpperCase ();
+        let amountToPrecision = this.amountToPrecision (symbol, amount);
+        let request = {
+            'side': orderSide,
+            'type': orderType,
+            'symbol': market['id'],
+            'volume': amountToPrecision,
+            // An excerpt from their docs:
+            // side required Trading Direction
+            // type required pending order types，1:Limit-price Delegation 2:Market- price Delegation
+            // volume required
+            //     Purchase Quantity（polysemy，multiplex field）
+            //     type=1: Quantity of buying and selling
+            //     type=2: Buying represents gross price, and selling represents total number
+            //     Trading restriction user/me-user information
+            // price optional Delegation Price：type=2：this parameter is no use.
+            // fee_is_user_exchange_coin optional
+            //     0，when making transactions with all platform currencies,
+            //     this parameter represents whether to use them to pay
+            //     fees or not and 0 is no, 1 is yes.
+        };
+        let priceToPrecision = undefined;
+        if (type === 'limit') {
+            priceToPrecision = this.priceToPrecision (symbol, price);
+            request['price'] = priceToPrecision;
+            priceToPrecision = parseFloat (priceToPrecision);
+        }
+        let response = await this.privatePostCreateOrder (this.extend (request, params));
+        //
+        //     { code: '0',
+        //        msg: 'suc',
+        //       data: { 'order_id' : 34343 } }
+        //
+        let result = this.parseOrder (response['data'], market);
+        return this.extend (result, {
+            'info': response,
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'status': 'open',
+            'price': priceToPrecision,
+            'amount': parseFloat (amountToPrecision),
+        });
+    }
+
+    async cancelOrder (id, symbol = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'order_id': id,
+            'symbol': market['id'],
+        };
+        let response = await this.privatePostCancelOrder (this.extend (request, params));
+        let order = this.safeValue (response, 'data', {});
+        return this.extend (this.parseOrder (order), {
+            'id': id,
+            'symbol': symbol,
+            'status': 'canceled',
+        });
+    }
+
+    parseOrderStatus (status) {
+        let statuses = {
+            '0': 'open', // INIT(0,"primary order，untraded and not enter the market")
+            '1': 'open', // NEW_(1,"new order，untraded and enter the market ")
+            '2': 'closed', // FILLED(2,"complete deal")
+            '3': 'open', // PART_FILLED(3,"partial deal")
+            '4': 'canceled', // CANCELED(4,"already withdrawn")
+            '5': 'canceled', // PENDING_CANCEL(5,"pending withdrawak")
+            '6': 'canceled', // EXPIRED(6,"abnormal orders")
+        };
+        if (status in statuses) {
+            return statuses[status];
+        }
+        return status;
+    }
+
+    parseOrder (order, market = undefined) {
+        //
+        // createOrder
+        //
+        //     {"order_id":34343}
+        //
+        // fetchOrder, fetchOpenOrders, fetchClosedOrders
+        //
+        //     {          side:   "BUY",
+        //         total_price:   "0.10000000",
+        //          created_at:    1510993841000,
+        //           avg_price:   "0.10000000",
+        //           countCoin:   "btc",
+        //              source:    1,
+        //                type:    1,
+        //            side_msg:   "买入",
+        //              volume:   "1.000",
+        //               price:   "0.10000000",
+        //          source_msg:   "WEB",
+        //          status_msg:   "完全成交",
+        //         deal_volume:   "1.00000000",
+        //                  id:    424,
+        //       remain_volume:   "0.00000000",
+        //            baseCoin:   "eth",
+        //           tradeList: [ {     volume: "1.000",
+        //                             feeCoin: "YLB",
+        //                               price: "0.10000000",
+        //                                 fee: "0.16431104",
+        //                               ctime:  1510996571195,
+        //                          deal_price: "0.10000000",
+        //                                  id:  306,
+        //                                type: "买入"            } ],
+        //              status:    2                                 }
+        //
+        // fetchOrder
+        //
+        //      { trade_list: [ {     volume: "0.010",
+        //                           feeCoin: "BTC",
+        //                             price: "0.05816200",
+        //                               fee: "0.00000029",
+        //                             ctime:  1533616674000,
+        //                        deal_price: "0.00058162",
+        //                                id:  415779,
+        //                              type: "卖出"            } ],
+        //        order_info: {          side:   "SELL",
+        //                        total_price:   "0.010",
+        //                         created_at:    1533616673000,
+        //                          avg_price:   "0.05816200",
+        //                          countCoin:   "btc",
+        //                             source:    3,
+        //                               type:    2,
+        //                           side_msg:   "卖出",
+        //                             volume:   "0.010",
+        //                              price:   "0.00000000",
+        //                         source_msg:   "API",
+        //                         status_msg:   "完全成交",
+        //                        deal_volume:   "0.01000000",
+        //                                 id:    3669583,
+        //                      remain_volume:   "0.00000000",
+        //                           baseCoin:   "eth",
+        //                          tradeList: [ {     volume: "0.010",
+        //                                            feeCoin: "BTC",
+        //                                              price: "0.05816200",
+        //                                                fee: "0.00000029",
+        //                                              ctime:  1533616674000,
+        //                                         deal_price: "0.00058162",
+        //                                                 id:  415779,
+        //                                               type: "卖出"            } ],
+        //                             status:    2                                 } }
+        //
+        let side = this.safeString (order, 'side');
+        if (typeof side !== 'undefined')
+            side = side.toLowerCase ();
+        let status = this.parseOrderStatus (this.safeString (order, 'status'));
+        let symbol = undefined;
+        if (typeof market === 'undefined') {
+            let baseId = this.safeString (order, 'baseCoin');
+            let quoteId = this.safeString (order, 'countCoin');
+            let marketId = baseId + quoteId;
+            if (marketId in this.markets_by_id) {
+                market = this.markets_by_id[marketId];
+            } else {
+                if ((typeof baseId !== 'undefined') && (typeof quoteId !== 'undefined')) {
+                    let base = baseId.toUpperCase ();
+                    let quote = quoteId.toUpperCase ();
+                    base = this.commonCurrencyCode (base);
+                    quote = this.commonCurrencyCode (quote);
+                    symbol = base + '/' + quote;
+                }
+            }
+        }
+        if (typeof market !== 'undefined') {
+            symbol = market['symbol'];
+        }
+        let timestamp = this.safeInteger (order, 'created_at');
+        if (typeof timestamp === 'undefined') {
+            let timestring = this.safeString (order, 'created_at');
+            if (typeof timestring !== 'undefined') {
+                timestamp = this.parse8601 ('2018-' + timestring + ':00Z');
+            }
+        }
+        let lastTradeTimestamp = undefined;
+        let fee = undefined;
+        let average = this.safeFloat (order, 'avg_price');
+        let price = this.safeFloat (order, 'price');
+        if (price === 0) {
+            price = average;
+        }
+        let amount = this.safeFloat (order, 'volume');
+        let filled = this.safeFloat (order, 'deal_volume');
+        let remaining = this.safeFloat (order, 'remain_volume');
+        let cost = this.safeFloat (order, 'total_price');
+        let id = this.safeString2 (order, 'id', 'order_id');
+        let trades = undefined;
+        let tradeList = this.safeValue (order, 'tradeList', []);
+        let feeCurrencies = {};
+        let feeCost = undefined;
+        for (let i = 0; i < tradeList.length; i++) {
+            let trade = this.parseTrade (tradeList[i], market);
+            if (typeof feeCost === 'undefined') {
+                feeCost = 0;
+            }
+            feeCost = feeCost + trade['fee']['cost'];
+            let tradeFeeCurrency = trade['fee']['currency'];
+            feeCurrencies[tradeFeeCurrency] = trade['fee']['cost'];
+            if (typeof trades === 'undefined') {
+                trades = [];
+            }
+            lastTradeTimestamp = trade['timestamp'];
+            trades.push (this.extend (trade, {
+                'order': id,
+            }));
+        }
+        if (typeof feeCost !== 'undefined') {
+            let feeCurrency = undefined;
+            let keys = Object.keys (feeCurrencies);
+            let numCurrencies = keys.length;
+            if (numCurrencies === 1) {
+                feeCurrency = keys[0];
+            }
+            fee = {
+                'cost': feeCost,
+                'currency': feeCurrency,
+            };
+        }
+        let result = {
+            'info': order,
+            'id': id,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'lastTradeTimestamp': lastTradeTimestamp,
+            'symbol': symbol,
+            'type': 'limit',
+            'side': side,
+            'price': price,
+            'cost': cost,
+            'average': average,
+            'amount': amount,
+            'filled': filled,
+            'remaining': remaining,
+            'status': status,
+            'fee': fee,
+            'trades': trades,
+        };
+        return result;
+    }
+
+    async fetchOrdersWithMethod (method, symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        if (typeof symbol === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchOrdersWithMethod() requires a symbol argument');
+        }
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            // pageSize optional page size
+            // page optional page number
+            'symbol': market['id'],
+        };
+        if (typeof limit !== 'undefined') {
+            request['pageSize'] = limit;
+        }
+        let response = await this[method] (this.extend (request, params));
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: {     count:    1,
+        //               orderList: [ {          side:   "SELL",
+        //                                total_price:   "0.010",
+        //                                 created_at:    1533616673000,
+        //                                  avg_price:   "0.05816200",
+        //                                  countCoin:   "btc",
+        //                                     source:    3,
+        //                                       type:    2,
+        //                                   side_msg:   "卖出",
+        //                                     volume:   "0.010",
+        //                                      price:   "0.00000000",
+        //                                 source_msg:   "API",
+        //                                 status_msg:   "完全成交",
+        //                                deal_volume:   "0.01000000",
+        //                                         id:    3669583,
+        //                              remain_volume:   "0.00000000",
+        //                                   baseCoin:   "eth",
+        //                                  tradeList: [ {     volume: "0.010",
+        //                                                    feeCoin: "BTC",
+        //                                                      price: "0.05816200",
+        //                                                        fee: "0.00000029",
+        //                                                      ctime:  1533616674000,
+        //                                                 deal_price: "0.00058162",
+        //                                                         id:  415779,
+        //                                                       type: "卖出"            } ],
+        //                                     status:    2                                 } ] } }
+        //
+        // privateGetNewOrder returns resultList, privateGetAllOrder returns orderList
+        let orders = this.safeValue2 (response['data'], 'orderList', 'resultList', []);
+        return this.parseOrders (orders, market, since, limit);
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return this.fetchOrdersWithMethod ('privateGetNewOrder', symbol, since, limit, params);
+    }
+
+    async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return this.fetchOrdersWithMethod ('privateGetAllOrder', symbol, since, limit, params);
+    }
+
+    async fetchOrder (id, symbol = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            'order_id': id,
+            'symbol': market['id'],
+        };
+        let response = await this.privateGetOrderInfo (this.extend (request, params));
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: { trade_list: [ {     volume: "0.010",
+        //                                  feeCoin: "BTC",
+        //                                    price: "0.05816200",
+        //                                      fee: "0.00000029",
+        //                                    ctime:  1533616674000,
+        //                               deal_price: "0.00058162",
+        //                                       id:  415779,
+        //                                     type: "卖出"            } ],
+        //               order_info: {          side:   "SELL",
+        //                               total_price:   "0.010",
+        //                                created_at:    1533616673000,
+        //                                 avg_price:   "0.05816200",
+        //                                 countCoin:   "btc",
+        //                                    source:    3,
+        //                                      type:    2,
+        //                                  side_msg:   "卖出",
+        //                                    volume:   "0.010",
+        //                                     price:   "0.00000000",
+        //                                source_msg:   "API",
+        //                                status_msg:   "完全成交",
+        //                               deal_volume:   "0.01000000",
+        //                                        id:    3669583,
+        //                             remain_volume:   "0.00000000",
+        //                                  baseCoin:   "eth",
+        //                                 tradeList: [ {     volume: "0.010",
+        //                                                   feeCoin: "BTC",
+        //                                                     price: "0.05816200",
+        //                                                       fee: "0.00000029",
+        //                                                     ctime:  1533616674000,
+        //                                                deal_price: "0.00058162",
+        //                                                        id:  415779,
+        //                                                      type: "卖出"            } ],
+        //                                    status:    2                                 } } }
+        //
+        return this.parseOrder (response['data']['order_info'], market);
+    }
+
+    async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        if (typeof symbol === 'undefined') {
+            throw new ExchangeError (this.id + ' fetchMyTrades requires a symbol argument');
+        }
+        await this.loadMarkets ();
+        let market = this.market (symbol);
+        let request = {
+            // pageSize optional page size
+            // page optional page number
+            'symbol': market['id'],
+        };
+        if (typeof limit !== 'undefined') {
+            request['pageSize'] = limit;
+        }
+        let response = await this.privateGetAllTrade (this.extend (request, params));
+        //
+        //     { code:   "0",
+        //        msg:   "suc",
+        //       data: {      count:    1,
+        //               resultList: [ {     volume: "0.010",
+        //                                     side: "SELL",
+        //                                  feeCoin: "BTC",
+        //                                    price: "0.05816200",
+        //                                      fee: "0.00000029",
+        //                                    ctime:  1533616674000,
+        //                               deal_price: "0.00058162",
+        //                                       id:  415779,
+        //                                     type: "卖出",
+        //                                   bid_id:  3669539,
+        //                                   ask_id:  3669583        } ] } }
+        //
+        let trades = this.safeValue (response['data'], 'resultList', []);
+        return this.parseTrades (trades, market, since, limit);
+    }
+
+    sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
+        let url = this.urls['api'] + '/' + this.implodeParams (path, params);
+        if (api === 'public') {
+            if (Object.keys (params).length)
+                url += '?' + this.urlencode (params);
+        } else {
+            this.checkRequiredCredentials ();
+            let timestamp = this.seconds ().toString ();
+            let auth = '';
+            let query = this.keysort (this.extend (params, {
+                'api_key': this.apiKey,
+                'time': timestamp,
+            }));
+            let keys = Object.keys (query);
+            for (let i = 0; i < keys.length; i++) {
+                let key = keys[i];
+                auth += key;
+                auth += query[key].toString ();
+            }
+            let signature = this.hash (this.encode (auth + this.secret));
+            if (Object.keys (query).length) {
+                if (method === 'GET') {
+                    url += '?' + this.urlencode (query) + '&sign=' + signature;
+                } else {
+                    body = this.urlencode (query) + '&sign=' + signature;
+                }
+            }
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            };
+        }
+        return { 'url': url, 'method': method, 'body': body, 'headers': headers };
+    }
+
+    handleErrors (httpCode, reason, url, method, headers, body) {
+        if (typeof body !== 'string')
+            return; // fallback to default error handler
+        if (body.length < 2)
+            return; // fallback to default error handler
+        if ((body[0] === '{') || (body[0] === '[')) {
+            let response = JSON.parse (body);
+            //
+            // {"code":"0","msg":"suc","data":{}}
+            //
+            const code = this.safeString (response, 'code');
+            // const message = this.safeString (response, 'msg');
+            const feedback = this.id + ' ' + this.json (response);
+            const exceptions = this.exceptions;
+            if (code !== '0') {
+                if (code in exceptions) {
+                    throw new exceptions[code] (feedback);
+                } else {
+                    throw new ExchangeError (feedback);
+                }
+            }
+        }
+    }
+};
+
+},{"./base/Exchange":9,"./base/errors":11,"./base/functions/number":17}],137:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -49906,7 +52773,7 @@ module.exports = class urdubit extends foxbit {
     }
 };
 
-},{"./foxbit.js":87}],135:[function(require,module,exports){
+},{"./foxbit.js":89}],138:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -50125,7 +52992,7 @@ module.exports = class vaultoro extends Exchange {
     }
 };
 
-},{"./base/Exchange":9}],136:[function(require,module,exports){
+},{"./base/Exchange":9}],139:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -50159,7 +53026,7 @@ module.exports = class vbtc extends foxbit {
     }
 };
 
-},{"./foxbit.js":87}],137:[function(require,module,exports){
+},{"./foxbit.js":89}],140:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -50452,7 +53319,7 @@ module.exports = class virwox extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],138:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],141:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -50619,7 +53486,7 @@ module.exports = class wex extends liqui {
     }
 };
 
-},{"./base/errors":11,"./liqui.js":111}],139:[function(require,module,exports){
+},{"./base/errors":11,"./liqui.js":113}],142:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -50964,7 +53831,7 @@ module.exports = class xbtce extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],140:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],143:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -51219,7 +54086,7 @@ module.exports = class yobit extends liqui {
     }
 };
 
-},{"./base/errors":11,"./liqui.js":111}],141:[function(require,module,exports){
+},{"./base/errors":11,"./liqui.js":113}],144:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -51302,7 +54169,7 @@ module.exports = class yunbi extends acx {
     }
 };
 
-},{"./acx.js":5}],142:[function(require,module,exports){
+},{"./acx.js":5}],145:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -51709,7 +54576,7 @@ module.exports = class zaif extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],143:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],146:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -51734,6 +54601,7 @@ module.exports = class zb extends Exchange {
                 'fetchOrder': true,
                 'fetchOrders': true,
                 'fetchOpenOrders': true,
+                'fetchOHLCV': true,
                 'withdraw': true,
             },
             'timeframes': {
@@ -51794,6 +54662,7 @@ module.exports = class zb extends Exchange {
                     'get': [
                         'markets',
                         'ticker',
+                        'allTicker',
                         'depth',
                         'trades',
                         'kline',
@@ -51889,7 +54758,6 @@ module.exports = class zb extends Exchange {
                 'amount': market['amountScale'],
                 'price': market['priceScale'],
             };
-            let lot = Math.pow (10, -precision['amount']);
             result.push ({
                 'id': id,
                 'symbol': symbol,
@@ -51897,12 +54765,11 @@ module.exports = class zb extends Exchange {
                 'quoteId': quoteId,
                 'base': base,
                 'quote': quote,
-                'lot': lot,
                 'active': true,
                 'precision': precision,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': Math.pow (10, -precision['amount']),
                         'max': undefined,
                     },
                     'price': {
@@ -51963,7 +54830,12 @@ module.exports = class zb extends Exchange {
             'currency': currency['id'],
         });
         let address = response['message']['datas']['key'];
-        let tag = undefined; // todo: figure this out
+        let tag = undefined;
+        if (address.indexOf ('_') >= 0) {
+            let arr = address.split ('_');
+            address = arr[0];  // WARNING: MAY BE tag_address INSTEAD OF address_tag FOR SOME CURRENCIES!!
+            tag = arr[1];
+        }
         return {
             'currency': code,
             'address': address,
@@ -51982,6 +54854,24 @@ module.exports = class zb extends Exchange {
         return this.parseOrderBook (orderbook);
     }
 
+    async fetchTickers (symbols = undefined, params = {}) {
+        await this.loadMarkets ();
+        let response = await this.publicGetAllTicker (params);
+        let result = {};
+        let anotherMarketsById = {};
+        let marketIds = Object.keys (this.marketsById);
+        for (let i = 0; i < marketIds.length; i++) {
+            let tickerId = marketIds[i].replace ('_', '');
+            anotherMarketsById[tickerId] = this.marketsById[marketIds[i]];
+        }
+        let ids = Object.keys (response);
+        for (let i = 0; i < ids.length; i++) {
+            let market = anotherMarketsById[ids[i]];
+            result[market['symbol']] = this.parseTicker (response[ids[i]], market);
+        }
+        return result;
+    }
+
     async fetchTicker (symbol, params = {}) {
         await this.loadMarkets ();
         let market = this.market (symbol);
@@ -51990,7 +54880,15 @@ module.exports = class zb extends Exchange {
         request[marketFieldName] = market['id'];
         let response = await this.publicGetTicker (this.extend (request, params));
         let ticker = response['ticker'];
+        return this.parseTicker (ticker, market);
+    }
+
+    parseTicker (ticker, market = undefined) {
         let timestamp = this.milliseconds ();
+        let symbol = undefined;
+        if (market !== 'undefined') {
+            symbol = market['symbol'];
+        }
         let last = this.safeFloat (ticker, 'last');
         return {
             'symbol': symbol,
@@ -52029,7 +54927,8 @@ module.exports = class zb extends Exchange {
         if (typeof since !== 'undefined')
             request['since'] = since;
         let response = await this.publicGetKline (this.extend (request, params));
-        return this.parseOHLCVs (response['data'], market, timeframe, since, limit);
+        let data = this.safeValue (response, 'data', []);
+        return this.parseOHLCVs (data, market, timeframe, since, limit);
     }
 
     parseTrade (trade, market = undefined) {
@@ -52269,10 +55168,10 @@ module.exports = class zb extends Exchange {
     }
 };
 
-},{"./base/Exchange":9,"./base/errors":11}],144:[function(require,module,exports){
+},{"./base/Exchange":9,"./base/errors":11}],147:[function(require,module,exports){
 module.exports = require('./register')().Promise
 
-},{"./register":146}],145:[function(require,module,exports){
+},{"./register":149}],148:[function(require,module,exports){
 "use strict"
     // global key for user preferred registration
 var REGISTRATION_KEY = '@@any-promise/REGISTRATION',
@@ -52352,7 +55251,7 @@ module.exports = function(root, loadImplementation){
   }
 }
 
-},{}],146:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 "use strict";
 module.exports = require('./loader')(window, loadImplementation)
 
@@ -52372,7 +55271,7 @@ function loadImplementation(){
   }
 }
 
-},{"./loader":145}],147:[function(require,module,exports){
+},{"./loader":148}],150:[function(require,module,exports){
 var asn1 = exports;
 
 asn1.bignum = require('bn.js');
@@ -52383,7 +55282,7 @@ asn1.constants = require('./asn1/constants');
 asn1.decoders = require('./asn1/decoders');
 asn1.encoders = require('./asn1/encoders');
 
-},{"./asn1/api":148,"./asn1/base":150,"./asn1/constants":154,"./asn1/decoders":156,"./asn1/encoders":159,"bn.js":165}],148:[function(require,module,exports){
+},{"./asn1/api":151,"./asn1/base":153,"./asn1/constants":157,"./asn1/decoders":159,"./asn1/encoders":162,"bn.js":171}],151:[function(require,module,exports){
 var asn1 = require('../asn1');
 var inherits = require('inherits');
 
@@ -52446,7 +55345,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
   return this._getEncoder(enc).encode(data, reporter);
 };
 
-},{"../asn1":147,"inherits":300,"vm":407}],149:[function(require,module,exports){
+},{"../asn1":150,"inherits":307,"vm":411}],152:[function(require,module,exports){
 var inherits = require('inherits');
 var Reporter = require('../base').Reporter;
 var Buffer = require('buffer').Buffer;
@@ -52564,7 +55463,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
   return out;
 };
 
-},{"../base":150,"buffer":197,"inherits":300}],150:[function(require,module,exports){
+},{"../base":153,"buffer":205,"inherits":307}],153:[function(require,module,exports){
 var base = exports;
 
 base.Reporter = require('./reporter').Reporter;
@@ -52572,7 +55471,7 @@ base.DecoderBuffer = require('./buffer').DecoderBuffer;
 base.EncoderBuffer = require('./buffer').EncoderBuffer;
 base.Node = require('./node');
 
-},{"./buffer":149,"./node":151,"./reporter":152}],151:[function(require,module,exports){
+},{"./buffer":152,"./node":154,"./reporter":155}],154:[function(require,module,exports){
 var Reporter = require('../base').Reporter;
 var EncoderBuffer = require('../base').EncoderBuffer;
 var DecoderBuffer = require('../base').DecoderBuffer;
@@ -53150,7 +56049,7 @@ Node.prototype._encodeValue = function encode(data, reporter, parent) {
 
     if (tag === null) {
       if (state.use === null)
-        reporter.error('Tag could be ommited only for .use()');
+        reporter.error('Tag could be omitted only for .use()');
     } else {
       if (state.use === null)
         result = this._encodeComposite(tag, primitive, cls, content);
@@ -53208,7 +56107,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
   return /^[A-Za-z0-9 '\(\)\+,\-\.\/:=\?]*$/.test(str);
 };
 
-},{"../base":150,"minimalistic-assert":317}],152:[function(require,module,exports){
+},{"../base":153,"minimalistic-assert":323}],155:[function(require,module,exports){
 var inherits = require('inherits');
 
 function Reporter(options) {
@@ -53331,7 +56230,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
   return this;
 };
 
-},{"inherits":300}],153:[function(require,module,exports){
+},{"inherits":307}],156:[function(require,module,exports){
 var constants = require('../constants');
 
 exports.tagClass = {
@@ -53375,7 +56274,7 @@ exports.tag = {
 };
 exports.tagByName = constants._reverse(exports.tag);
 
-},{"../constants":154}],154:[function(require,module,exports){
+},{"../constants":157}],157:[function(require,module,exports){
 var constants = exports;
 
 // Helper
@@ -53396,7 +56295,7 @@ constants._reverse = function reverse(map) {
 
 constants.der = require('./der');
 
-},{"./der":153}],155:[function(require,module,exports){
+},{"./der":156}],158:[function(require,module,exports){
 var inherits = require('inherits');
 
 var asn1 = require('../../asn1');
@@ -53722,13 +56621,13 @@ function derDecodeLen(buf, primitive, fail) {
   return len;
 }
 
-},{"../../asn1":147,"inherits":300}],156:[function(require,module,exports){
+},{"../../asn1":150,"inherits":307}],159:[function(require,module,exports){
 var decoders = exports;
 
 decoders.der = require('./der');
 decoders.pem = require('./pem');
 
-},{"./der":155,"./pem":157}],157:[function(require,module,exports){
+},{"./der":158,"./pem":160}],160:[function(require,module,exports){
 var inherits = require('inherits');
 var Buffer = require('buffer').Buffer;
 
@@ -53779,7 +56678,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
   return DERDecoder.prototype.decode.call(this, input, options);
 };
 
-},{"./der":155,"buffer":197,"inherits":300}],158:[function(require,module,exports){
+},{"./der":158,"buffer":205,"inherits":307}],161:[function(require,module,exports){
 var inherits = require('inherits');
 var Buffer = require('buffer').Buffer;
 
@@ -54076,13 +56975,13 @@ function encodeTag(tag, primitive, cls, reporter) {
   return res;
 }
 
-},{"../../asn1":147,"buffer":197,"inherits":300}],159:[function(require,module,exports){
+},{"../../asn1":150,"buffer":205,"inherits":307}],162:[function(require,module,exports){
 var encoders = exports;
 
 encoders.der = require('./der');
 encoders.pem = require('./pem');
 
-},{"./der":158,"./pem":160}],160:[function(require,module,exports){
+},{"./der":161,"./pem":163}],163:[function(require,module,exports){
 var inherits = require('inherits');
 
 var DEREncoder = require('./der');
@@ -54105,7 +57004,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
   return out.join('\n');
 };
 
-},{"./der":158,"inherits":300}],161:[function(require,module,exports){
+},{"./der":161,"inherits":307}],164:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -54599,7 +57498,629 @@ var objectKeys = Object.keys || function (obj) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"util/":406}],162:[function(require,module,exports){
+},{"util/":167}],165:[function(require,module,exports){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],166:[function(require,module,exports){
+module.exports = function isBuffer(arg) {
+  return arg && typeof arg === 'object'
+    && typeof arg.copy === 'function'
+    && typeof arg.fill === 'function'
+    && typeof arg.readUInt8 === 'function';
+}
+},{}],167:[function(require,module,exports){
+(function (process,global){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var formatRegExp = /%[sdj%]/g;
+exports.format = function(f) {
+  if (!isString(f)) {
+    var objects = [];
+    for (var i = 0; i < arguments.length; i++) {
+      objects.push(inspect(arguments[i]));
+    }
+    return objects.join(' ');
+  }
+
+  var i = 1;
+  var args = arguments;
+  var len = args.length;
+  var str = String(f).replace(formatRegExp, function(x) {
+    if (x === '%%') return '%';
+    if (i >= len) return x;
+    switch (x) {
+      case '%s': return String(args[i++]);
+      case '%d': return Number(args[i++]);
+      case '%j':
+        try {
+          return JSON.stringify(args[i++]);
+        } catch (_) {
+          return '[Circular]';
+        }
+      default:
+        return x;
+    }
+  });
+  for (var x = args[i]; i < len; x = args[++i]) {
+    if (isNull(x) || !isObject(x)) {
+      str += ' ' + x;
+    } else {
+      str += ' ' + inspect(x);
+    }
+  }
+  return str;
+};
+
+
+// Mark that a method should not be used.
+// Returns a modified function which warns once by default.
+// If --no-deprecation is set, then it is a no-op.
+exports.deprecate = function(fn, msg) {
+  // Allow for deprecating things in the process of starting up.
+  if (isUndefined(global.process)) {
+    return function() {
+      return exports.deprecate(fn, msg).apply(this, arguments);
+    };
+  }
+
+  if (process.noDeprecation === true) {
+    return fn;
+  }
+
+  var warned = false;
+  function deprecated() {
+    if (!warned) {
+      if (process.throwDeprecation) {
+        throw new Error(msg);
+      } else if (process.traceDeprecation) {
+        console.trace(msg);
+      } else {
+        console.error(msg);
+      }
+      warned = true;
+    }
+    return fn.apply(this, arguments);
+  }
+
+  return deprecated;
+};
+
+
+var debugs = {};
+var debugEnviron;
+exports.debuglog = function(set) {
+  if (isUndefined(debugEnviron))
+    debugEnviron = process.env.NODE_DEBUG || '';
+  set = set.toUpperCase();
+  if (!debugs[set]) {
+    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
+      var pid = process.pid;
+      debugs[set] = function() {
+        var msg = exports.format.apply(exports, arguments);
+        console.error('%s %d: %s', set, pid, msg);
+      };
+    } else {
+      debugs[set] = function() {};
+    }
+  }
+  return debugs[set];
+};
+
+
+/**
+ * Echos the value of a value. Trys to print the value out
+ * in the best way possible given the different types.
+ *
+ * @param {Object} obj The object to print out.
+ * @param {Object} opts Optional options object that alters the output.
+ */
+/* legacy: obj, showHidden, depth, colors*/
+function inspect(obj, opts) {
+  // default options
+  var ctx = {
+    seen: [],
+    stylize: stylizeNoColor
+  };
+  // legacy...
+  if (arguments.length >= 3) ctx.depth = arguments[2];
+  if (arguments.length >= 4) ctx.colors = arguments[3];
+  if (isBoolean(opts)) {
+    // legacy...
+    ctx.showHidden = opts;
+  } else if (opts) {
+    // got an "options" object
+    exports._extend(ctx, opts);
+  }
+  // set default options
+  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
+  if (isUndefined(ctx.depth)) ctx.depth = 2;
+  if (isUndefined(ctx.colors)) ctx.colors = false;
+  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
+  if (ctx.colors) ctx.stylize = stylizeWithColor;
+  return formatValue(ctx, obj, ctx.depth);
+}
+exports.inspect = inspect;
+
+
+// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
+inspect.colors = {
+  'bold' : [1, 22],
+  'italic' : [3, 23],
+  'underline' : [4, 24],
+  'inverse' : [7, 27],
+  'white' : [37, 39],
+  'grey' : [90, 39],
+  'black' : [30, 39],
+  'blue' : [34, 39],
+  'cyan' : [36, 39],
+  'green' : [32, 39],
+  'magenta' : [35, 39],
+  'red' : [31, 39],
+  'yellow' : [33, 39]
+};
+
+// Don't use 'blue' not visible on cmd.exe
+inspect.styles = {
+  'special': 'cyan',
+  'number': 'yellow',
+  'boolean': 'yellow',
+  'undefined': 'grey',
+  'null': 'bold',
+  'string': 'green',
+  'date': 'magenta',
+  // "name": intentionally not styling
+  'regexp': 'red'
+};
+
+
+function stylizeWithColor(str, styleType) {
+  var style = inspect.styles[styleType];
+
+  if (style) {
+    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
+           '\u001b[' + inspect.colors[style][1] + 'm';
+  } else {
+    return str;
+  }
+}
+
+
+function stylizeNoColor(str, styleType) {
+  return str;
+}
+
+
+function arrayToHash(array) {
+  var hash = {};
+
+  array.forEach(function(val, idx) {
+    hash[val] = true;
+  });
+
+  return hash;
+}
+
+
+function formatValue(ctx, value, recurseTimes) {
+  // Provide a hook for user-specified inspect functions.
+  // Check that value is an object with an inspect function on it
+  if (ctx.customInspect &&
+      value &&
+      isFunction(value.inspect) &&
+      // Filter out the util module, it's inspect function is special
+      value.inspect !== exports.inspect &&
+      // Also filter out any prototype objects using the circular check.
+      !(value.constructor && value.constructor.prototype === value)) {
+    var ret = value.inspect(recurseTimes, ctx);
+    if (!isString(ret)) {
+      ret = formatValue(ctx, ret, recurseTimes);
+    }
+    return ret;
+  }
+
+  // Primitive types cannot have properties
+  var primitive = formatPrimitive(ctx, value);
+  if (primitive) {
+    return primitive;
+  }
+
+  // Look up the keys of the object.
+  var keys = Object.keys(value);
+  var visibleKeys = arrayToHash(keys);
+
+  if (ctx.showHidden) {
+    keys = Object.getOwnPropertyNames(value);
+  }
+
+  // IE doesn't make error fields non-enumerable
+  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
+  if (isError(value)
+      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+    return formatError(value);
+  }
+
+  // Some type of object without properties can be shortcutted.
+  if (keys.length === 0) {
+    if (isFunction(value)) {
+      var name = value.name ? ': ' + value.name : '';
+      return ctx.stylize('[Function' + name + ']', 'special');
+    }
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    }
+    if (isDate(value)) {
+      return ctx.stylize(Date.prototype.toString.call(value), 'date');
+    }
+    if (isError(value)) {
+      return formatError(value);
+    }
+  }
+
+  var base = '', array = false, braces = ['{', '}'];
+
+  // Make Array say that they are Array
+  if (isArray(value)) {
+    array = true;
+    braces = ['[', ']'];
+  }
+
+  // Make functions say that they are functions
+  if (isFunction(value)) {
+    var n = value.name ? ': ' + value.name : '';
+    base = ' [Function' + n + ']';
+  }
+
+  // Make RegExps say that they are RegExps
+  if (isRegExp(value)) {
+    base = ' ' + RegExp.prototype.toString.call(value);
+  }
+
+  // Make dates with properties first say the date
+  if (isDate(value)) {
+    base = ' ' + Date.prototype.toUTCString.call(value);
+  }
+
+  // Make error with message first say the error
+  if (isError(value)) {
+    base = ' ' + formatError(value);
+  }
+
+  if (keys.length === 0 && (!array || value.length == 0)) {
+    return braces[0] + base + braces[1];
+  }
+
+  if (recurseTimes < 0) {
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    } else {
+      return ctx.stylize('[Object]', 'special');
+    }
+  }
+
+  ctx.seen.push(value);
+
+  var output;
+  if (array) {
+    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
+  } else {
+    output = keys.map(function(key) {
+      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
+    });
+  }
+
+  ctx.seen.pop();
+
+  return reduceToSingleString(output, base, braces);
+}
+
+
+function formatPrimitive(ctx, value) {
+  if (isUndefined(value))
+    return ctx.stylize('undefined', 'undefined');
+  if (isString(value)) {
+    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
+                                             .replace(/'/g, "\\'")
+                                             .replace(/\\"/g, '"') + '\'';
+    return ctx.stylize(simple, 'string');
+  }
+  if (isNumber(value))
+    return ctx.stylize('' + value, 'number');
+  if (isBoolean(value))
+    return ctx.stylize('' + value, 'boolean');
+  // For some reason typeof null is "object", so special case here.
+  if (isNull(value))
+    return ctx.stylize('null', 'null');
+}
+
+
+function formatError(value) {
+  return '[' + Error.prototype.toString.call(value) + ']';
+}
+
+
+function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
+  var output = [];
+  for (var i = 0, l = value.length; i < l; ++i) {
+    if (hasOwnProperty(value, String(i))) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          String(i), true));
+    } else {
+      output.push('');
+    }
+  }
+  keys.forEach(function(key) {
+    if (!key.match(/^\d+$/)) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          key, true));
+    }
+  });
+  return output;
+}
+
+
+function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
+  var name, str, desc;
+  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
+  if (desc.get) {
+    if (desc.set) {
+      str = ctx.stylize('[Getter/Setter]', 'special');
+    } else {
+      str = ctx.stylize('[Getter]', 'special');
+    }
+  } else {
+    if (desc.set) {
+      str = ctx.stylize('[Setter]', 'special');
+    }
+  }
+  if (!hasOwnProperty(visibleKeys, key)) {
+    name = '[' + key + ']';
+  }
+  if (!str) {
+    if (ctx.seen.indexOf(desc.value) < 0) {
+      if (isNull(recurseTimes)) {
+        str = formatValue(ctx, desc.value, null);
+      } else {
+        str = formatValue(ctx, desc.value, recurseTimes - 1);
+      }
+      if (str.indexOf('\n') > -1) {
+        if (array) {
+          str = str.split('\n').map(function(line) {
+            return '  ' + line;
+          }).join('\n').substr(2);
+        } else {
+          str = '\n' + str.split('\n').map(function(line) {
+            return '   ' + line;
+          }).join('\n');
+        }
+      }
+    } else {
+      str = ctx.stylize('[Circular]', 'special');
+    }
+  }
+  if (isUndefined(name)) {
+    if (array && key.match(/^\d+$/)) {
+      return str;
+    }
+    name = JSON.stringify('' + key);
+    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+      name = name.substr(1, name.length - 2);
+      name = ctx.stylize(name, 'name');
+    } else {
+      name = name.replace(/'/g, "\\'")
+                 .replace(/\\"/g, '"')
+                 .replace(/(^"|"$)/g, "'");
+      name = ctx.stylize(name, 'string');
+    }
+  }
+
+  return name + ': ' + str;
+}
+
+
+function reduceToSingleString(output, base, braces) {
+  var numLinesEst = 0;
+  var length = output.reduce(function(prev, cur) {
+    numLinesEst++;
+    if (cur.indexOf('\n') >= 0) numLinesEst++;
+    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
+  }, 0);
+
+  if (length > 60) {
+    return braces[0] +
+           (base === '' ? '' : base + '\n ') +
+           ' ' +
+           output.join(',\n  ') +
+           ' ' +
+           braces[1];
+  }
+
+  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
+}
+
+
+// NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+function isArray(ar) {
+  return Array.isArray(ar);
+}
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return isObject(re) && objectToString(re) === '[object RegExp]';
+}
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+exports.isObject = isObject;
+
+function isDate(d) {
+  return isObject(d) && objectToString(d) === '[object Date]';
+}
+exports.isDate = isDate;
+
+function isError(e) {
+  return isObject(e) &&
+      (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null ||
+         typeof arg === 'boolean' ||
+         typeof arg === 'number' ||
+         typeof arg === 'string' ||
+         typeof arg === 'symbol' ||  // ES6 symbol
+         typeof arg === 'undefined';
+}
+exports.isPrimitive = isPrimitive;
+
+exports.isBuffer = require('./support/isBuffer');
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
+}
+
+
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+              'Oct', 'Nov', 'Dec'];
+
+// 26 Feb 16:19:34
+function timestamp() {
+  var d = new Date();
+  var time = [pad(d.getHours()),
+              pad(d.getMinutes()),
+              pad(d.getSeconds())].join(':');
+  return [d.getDate(), months[d.getMonth()], time].join(' ');
+}
+
+
+// log is just a thin wrapper to console.log that prepends a timestamp
+exports.log = function() {
+  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+};
+
+
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * The Function.prototype.inherits from lang.js rewritten as a standalone
+ * function (not on Function.prototype). NOTE: If this file is to be loaded
+ * during bootstrapping this function needs to be rewritten using some native
+ * functions as prototype setup using normal JavaScript does not work as
+ * expected during bootstrapping (see mirror.js in r114903).
+ *
+ * @param {function} ctor Constructor function which needs to inherit the
+ *     prototype.
+ * @param {function} superCtor Constructor function to inherit prototype from.
+ */
+exports.inherits = require('inherits');
+
+exports._extend = function(origin, add) {
+  // Don't do anything if add isn't an object
+  if (!add || !isObject(add)) return origin;
+
+  var keys = Object.keys(add);
+  var i = keys.length;
+  while (i--) {
+    origin[keys[i]] = add[keys[i]];
+  }
+  return origin;
+};
+
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":166,"_process":202,"inherits":165}],168:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -54616,68 +58137,102 @@ for (var i = 0, len = code.length; i < len; ++i) {
   revLookup[code.charCodeAt(i)] = i
 }
 
+// Support decoding URL-safe base64 strings, as Node.js does.
+// See: https://en.wikipedia.org/wiki/Base64#URL_applications
 revLookup['-'.charCodeAt(0)] = 62
 revLookup['_'.charCodeAt(0)] = 63
 
-function placeHoldersCount (b64) {
+function getLens (b64) {
   var len = b64.length
+
   if (len % 4 > 0) {
     throw new Error('Invalid string. Length must be a multiple of 4')
   }
 
-  // the number of equal signs (place holders)
-  // if there are two placeholders, than the two characters before it
-  // represent one byte
-  // if there is only one, then the three characters before it represent 2 bytes
-  // this is just a cheap hack to not do indexOf twice
-  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+  // Trim off extra bytes after placeholder bytes are found
+  // See: https://github.com/beatgammit/base64-js/issues/42
+  var validLen = b64.indexOf('=')
+  if (validLen === -1) validLen = len
+
+  var placeHoldersLen = validLen === len
+    ? 0
+    : 4 - (validLen % 4)
+
+  return [validLen, placeHoldersLen]
 }
 
+// base64 is 4/3 + up to two characters of the original data
 function byteLength (b64) {
-  // base64 is 4/3 + up to two characters of the original data
-  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function _byteLength (b64, validLen, placeHoldersLen) {
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
 }
 
 function toByteArray (b64) {
-  var i, l, tmp, placeHolders, arr
-  var len = b64.length
-  placeHolders = placeHoldersCount(b64)
+  var tmp
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
 
-  arr = new Arr((len * 3 / 4) - placeHolders)
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+  var curByte = 0
 
   // if there are placeholders, only get up to the last complete 4 chars
-  l = placeHolders > 0 ? len - 4 : len
+  var len = placeHoldersLen > 0
+    ? validLen - 4
+    : validLen
 
-  var L = 0
-
-  for (i = 0; i < l; i += 4) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
-    arr[L++] = (tmp >> 16) & 0xFF
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
+  for (var i = 0; i < len; i += 4) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 18) |
+      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+      revLookup[b64.charCodeAt(i + 3)]
+    arr[curByte++] = (tmp >> 16) & 0xFF
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
   }
 
-  if (placeHolders === 2) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
-    arr[L++] = tmp & 0xFF
-  } else if (placeHolders === 1) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
+  if (placeHoldersLen === 2) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 2) |
+      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 1) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 10) |
+      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
   }
 
   return arr
 }
 
 function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+  return lookup[num >> 18 & 0x3F] +
+    lookup[num >> 12 & 0x3F] +
+    lookup[num >> 6 & 0x3F] +
+    lookup[num & 0x3F]
 }
 
 function encodeChunk (uint8, start, end) {
   var tmp
   var output = []
   for (var i = start; i < end; i += 3) {
-    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+    tmp =
+      ((uint8[i] << 16) & 0xFF0000) +
+      ((uint8[i + 1] << 8) & 0xFF00) +
+      (uint8[i + 2] & 0xFF)
     output.push(tripletToBase64(tmp))
   }
   return output.join('')
@@ -54687,35 +58242,38 @@ function fromByteArray (uint8) {
   var tmp
   var len = uint8.length
   var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-  var output = ''
   var parts = []
   var maxChunkLength = 16383 // must be multiple of 3
 
   // go through the array every three bytes, we'll deal with trailing stuff later
   for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+    parts.push(encodeChunk(
+      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+    ))
   }
 
   // pad the end with zeros, but make sure to not forget the extra bytes
   if (extraBytes === 1) {
     tmp = uint8[len - 1]
-    output += lookup[tmp >> 2]
-    output += lookup[(tmp << 4) & 0x3F]
-    output += '=='
+    parts.push(
+      lookup[tmp >> 2] +
+      lookup[(tmp << 4) & 0x3F] +
+      '=='
+    )
   } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
-    output += lookup[tmp >> 10]
-    output += lookup[(tmp >> 4) & 0x3F]
-    output += lookup[(tmp << 2) & 0x3F]
-    output += '='
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 10] +
+      lookup[(tmp >> 4) & 0x3F] +
+      lookup[(tmp << 2) & 0x3F] +
+      '='
+    )
   }
-
-  parts.push(output)
 
   return parts.join('')
 }
 
-},{}],163:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 ;(function (globalObject) {
   'use strict';
 
@@ -57531,7 +61089,7 @@ function fromByteArray (uint8) {
   }
 })(this);
 
-},{}],164:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 // Reference https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki
 // Format: 0x30 [total-length] 0x02 [R-length] [R] 0x02 [S-length] [S]
 // NOTE: SIGHASH byte ignored AND restricted, truncate before use
@@ -57646,7 +61204,7 @@ module.exports = {
   encode: encode
 }
 
-},{"safe-buffer":372}],165:[function(require,module,exports){
+},{"safe-buffer":377}],171:[function(require,module,exports){
 (function (module, exports) {
   'use strict';
 
@@ -61075,7 +64633,7 @@ module.exports = {
   };
 })(typeof module === 'undefined' || module, this);
 
-},{"buffer":167}],166:[function(require,module,exports){
+},{"buffer":173}],172:[function(require,module,exports){
 var r;
 
 module.exports = function rand(len) {
@@ -61142,9 +64700,9 @@ if (typeof self === 'object') {
   }
 }
 
-},{"crypto":167}],167:[function(require,module,exports){
+},{"crypto":173}],173:[function(require,module,exports){
 
-},{}],168:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 // based on the aes implimentation in triple sec
 // https://github.com/keybase/triplesec
 // which is in turn based on the one from crypto-js
@@ -61374,7 +64932,7 @@ AES.prototype.scrub = function () {
 
 module.exports.AES = AES
 
-},{"safe-buffer":372}],169:[function(require,module,exports){
+},{"safe-buffer":377}],175:[function(require,module,exports){
 var aes = require('./aes')
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('cipher-base')
@@ -61493,7 +65051,7 @@ StreamCipher.prototype.setAAD = function setAAD (buf) {
 
 module.exports = StreamCipher
 
-},{"./aes":168,"./ghash":173,"./incr32":174,"buffer-xor":196,"cipher-base":198,"inherits":300,"safe-buffer":372}],170:[function(require,module,exports){
+},{"./aes":174,"./ghash":179,"./incr32":180,"buffer-xor":204,"cipher-base":206,"inherits":307,"safe-buffer":377}],176:[function(require,module,exports){
 var ciphers = require('./encrypter')
 var deciphers = require('./decrypter')
 var modes = require('./modes/list.json')
@@ -61508,7 +65066,7 @@ exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
 exports.listCiphers = exports.getCiphers = getCiphers
 
-},{"./decrypter":171,"./encrypter":172,"./modes/list.json":182}],171:[function(require,module,exports){
+},{"./decrypter":177,"./encrypter":178,"./modes/list.json":188}],177:[function(require,module,exports){
 var AuthCipher = require('./authCipher')
 var Buffer = require('safe-buffer').Buffer
 var MODES = require('./modes')
@@ -61590,6 +65148,9 @@ Splitter.prototype.flush = function () {
 
 function unpad (last) {
   var padded = last[15]
+  if (padded < 1 || padded > 16) {
+    throw new Error('unable to decrypt data')
+  }
   var i = -1
   while (++i < padded) {
     if (last[(i + (16 - padded))] !== padded) {
@@ -61631,7 +65192,7 @@ function createDecipher (suite, password) {
 exports.createDecipher = createDecipher
 exports.createDecipheriv = createDecipheriv
 
-},{"./aes":168,"./authCipher":169,"./modes":181,"./streamCipher":184,"cipher-base":198,"evp_bytestokey":280,"inherits":300,"safe-buffer":372}],172:[function(require,module,exports){
+},{"./aes":174,"./authCipher":175,"./modes":187,"./streamCipher":190,"cipher-base":206,"evp_bytestokey":287,"inherits":307,"safe-buffer":377}],178:[function(require,module,exports){
 var MODES = require('./modes')
 var AuthCipher = require('./authCipher')
 var Buffer = require('safe-buffer').Buffer
@@ -61747,7 +65308,7 @@ function createCipher (suite, password) {
 exports.createCipheriv = createCipheriv
 exports.createCipher = createCipher
 
-},{"./aes":168,"./authCipher":169,"./modes":181,"./streamCipher":184,"cipher-base":198,"evp_bytestokey":280,"inherits":300,"safe-buffer":372}],173:[function(require,module,exports){
+},{"./aes":174,"./authCipher":175,"./modes":187,"./streamCipher":190,"cipher-base":206,"evp_bytestokey":287,"inherits":307,"safe-buffer":377}],179:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var ZEROES = Buffer.alloc(16, 0)
 
@@ -61838,7 +65399,7 @@ GHASH.prototype.final = function (abl, bl) {
 
 module.exports = GHASH
 
-},{"safe-buffer":372}],174:[function(require,module,exports){
+},{"safe-buffer":377}],180:[function(require,module,exports){
 function incr32 (iv) {
   var len = iv.length
   var item
@@ -61855,7 +65416,7 @@ function incr32 (iv) {
 }
 module.exports = incr32
 
-},{}],175:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 var xor = require('buffer-xor')
 
 exports.encrypt = function (self, block) {
@@ -61874,7 +65435,7 @@ exports.decrypt = function (self, block) {
   return xor(out, pad)
 }
 
-},{"buffer-xor":196}],176:[function(require,module,exports){
+},{"buffer-xor":204}],182:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var xor = require('buffer-xor')
 
@@ -61909,7 +65470,7 @@ exports.encrypt = function (self, data, decrypt) {
   return out
 }
 
-},{"buffer-xor":196,"safe-buffer":372}],177:[function(require,module,exports){
+},{"buffer-xor":204,"safe-buffer":377}],183:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 function encryptByte (self, byteParam, decrypt) {
@@ -61953,7 +65514,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   return out
 }
 
-},{"safe-buffer":372}],178:[function(require,module,exports){
+},{"safe-buffer":377}],184:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 function encryptByte (self, byteParam, decrypt) {
@@ -61980,7 +65541,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   return out
 }
 
-},{"safe-buffer":372}],179:[function(require,module,exports){
+},{"safe-buffer":377}],185:[function(require,module,exports){
 var xor = require('buffer-xor')
 var Buffer = require('safe-buffer').Buffer
 var incr32 = require('../incr32')
@@ -62012,7 +65573,7 @@ exports.encrypt = function (self, chunk) {
   return xor(chunk, pad)
 }
 
-},{"../incr32":174,"buffer-xor":196,"safe-buffer":372}],180:[function(require,module,exports){
+},{"../incr32":180,"buffer-xor":204,"safe-buffer":377}],186:[function(require,module,exports){
 exports.encrypt = function (self, block) {
   return self._cipher.encryptBlock(block)
 }
@@ -62021,7 +65582,7 @@ exports.decrypt = function (self, block) {
   return self._cipher.decryptBlock(block)
 }
 
-},{}],181:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 var modeModules = {
   ECB: require('./ecb'),
   CBC: require('./cbc'),
@@ -62041,7 +65602,7 @@ for (var key in modes) {
 
 module.exports = modes
 
-},{"./cbc":175,"./cfb":176,"./cfb1":177,"./cfb8":178,"./ctr":179,"./ecb":180,"./list.json":182,"./ofb":183}],182:[function(require,module,exports){
+},{"./cbc":181,"./cfb":182,"./cfb1":183,"./cfb8":184,"./ctr":185,"./ecb":186,"./list.json":188,"./ofb":189}],188:[function(require,module,exports){
 module.exports={
   "aes-128-ecb": {
     "cipher": "AES",
@@ -62234,7 +65795,7 @@ module.exports={
   }
 }
 
-},{}],183:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 (function (Buffer){
 var xor = require('buffer-xor')
 
@@ -62254,7 +65815,7 @@ exports.encrypt = function (self, chunk) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":197,"buffer-xor":196}],184:[function(require,module,exports){
+},{"buffer":205,"buffer-xor":204}],190:[function(require,module,exports){
 var aes = require('./aes')
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('cipher-base')
@@ -62283,15 +65844,17 @@ StreamCipher.prototype._final = function () {
 
 module.exports = StreamCipher
 
-},{"./aes":168,"cipher-base":198,"inherits":300,"safe-buffer":372}],185:[function(require,module,exports){
-var ebtk = require('evp_bytestokey')
-var aes = require('browserify-aes/browser')
+},{"./aes":174,"cipher-base":206,"inherits":307,"safe-buffer":377}],191:[function(require,module,exports){
 var DES = require('browserify-des')
-var desModes = require('browserify-des/modes')
+var aes = require('browserify-aes/browser')
 var aesModes = require('browserify-aes/modes')
+var desModes = require('browserify-des/modes')
+var ebtk = require('evp_bytestokey')
+
 function createCipher (suite, password) {
-  var keyLen, ivLen
   suite = suite.toLowerCase()
+
+  var keyLen, ivLen
   if (aesModes[suite]) {
     keyLen = aesModes[suite].key
     ivLen = aesModes[suite].iv
@@ -62301,12 +65864,15 @@ function createCipher (suite, password) {
   } else {
     throw new TypeError('invalid suite type')
   }
+
   var keys = ebtk(password, false, keyLen, ivLen)
   return createCipheriv(suite, keys.key, keys.iv)
 }
+
 function createDecipher (suite, password) {
-  var keyLen, ivLen
   suite = suite.toLowerCase()
+
+  var keyLen, ivLen
   if (aesModes[suite]) {
     keyLen = aesModes[suite].key
     ivLen = aesModes[suite].iv
@@ -62316,53 +65882,42 @@ function createDecipher (suite, password) {
   } else {
     throw new TypeError('invalid suite type')
   }
+
   var keys = ebtk(password, false, keyLen, ivLen)
   return createDecipheriv(suite, keys.key, keys.iv)
 }
 
 function createCipheriv (suite, key, iv) {
   suite = suite.toLowerCase()
-  if (aesModes[suite]) {
-    return aes.createCipheriv(suite, key, iv)
-  } else if (desModes[suite]) {
-    return new DES({
-      key: key,
-      iv: iv,
-      mode: suite
-    })
-  } else {
-    throw new TypeError('invalid suite type')
-  }
+  if (aesModes[suite]) return aes.createCipheriv(suite, key, iv)
+  if (desModes[suite]) return new DES({ key: key, iv: iv, mode: suite })
+
+  throw new TypeError('invalid suite type')
 }
+
 function createDecipheriv (suite, key, iv) {
   suite = suite.toLowerCase()
-  if (aesModes[suite]) {
-    return aes.createDecipheriv(suite, key, iv)
-  } else if (desModes[suite]) {
-    return new DES({
-      key: key,
-      iv: iv,
-      mode: suite,
-      decrypt: true
-    })
-  } else {
-    throw new TypeError('invalid suite type')
-  }
+  if (aesModes[suite]) return aes.createDecipheriv(suite, key, iv)
+  if (desModes[suite]) return new DES({ key: key, iv: iv, mode: suite, decrypt: true })
+
+  throw new TypeError('invalid suite type')
 }
+
+function getCiphers () {
+  return Object.keys(desModes).concat(aes.getCiphers())
+}
+
 exports.createCipher = exports.Cipher = createCipher
 exports.createCipheriv = exports.Cipheriv = createCipheriv
 exports.createDecipher = exports.Decipher = createDecipher
 exports.createDecipheriv = exports.Decipheriv = createDecipheriv
-function getCiphers () {
-  return Object.keys(desModes).concat(aes.getCiphers())
-}
 exports.listCiphers = exports.getCiphers = getCiphers
 
-},{"browserify-aes/browser":170,"browserify-aes/modes":181,"browserify-des":186,"browserify-des/modes":187,"evp_bytestokey":280}],186:[function(require,module,exports){
-(function (Buffer){
+},{"browserify-aes/browser":176,"browserify-aes/modes":187,"browserify-des":192,"browserify-des/modes":193,"evp_bytestokey":287}],192:[function(require,module,exports){
 var CipherBase = require('cipher-base')
 var des = require('des.js')
 var inherits = require('inherits')
+var Buffer = require('safe-buffer').Buffer
 
 var modes = {
   'des-ede3-cbc': des.CBC.instantiate(des.EDE),
@@ -62387,10 +65942,16 @@ function DES (opts) {
     type = 'encrypt'
   }
   var key = opts.key
+  if (!Buffer.isBuffer(key)) {
+    key = Buffer.from(key)
+  }
   if (modeName === 'des-ede' || modeName === 'des-ede-cbc') {
     key = Buffer.concat([key, key.slice(0, 8)])
   }
   var iv = opts.iv
+  if (!Buffer.isBuffer(iv)) {
+    iv = Buffer.from(iv)
+  }
   this._des = mode.create({
     key: key,
     iv: iv,
@@ -62398,14 +65959,13 @@ function DES (opts) {
   })
 }
 DES.prototype._update = function (data) {
-  return new Buffer(this._des.update(data))
+  return Buffer.from(this._des.update(data))
 }
 DES.prototype._final = function () {
-  return new Buffer(this._des.final())
+  return Buffer.from(this._des.final())
 }
 
-}).call(this,require("buffer").Buffer)
-},{"buffer":197,"cipher-base":198,"des.js":242,"inherits":300}],187:[function(require,module,exports){
+},{"cipher-base":206,"des.js":249,"inherits":307,"safe-buffer":377}],193:[function(require,module,exports){
 exports['des-ecb'] = {
   key: 8,
   iv: 0
@@ -62431,7 +65991,7 @@ exports['des-ede'] = {
   iv: 0
 }
 
-},{}],188:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 (function (Buffer){
 var bn = require('bn.js');
 var randomBytes = require('randombytes');
@@ -62475,7 +66035,7 @@ function getr(priv) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"bn.js":165,"buffer":197,"randombytes":352}],189:[function(require,module,exports){
+},{"bn.js":171,"buffer":205,"randombytes":357}],195:[function(require,module,exports){
 (function (Buffer){
 const Sha3 = require('js-sha3')
 
@@ -62513,10 +66073,10 @@ module.exports = {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":197,"js-sha3":306}],190:[function(require,module,exports){
+},{"buffer":205,"js-sha3":313}],196:[function(require,module,exports){
 module.exports = require('./browser/algorithms.json')
 
-},{"./browser/algorithms.json":191}],191:[function(require,module,exports){
+},{"./browser/algorithms.json":197}],197:[function(require,module,exports){
 module.exports={
   "sha224WithRSAEncryption": {
     "sign": "rsa",
@@ -62670,7 +66230,7 @@ module.exports={
   }
 }
 
-},{}],192:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 module.exports={
   "1.3.132.0.10": "secp256k1",
   "1.3.132.0.33": "p224",
@@ -62680,7 +66240,7 @@ module.exports={
   "1.3.132.0.35": "p521"
 }
 
-},{}],193:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('create-hash')
 var stream = require('stream')
@@ -62775,7 +66335,7 @@ module.exports = {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./algorithms.json":191,"./sign":194,"./verify":195,"buffer":197,"create-hash":201,"inherits":300,"stream":389}],194:[function(require,module,exports){
+},{"./algorithms.json":197,"./sign":200,"./verify":201,"buffer":205,"create-hash":209,"inherits":307,"stream":394}],200:[function(require,module,exports){
 (function (Buffer){
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var createHmac = require('create-hmac')
@@ -62924,7 +66484,7 @@ module.exports.getKey = getKey
 module.exports.makeKey = makeKey
 
 }).call(this,require("buffer").Buffer)
-},{"./curves.json":192,"bn.js":165,"browserify-rsa":188,"buffer":197,"create-hmac":204,"elliptic":252,"parse-asn1":327}],195:[function(require,module,exports){
+},{"./curves.json":198,"bn.js":171,"browserify-rsa":194,"buffer":205,"create-hmac":211,"elliptic":259,"parse-asn1":333}],201:[function(require,module,exports){
 (function (Buffer){
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var BN = require('bn.js')
@@ -63011,7 +66571,466 @@ function checkValue (b, q) {
 module.exports = verify
 
 }).call(this,require("buffer").Buffer)
-},{"./curves.json":192,"bn.js":165,"buffer":197,"elliptic":252,"parse-asn1":327}],196:[function(require,module,exports){
+},{"./curves.json":198,"bn.js":171,"buffer":205,"elliptic":259,"parse-asn1":333}],202:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],203:[function(require,module,exports){
+'use strict';
+
+var Buffer = require('safe-buffer').Buffer;
+
+var isEncoding = Buffer.isEncoding || function (encoding) {
+  encoding = '' + encoding;
+  switch (encoding && encoding.toLowerCase()) {
+    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':
+      return true;
+    default:
+      return false;
+  }
+};
+
+function _normalizeEncoding(enc) {
+  if (!enc) return 'utf8';
+  var retried;
+  while (true) {
+    switch (enc) {
+      case 'utf8':
+      case 'utf-8':
+        return 'utf8';
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return 'utf16le';
+      case 'latin1':
+      case 'binary':
+        return 'latin1';
+      case 'base64':
+      case 'ascii':
+      case 'hex':
+        return enc;
+      default:
+        if (retried) return; // undefined
+        enc = ('' + enc).toLowerCase();
+        retried = true;
+    }
+  }
+};
+
+// Do not cache `Buffer.isEncoding` when checking encoding names as some
+// modules monkey-patch it to support additional encodings
+function normalizeEncoding(enc) {
+  var nenc = _normalizeEncoding(enc);
+  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);
+  return nenc || enc;
+}
+
+// StringDecoder provides an interface for efficiently splitting a series of
+// buffers into a series of JS strings without breaking apart multi-byte
+// characters.
+exports.StringDecoder = StringDecoder;
+function StringDecoder(encoding) {
+  this.encoding = normalizeEncoding(encoding);
+  var nb;
+  switch (this.encoding) {
+    case 'utf16le':
+      this.text = utf16Text;
+      this.end = utf16End;
+      nb = 4;
+      break;
+    case 'utf8':
+      this.fillLast = utf8FillLast;
+      nb = 4;
+      break;
+    case 'base64':
+      this.text = base64Text;
+      this.end = base64End;
+      nb = 3;
+      break;
+    default:
+      this.write = simpleWrite;
+      this.end = simpleEnd;
+      return;
+  }
+  this.lastNeed = 0;
+  this.lastTotal = 0;
+  this.lastChar = Buffer.allocUnsafe(nb);
+}
+
+StringDecoder.prototype.write = function (buf) {
+  if (buf.length === 0) return '';
+  var r;
+  var i;
+  if (this.lastNeed) {
+    r = this.fillLast(buf);
+    if (r === undefined) return '';
+    i = this.lastNeed;
+    this.lastNeed = 0;
+  } else {
+    i = 0;
+  }
+  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);
+  return r || '';
+};
+
+StringDecoder.prototype.end = utf8End;
+
+// Returns only complete characters in a Buffer
+StringDecoder.prototype.text = utf8Text;
+
+// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer
+StringDecoder.prototype.fillLast = function (buf) {
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
+  this.lastNeed -= buf.length;
+};
+
+// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
+// continuation byte.
+function utf8CheckByte(byte) {
+  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
+  return -1;
+}
+
+// Checks at most 3 bytes at the end of a Buffer in order to detect an
+// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
+// needed to complete the UTF-8 character (if applicable) are returned.
+function utf8CheckIncomplete(self, buf, i) {
+  var j = buf.length - 1;
+  if (j < i) return 0;
+  var nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 1;
+    return nb;
+  }
+  if (--j < i) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) self.lastNeed = nb - 2;
+    return nb;
+  }
+  if (--j < i) return 0;
+  nb = utf8CheckByte(buf[j]);
+  if (nb >= 0) {
+    if (nb > 0) {
+      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;
+    }
+    return nb;
+  }
+  return 0;
+}
+
+// Validates as many continuation bytes for a multi-byte UTF-8 character as
+// needed or are available. If we see a non-continuation byte where we expect
+// one, we "replace" the validated continuation bytes we've seen so far with
+// UTF-8 replacement characters ('\ufffd'), to match v8's UTF-8 decoding
+// behavior. The continuation byte check is included three times in the case
+// where all of the continuation bytes for a character exist in the same buffer.
+// It is also done this way as a slight performance increase instead of using a
+// loop.
+function utf8CheckExtraBytes(self, buf, p) {
+  if ((buf[0] & 0xC0) !== 0x80) {
+    self.lastNeed = 0;
+    return '\ufffd'.repeat(p);
+  }
+  if (self.lastNeed > 1 && buf.length > 1) {
+    if ((buf[1] & 0xC0) !== 0x80) {
+      self.lastNeed = 1;
+      return '\ufffd'.repeat(p + 1);
+    }
+    if (self.lastNeed > 2 && buf.length > 2) {
+      if ((buf[2] & 0xC0) !== 0x80) {
+        self.lastNeed = 2;
+        return '\ufffd'.repeat(p + 2);
+      }
+    }
+  }
+}
+
+// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.
+function utf8FillLast(buf) {
+  var p = this.lastTotal - this.lastNeed;
+  var r = utf8CheckExtraBytes(this, buf, p);
+  if (r !== undefined) return r;
+  if (this.lastNeed <= buf.length) {
+    buf.copy(this.lastChar, p, 0, this.lastNeed);
+    return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+  }
+  buf.copy(this.lastChar, p, 0, buf.length);
+  this.lastNeed -= buf.length;
+}
+
+// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a
+// partial character, the character's bytes are buffered until the required
+// number of bytes are available.
+function utf8Text(buf, i) {
+  var total = utf8CheckIncomplete(this, buf, i);
+  if (!this.lastNeed) return buf.toString('utf8', i);
+  this.lastTotal = total;
+  var end = buf.length - (total - this.lastNeed);
+  buf.copy(this.lastChar, 0, end);
+  return buf.toString('utf8', i, end);
+}
+
+// For UTF-8, a replacement character for each buffered byte of a (partial)
+// character needs to be added to the output.
+function utf8End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + '\ufffd'.repeat(this.lastTotal - this.lastNeed);
+  return r;
+}
+
+// UTF-16LE typically needs two bytes per character, but even if we have an even
+// number of bytes available, we need to check if we end on a leading/high
+// surrogate. In that case, we need to wait for the next two bytes in order to
+// decode the last character properly.
+function utf16Text(buf, i) {
+  if ((buf.length - i) % 2 === 0) {
+    var r = buf.toString('utf16le', i);
+    if (r) {
+      var c = r.charCodeAt(r.length - 1);
+      if (c >= 0xD800 && c <= 0xDBFF) {
+        this.lastNeed = 2;
+        this.lastTotal = 4;
+        this.lastChar[0] = buf[buf.length - 2];
+        this.lastChar[1] = buf[buf.length - 1];
+        return r.slice(0, -1);
+      }
+    }
+    return r;
+  }
+  this.lastNeed = 1;
+  this.lastTotal = 2;
+  this.lastChar[0] = buf[buf.length - 1];
+  return buf.toString('utf16le', i, buf.length - 1);
+}
+
+// For UTF-16LE we do not explicitly append special replacement characters if we
+// end on a partial character, we simply let v8 handle that.
+function utf16End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) {
+    var end = this.lastTotal - this.lastNeed;
+    return r + this.lastChar.toString('utf16le', 0, end);
+  }
+  return r;
+}
+
+function base64Text(buf, i) {
+  var n = (buf.length - i) % 3;
+  if (n === 0) return buf.toString('base64', i);
+  this.lastNeed = 3 - n;
+  this.lastTotal = 3;
+  if (n === 1) {
+    this.lastChar[0] = buf[buf.length - 1];
+  } else {
+    this.lastChar[0] = buf[buf.length - 2];
+    this.lastChar[1] = buf[buf.length - 1];
+  }
+  return buf.toString('base64', i, buf.length - n);
+}
+
+function base64End(buf) {
+  var r = buf && buf.length ? this.write(buf) : '';
+  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);
+  return r;
+}
+
+// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)
+function simpleWrite(buf) {
+  return buf.toString(this.encoding);
+}
+
+function simpleEnd(buf) {
+  return buf && buf.length ? this.write(buf) : '';
+}
+},{"safe-buffer":377}],204:[function(require,module,exports){
 (function (Buffer){
 module.exports = function xor (a, b) {
   var length = Math.min(a.length, b.length)
@@ -63025,7 +67044,7 @@ module.exports = function xor (a, b) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":197}],197:[function(require,module,exports){
+},{"buffer":205}],205:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -63081,9 +67100,25 @@ function typedArraySupport () {
   }
 }
 
+Object.defineProperty(Buffer.prototype, 'parent', {
+  enumerable: true,
+  get: function () {
+    if (!Buffer.isBuffer(this)) return undefined
+    return this.buffer
+  }
+})
+
+Object.defineProperty(Buffer.prototype, 'offset', {
+  enumerable: true,
+  get: function () {
+    if (!Buffer.isBuffer(this)) return undefined
+    return this.byteOffset
+  }
+})
+
 function createBuffer (length) {
   if (length > K_MAX_LENGTH) {
-    throw new RangeError('Invalid typed array length')
+    throw new RangeError('The value "' + length + '" is invalid for option "size"')
   }
   // Return an augmented `Uint8Array` instance
   var buf = new Uint8Array(length)
@@ -63105,8 +67140,8 @@ function Buffer (arg, encodingOrOffset, length) {
   // Common case.
   if (typeof arg === 'number') {
     if (typeof encodingOrOffset === 'string') {
-      throw new Error(
-        'If encoding is specified then the first argument must be a string'
+      throw new TypeError(
+        'The "string" argument must be of type string. Received type number'
       )
     }
     return allocUnsafe(arg)
@@ -63115,7 +67150,7 @@ function Buffer (arg, encodingOrOffset, length) {
 }
 
 // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
-if (typeof Symbol !== 'undefined' && Symbol.species &&
+if (typeof Symbol !== 'undefined' && Symbol.species != null &&
     Buffer[Symbol.species] === Buffer) {
   Object.defineProperty(Buffer, Symbol.species, {
     value: null,
@@ -63128,19 +67163,51 @@ if (typeof Symbol !== 'undefined' && Symbol.species &&
 Buffer.poolSize = 8192 // not used by this implementation
 
 function from (value, encodingOrOffset, length) {
-  if (typeof value === 'number') {
-    throw new TypeError('"value" argument must not be a number')
-  }
-
-  if (isArrayBuffer(value)) {
-    return fromArrayBuffer(value, encodingOrOffset, length)
-  }
-
   if (typeof value === 'string') {
     return fromString(value, encodingOrOffset)
   }
 
-  return fromObject(value)
+  if (ArrayBuffer.isView(value)) {
+    return fromArrayLike(value)
+  }
+
+  if (value == null) {
+    throw TypeError(
+      'The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' +
+      'or Array-like Object. Received type ' + (typeof value)
+    )
+  }
+
+  if (isInstance(value, ArrayBuffer) ||
+      (value && isInstance(value.buffer, ArrayBuffer))) {
+    return fromArrayBuffer(value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'number') {
+    throw new TypeError(
+      'The "value" argument must not be of type number. Received type number'
+    )
+  }
+
+  var valueOf = value.valueOf && value.valueOf()
+  if (valueOf != null && valueOf !== value) {
+    return Buffer.from(valueOf, encodingOrOffset, length)
+  }
+
+  var b = fromObject(value)
+  if (b) return b
+
+  if (typeof Symbol !== 'undefined' && Symbol.toPrimitive != null &&
+      typeof value[Symbol.toPrimitive] === 'function') {
+    return Buffer.from(
+      value[Symbol.toPrimitive]('string'), encodingOrOffset, length
+    )
+  }
+
+  throw new TypeError(
+    'The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' +
+    'or Array-like Object. Received type ' + (typeof value)
+  )
 }
 
 /**
@@ -63162,9 +67229,9 @@ Buffer.__proto__ = Uint8Array
 
 function assertSize (size) {
   if (typeof size !== 'number') {
-    throw new TypeError('"size" argument must be a number')
+    throw new TypeError('"size" argument must be of type number')
   } else if (size < 0) {
-    throw new RangeError('"size" argument must not be negative')
+    throw new RangeError('The value "' + size + '" is invalid for option "size"')
   }
 }
 
@@ -63216,7 +67283,7 @@ function fromString (string, encoding) {
   }
 
   if (!Buffer.isEncoding(encoding)) {
-    throw new TypeError('"encoding" must be a valid string encoding')
+    throw new TypeError('Unknown encoding: ' + encoding)
   }
 
   var length = byteLength(string, encoding) | 0
@@ -63245,11 +67312,11 @@ function fromArrayLike (array) {
 
 function fromArrayBuffer (array, byteOffset, length) {
   if (byteOffset < 0 || array.byteLength < byteOffset) {
-    throw new RangeError('\'offset\' is out of bounds')
+    throw new RangeError('"offset" is outside of buffer bounds')
   }
 
   if (array.byteLength < byteOffset + (length || 0)) {
-    throw new RangeError('\'length\' is out of bounds')
+    throw new RangeError('"length" is outside of buffer bounds')
   }
 
   var buf
@@ -63279,20 +67346,16 @@ function fromObject (obj) {
     return buf
   }
 
-  if (obj) {
-    if (isArrayBufferView(obj) || 'length' in obj) {
-      if (typeof obj.length !== 'number' || numberIsNaN(obj.length)) {
-        return createBuffer(0)
-      }
-      return fromArrayLike(obj)
+  if (obj.length !== undefined) {
+    if (typeof obj.length !== 'number' || numberIsNaN(obj.length)) {
+      return createBuffer(0)
     }
-
-    if (obj.type === 'Buffer' && Array.isArray(obj.data)) {
-      return fromArrayLike(obj.data)
-    }
+    return fromArrayLike(obj)
   }
 
-  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+  if (obj.type === 'Buffer' && Array.isArray(obj.data)) {
+    return fromArrayLike(obj.data)
+  }
 }
 
 function checked (length) {
@@ -63313,12 +67376,17 @@ function SlowBuffer (length) {
 }
 
 Buffer.isBuffer = function isBuffer (b) {
-  return b != null && b._isBuffer === true
+  return b != null && b._isBuffer === true &&
+    b !== Buffer.prototype // so Buffer.isBuffer(Buffer.prototype) will be false
 }
 
 Buffer.compare = function compare (a, b) {
+  if (isInstance(a, Uint8Array)) a = Buffer.from(a, a.offset, a.byteLength)
+  if (isInstance(b, Uint8Array)) b = Buffer.from(b, b.offset, b.byteLength)
   if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
-    throw new TypeError('Arguments must be Buffers')
+    throw new TypeError(
+      'The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array'
+    )
   }
 
   if (a === b) return 0
@@ -63379,6 +67447,9 @@ Buffer.concat = function concat (list, length) {
   var pos = 0
   for (i = 0; i < list.length; ++i) {
     var buf = list[i]
+    if (isInstance(buf, Uint8Array)) {
+      buf = Buffer.from(buf)
+    }
     if (!Buffer.isBuffer(buf)) {
       throw new TypeError('"list" argument must be an Array of Buffers')
     }
@@ -63392,15 +67463,19 @@ function byteLength (string, encoding) {
   if (Buffer.isBuffer(string)) {
     return string.length
   }
-  if (isArrayBufferView(string) || isArrayBuffer(string)) {
+  if (ArrayBuffer.isView(string) || isInstance(string, ArrayBuffer)) {
     return string.byteLength
   }
   if (typeof string !== 'string') {
-    string = '' + string
+    throw new TypeError(
+      'The "string" argument must be one of type string, Buffer, or ArrayBuffer. ' +
+      'Received type ' + typeof string
+    )
   }
 
   var len = string.length
-  if (len === 0) return 0
+  var mustMatch = (arguments.length > 2 && arguments[2] === true)
+  if (!mustMatch && len === 0) return 0
 
   // Use a for loop to avoid recursion
   var loweredCase = false
@@ -63412,7 +67487,6 @@ function byteLength (string, encoding) {
         return len
       case 'utf8':
       case 'utf-8':
-      case undefined:
         return utf8ToBytes(string).length
       case 'ucs2':
       case 'ucs-2':
@@ -63424,7 +67498,9 @@ function byteLength (string, encoding) {
       case 'base64':
         return base64ToBytes(string).length
       default:
-        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+        if (loweredCase) {
+          return mustMatch ? -1 : utf8ToBytes(string).length // assume utf8
+        }
         encoding = ('' + encoding).toLowerCase()
         loweredCase = true
     }
@@ -63560,6 +67636,8 @@ Buffer.prototype.toString = function toString () {
   return slowToString.apply(this, arguments)
 }
 
+Buffer.prototype.toLocaleString = Buffer.prototype.toString
+
 Buffer.prototype.equals = function equals (b) {
   if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
   if (this === b) return true
@@ -63569,16 +67647,20 @@ Buffer.prototype.equals = function equals (b) {
 Buffer.prototype.inspect = function inspect () {
   var str = ''
   var max = exports.INSPECT_MAX_BYTES
-  if (this.length > 0) {
-    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
-    if (this.length > max) str += ' ... '
-  }
+  str = this.toString('hex', 0, max).replace(/(.{2})/g, '$1 ').trim()
+  if (this.length > max) str += ' ... '
   return '<Buffer ' + str + '>'
 }
 
 Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+  if (isInstance(target, Uint8Array)) {
+    target = Buffer.from(target, target.offset, target.byteLength)
+  }
   if (!Buffer.isBuffer(target)) {
-    throw new TypeError('Argument must be a Buffer')
+    throw new TypeError(
+      'The "target" argument must be one of type Buffer or Uint8Array. ' +
+      'Received type ' + (typeof target)
+    )
   }
 
   if (start === undefined) {
@@ -63657,7 +67739,7 @@ function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
   } else if (byteOffset < -0x80000000) {
     byteOffset = -0x80000000
   }
-  byteOffset = +byteOffset  // Coerce to Number.
+  byteOffset = +byteOffset // Coerce to Number.
   if (numberIsNaN(byteOffset)) {
     // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
     byteOffset = dir ? 0 : (buffer.length - 1)
@@ -63780,9 +67862,7 @@ function hexWrite (buf, string, offset, length) {
     }
   }
 
-  // must be an even number of digits
   var strLen = string.length
-  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
 
   if (length > strLen / 2) {
     length = strLen / 2
@@ -63911,8 +67991,8 @@ function utf8Slice (buf, start, end) {
     var codePoint = null
     var bytesPerSequence = (firstByte > 0xEF) ? 4
       : (firstByte > 0xDF) ? 3
-      : (firstByte > 0xBF) ? 2
-      : 1
+        : (firstByte > 0xBF) ? 2
+          : 1
 
     if (i + bytesPerSequence <= end) {
       var secondByte, thirdByte, fourthByte, tempCodePoint
@@ -64475,6 +68555,7 @@ Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert
 
 // copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
 Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+  if (!Buffer.isBuffer(target)) throw new TypeError('argument should be a Buffer')
   if (!start) start = 0
   if (!end && end !== 0) end = this.length
   if (targetStart >= target.length) targetStart = target.length
@@ -64489,7 +68570,7 @@ Buffer.prototype.copy = function copy (target, targetStart, start, end) {
   if (targetStart < 0) {
     throw new RangeError('targetStart out of bounds')
   }
-  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+  if (start < 0 || start >= this.length) throw new RangeError('Index out of range')
   if (end < 0) throw new RangeError('sourceEnd out of bounds')
 
   // Are we oob?
@@ -64499,22 +68580,19 @@ Buffer.prototype.copy = function copy (target, targetStart, start, end) {
   }
 
   var len = end - start
-  var i
 
-  if (this === target && start < targetStart && targetStart < end) {
+  if (this === target && typeof Uint8Array.prototype.copyWithin === 'function') {
+    // Use built-in when available, missing from IE11
+    this.copyWithin(targetStart, start, end)
+  } else if (this === target && start < targetStart && targetStart < end) {
     // descending copy from end
-    for (i = len - 1; i >= 0; --i) {
-      target[i + targetStart] = this[i + start]
-    }
-  } else if (len < 1000) {
-    // ascending copy from start
-    for (i = 0; i < len; ++i) {
+    for (var i = len - 1; i >= 0; --i) {
       target[i + targetStart] = this[i + start]
     }
   } else {
     Uint8Array.prototype.set.call(
       target,
-      this.subarray(start, start + len),
+      this.subarray(start, end),
       targetStart
     )
   }
@@ -64537,17 +68615,19 @@ Buffer.prototype.fill = function fill (val, start, end, encoding) {
       encoding = end
       end = this.length
     }
-    if (val.length === 1) {
-      var code = val.charCodeAt(0)
-      if (code < 256) {
-        val = code
-      }
-    }
     if (encoding !== undefined && typeof encoding !== 'string') {
       throw new TypeError('encoding must be a string')
     }
     if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
       throw new TypeError('Unknown encoding: ' + encoding)
+    }
+    if (val.length === 1) {
+      var code = val.charCodeAt(0)
+      if ((encoding === 'utf8' && code < 128) ||
+          encoding === 'latin1') {
+        // Fast path: If `val` fits into a single byte, use that numeric value.
+        val = code
+      }
     }
   } else if (typeof val === 'number') {
     val = val & 255
@@ -64575,8 +68655,12 @@ Buffer.prototype.fill = function fill (val, start, end, encoding) {
   } else {
     var bytes = Buffer.isBuffer(val)
       ? val
-      : new Buffer(val, encoding)
+      : Buffer.from(val, encoding)
     var len = bytes.length
+    if (len === 0) {
+      throw new TypeError('The value "' + val +
+        '" is invalid for argument "value"')
+    }
     for (i = 0; i < end - start; ++i) {
       this[i + start] = bytes[i % len]
     }
@@ -64591,6 +68675,8 @@ Buffer.prototype.fill = function fill (val, start, end, encoding) {
 var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g
 
 function base64clean (str) {
+  // Node takes equal signs as end of the Base64 encoding
+  str = str.split('=')[0]
   // Node strips out invalid characters like \n and \t from the string, base64-js does not
   str = str.trim().replace(INVALID_BASE64_RE, '')
   // Node converts strings with length < 2 to ''
@@ -64724,24 +68810,20 @@ function blitBuffer (src, dst, offset, length) {
   return i
 }
 
-// ArrayBuffers from another context (i.e. an iframe) do not pass the `instanceof` check
-// but they should be treated as valid. See: https://github.com/feross/buffer/issues/166
-function isArrayBuffer (obj) {
-  return obj instanceof ArrayBuffer ||
-    (obj != null && obj.constructor != null && obj.constructor.name === 'ArrayBuffer' &&
-      typeof obj.byteLength === 'number')
+// ArrayBuffer or Uint8Array objects from other contexts (i.e. iframes) do not pass
+// the `instanceof` check but they should be treated as of that type.
+// See: https://github.com/feross/buffer/issues/166
+function isInstance (obj, type) {
+  return obj instanceof type ||
+    (obj != null && obj.constructor != null && obj.constructor.name != null &&
+      obj.constructor.name === type.name)
 }
-
-// Node 0.10 supports `ArrayBuffer` but lacks `ArrayBuffer.isView`
-function isArrayBufferView (obj) {
-  return (typeof ArrayBuffer.isView === 'function') && ArrayBuffer.isView(obj)
-}
-
 function numberIsNaN (obj) {
+  // For IE11 support
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":162,"ieee754":298}],198:[function(require,module,exports){
+},{"base64-js":168,"ieee754":305}],206:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
 var StringDecoder = require('string_decoder').StringDecoder
@@ -64842,7 +68924,7 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 
 module.exports = CipherBase
 
-},{"inherits":300,"safe-buffer":372,"stream":389,"string_decoder":391}],199:[function(require,module,exports){
+},{"inherits":307,"safe-buffer":377,"stream":394,"string_decoder":203}],207:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -64953,162 +69035,141 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":301}],200:[function(require,module,exports){
+},{"../../is-buffer/index.js":308}],208:[function(require,module,exports){
 (function (Buffer){
-var elliptic = require('elliptic');
-var BN = require('bn.js');
+var elliptic = require('elliptic')
+var BN = require('bn.js')
 
-module.exports = function createECDH(curve) {
-	return new ECDH(curve);
-};
+module.exports = function createECDH (curve) {
+  return new ECDH(curve)
+}
 
 var aliases = {
-	secp256k1: {
-		name: 'secp256k1',
-		byteLength: 32
-	},
-	secp224r1: {
-		name: 'p224',
-		byteLength: 28
-	},
-	prime256v1: {
-		name: 'p256',
-		byteLength: 32
-	},
-	prime192v1: {
-		name: 'p192',
-		byteLength: 24
-	},
-	ed25519: {
-		name: 'ed25519',
-		byteLength: 32
-	},
-	secp384r1: {
-		name: 'p384',
-		byteLength: 48
-	},
-	secp521r1: {
-		name: 'p521',
-		byteLength: 66
-	}
-};
+  secp256k1: {
+    name: 'secp256k1',
+    byteLength: 32
+  },
+  secp224r1: {
+    name: 'p224',
+    byteLength: 28
+  },
+  prime256v1: {
+    name: 'p256',
+    byteLength: 32
+  },
+  prime192v1: {
+    name: 'p192',
+    byteLength: 24
+  },
+  ed25519: {
+    name: 'ed25519',
+    byteLength: 32
+  },
+  secp384r1: {
+    name: 'p384',
+    byteLength: 48
+  },
+  secp521r1: {
+    name: 'p521',
+    byteLength: 66
+  }
+}
 
-aliases.p224 = aliases.secp224r1;
-aliases.p256 = aliases.secp256r1 = aliases.prime256v1;
-aliases.p192 = aliases.secp192r1 = aliases.prime192v1;
-aliases.p384 = aliases.secp384r1;
-aliases.p521 = aliases.secp521r1;
+aliases.p224 = aliases.secp224r1
+aliases.p256 = aliases.secp256r1 = aliases.prime256v1
+aliases.p192 = aliases.secp192r1 = aliases.prime192v1
+aliases.p384 = aliases.secp384r1
+aliases.p521 = aliases.secp521r1
 
-function ECDH(curve) {
-	this.curveType = aliases[curve];
-	if (!this.curveType ) {
-		this.curveType = {
-			name: curve
-		};
-	}
-	this.curve = new elliptic.ec(this.curveType.name);
-	this.keys = void 0;
+function ECDH (curve) {
+  this.curveType = aliases[curve]
+  if (!this.curveType) {
+    this.curveType = {
+      name: curve
+    }
+  }
+  this.curve = new elliptic.ec(this.curveType.name) // eslint-disable-line new-cap
+  this.keys = void 0
 }
 
 ECDH.prototype.generateKeys = function (enc, format) {
-	this.keys = this.curve.genKeyPair();
-	return this.getPublicKey(enc, format);
-};
+  this.keys = this.curve.genKeyPair()
+  return this.getPublicKey(enc, format)
+}
 
 ECDH.prototype.computeSecret = function (other, inenc, enc) {
-	inenc = inenc || 'utf8';
-	if (!Buffer.isBuffer(other)) {
-		other = new Buffer(other, inenc);
-	}
-	var otherPub = this.curve.keyFromPublic(other).getPublic();
-	var out = otherPub.mul(this.keys.getPrivate()).getX();
-	return formatReturnValue(out, enc, this.curveType.byteLength);
-};
+  inenc = inenc || 'utf8'
+  if (!Buffer.isBuffer(other)) {
+    other = new Buffer(other, inenc)
+  }
+  var otherPub = this.curve.keyFromPublic(other).getPublic()
+  var out = otherPub.mul(this.keys.getPrivate()).getX()
+  return formatReturnValue(out, enc, this.curveType.byteLength)
+}
 
 ECDH.prototype.getPublicKey = function (enc, format) {
-	var key = this.keys.getPublic(format === 'compressed', true);
-	if (format === 'hybrid') {
-		if (key[key.length - 1] % 2) {
-			key[0] = 7;
-		} else {
-			key [0] = 6;
-		}
-	}
-	return formatReturnValue(key, enc);
-};
+  var key = this.keys.getPublic(format === 'compressed', true)
+  if (format === 'hybrid') {
+    if (key[key.length - 1] % 2) {
+      key[0] = 7
+    } else {
+      key[0] = 6
+    }
+  }
+  return formatReturnValue(key, enc)
+}
 
 ECDH.prototype.getPrivateKey = function (enc) {
-	return formatReturnValue(this.keys.getPrivate(), enc);
-};
+  return formatReturnValue(this.keys.getPrivate(), enc)
+}
 
 ECDH.prototype.setPublicKey = function (pub, enc) {
-	enc = enc || 'utf8';
-	if (!Buffer.isBuffer(pub)) {
-		pub = new Buffer(pub, enc);
-	}
-	this.keys._importPublic(pub);
-	return this;
-};
+  enc = enc || 'utf8'
+  if (!Buffer.isBuffer(pub)) {
+    pub = new Buffer(pub, enc)
+  }
+  this.keys._importPublic(pub)
+  return this
+}
 
 ECDH.prototype.setPrivateKey = function (priv, enc) {
-	enc = enc || 'utf8';
-	if (!Buffer.isBuffer(priv)) {
-		priv = new Buffer(priv, enc);
-	}
-	var _priv = new BN(priv);
-	_priv = _priv.toString(16);
-	this.keys._importPrivate(_priv);
-	return this;
-};
+  enc = enc || 'utf8'
+  if (!Buffer.isBuffer(priv)) {
+    priv = new Buffer(priv, enc)
+  }
 
-function formatReturnValue(bn, enc, len) {
-	if (!Array.isArray(bn)) {
-		bn = bn.toArray();
-	}
-	var buf = new Buffer(bn);
-	if (len && buf.length < len) {
-		var zeros = new Buffer(len - buf.length);
-		zeros.fill(0);
-		buf = Buffer.concat([zeros, buf]);
-	}
-	if (!enc) {
-		return buf;
-	} else {
-		return buf.toString(enc);
-	}
+  var _priv = new BN(priv)
+  _priv = _priv.toString(16)
+  this.keys = this.curve.genKeyPair()
+  this.keys._importPrivate(_priv)
+  return this
+}
+
+function formatReturnValue (bn, enc, len) {
+  if (!Array.isArray(bn)) {
+    bn = bn.toArray()
+  }
+  var buf = new Buffer(bn)
+  if (len && buf.length < len) {
+    var zeros = new Buffer(len - buf.length)
+    zeros.fill(0)
+    buf = Buffer.concat([zeros, buf])
+  }
+  if (!enc) {
+    return buf
+  } else {
+    return buf.toString(enc)
+  }
 }
 
 }).call(this,require("buffer").Buffer)
-},{"bn.js":165,"buffer":197,"elliptic":252}],201:[function(require,module,exports){
-(function (Buffer){
+},{"bn.js":171,"buffer":205,"elliptic":259}],209:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
-var md5 = require('./md5')
+var MD5 = require('md5.js')
 var RIPEMD160 = require('ripemd160')
 var sha = require('sha.js')
-
 var Base = require('cipher-base')
-
-function HashNoConstructor (hash) {
-  Base.call(this, 'digest')
-
-  this._hash = hash
-  this.buffers = []
-}
-
-inherits(HashNoConstructor, Base)
-
-HashNoConstructor.prototype._update = function (data) {
-  this.buffers.push(data)
-}
-
-HashNoConstructor.prototype._final = function () {
-  var buf = Buffer.concat(this.buffers)
-  var r = this._hash(buf)
-  this.buffers = null
-
-  return r
-}
 
 function Hash (hash) {
   Base.call(this, 'digest')
@@ -65128,201 +69189,20 @@ Hash.prototype._final = function () {
 
 module.exports = function createHash (alg) {
   alg = alg.toLowerCase()
-  if (alg === 'md5') return new HashNoConstructor(md5)
-  if (alg === 'rmd160' || alg === 'ripemd160') return new Hash(new RIPEMD160())
+  if (alg === 'md5') return new MD5()
+  if (alg === 'rmd160' || alg === 'ripemd160') return new RIPEMD160()
 
   return new Hash(sha(alg))
 }
 
-}).call(this,require("buffer").Buffer)
-},{"./md5":203,"buffer":197,"cipher-base":198,"inherits":300,"ripemd160":370,"sha.js":382}],202:[function(require,module,exports){
-(function (Buffer){
-'use strict'
-var intSize = 4
-var zeroBuffer = new Buffer(intSize)
-zeroBuffer.fill(0)
+},{"cipher-base":206,"inherits":307,"md5.js":321,"ripemd160":375,"sha.js":387}],210:[function(require,module,exports){
+var MD5 = require('md5.js')
 
-var charSize = 8
-var hashSize = 16
-
-function toArray (buf) {
-  if ((buf.length % intSize) !== 0) {
-    var len = buf.length + (intSize - (buf.length % intSize))
-    buf = Buffer.concat([buf, zeroBuffer], len)
-  }
-
-  var arr = new Array(buf.length >>> 2)
-  for (var i = 0, j = 0; i < buf.length; i += intSize, j++) {
-    arr[j] = buf.readInt32LE(i)
-  }
-
-  return arr
+module.exports = function (buffer) {
+  return new MD5().update(buffer).digest()
 }
 
-module.exports = function hash (buf, fn) {
-  var arr = fn(toArray(buf), buf.length * charSize)
-  buf = new Buffer(hashSize)
-  for (var i = 0; i < arr.length; i++) {
-    buf.writeInt32LE(arr[i], i << 2, true)
-  }
-  return buf
-}
-
-}).call(this,require("buffer").Buffer)
-},{"buffer":197}],203:[function(require,module,exports){
-'use strict'
-/*
- * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
- * Digest Algorithm, as defined in RFC 1321.
- * Version 2.1 Copyright (C) Paul Johnston 1999 - 2002.
- * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
- * Distributed under the BSD License
- * See http://pajhome.org.uk/crypt/md5 for more info.
- */
-
-var makeHash = require('./make-hash')
-
-/*
- * Calculate the MD5 of an array of little-endian words, and a bit length
- */
-function core_md5 (x, len) {
-  /* append padding */
-  x[len >> 5] |= 0x80 << ((len) % 32)
-  x[(((len + 64) >>> 9) << 4) + 14] = len
-
-  var a = 1732584193
-  var b = -271733879
-  var c = -1732584194
-  var d = 271733878
-
-  for (var i = 0; i < x.length; i += 16) {
-    var olda = a
-    var oldb = b
-    var oldc = c
-    var oldd = d
-
-    a = md5_ff(a, b, c, d, x[i + 0], 7, -680876936)
-    d = md5_ff(d, a, b, c, x[i + 1], 12, -389564586)
-    c = md5_ff(c, d, a, b, x[i + 2], 17, 606105819)
-    b = md5_ff(b, c, d, a, x[i + 3], 22, -1044525330)
-    a = md5_ff(a, b, c, d, x[i + 4], 7, -176418897)
-    d = md5_ff(d, a, b, c, x[i + 5], 12, 1200080426)
-    c = md5_ff(c, d, a, b, x[i + 6], 17, -1473231341)
-    b = md5_ff(b, c, d, a, x[i + 7], 22, -45705983)
-    a = md5_ff(a, b, c, d, x[i + 8], 7, 1770035416)
-    d = md5_ff(d, a, b, c, x[i + 9], 12, -1958414417)
-    c = md5_ff(c, d, a, b, x[i + 10], 17, -42063)
-    b = md5_ff(b, c, d, a, x[i + 11], 22, -1990404162)
-    a = md5_ff(a, b, c, d, x[i + 12], 7, 1804603682)
-    d = md5_ff(d, a, b, c, x[i + 13], 12, -40341101)
-    c = md5_ff(c, d, a, b, x[i + 14], 17, -1502002290)
-    b = md5_ff(b, c, d, a, x[i + 15], 22, 1236535329)
-
-    a = md5_gg(a, b, c, d, x[i + 1], 5, -165796510)
-    d = md5_gg(d, a, b, c, x[i + 6], 9, -1069501632)
-    c = md5_gg(c, d, a, b, x[i + 11], 14, 643717713)
-    b = md5_gg(b, c, d, a, x[i + 0], 20, -373897302)
-    a = md5_gg(a, b, c, d, x[i + 5], 5, -701558691)
-    d = md5_gg(d, a, b, c, x[i + 10], 9, 38016083)
-    c = md5_gg(c, d, a, b, x[i + 15], 14, -660478335)
-    b = md5_gg(b, c, d, a, x[i + 4], 20, -405537848)
-    a = md5_gg(a, b, c, d, x[i + 9], 5, 568446438)
-    d = md5_gg(d, a, b, c, x[i + 14], 9, -1019803690)
-    c = md5_gg(c, d, a, b, x[i + 3], 14, -187363961)
-    b = md5_gg(b, c, d, a, x[i + 8], 20, 1163531501)
-    a = md5_gg(a, b, c, d, x[i + 13], 5, -1444681467)
-    d = md5_gg(d, a, b, c, x[i + 2], 9, -51403784)
-    c = md5_gg(c, d, a, b, x[i + 7], 14, 1735328473)
-    b = md5_gg(b, c, d, a, x[i + 12], 20, -1926607734)
-
-    a = md5_hh(a, b, c, d, x[i + 5], 4, -378558)
-    d = md5_hh(d, a, b, c, x[i + 8], 11, -2022574463)
-    c = md5_hh(c, d, a, b, x[i + 11], 16, 1839030562)
-    b = md5_hh(b, c, d, a, x[i + 14], 23, -35309556)
-    a = md5_hh(a, b, c, d, x[i + 1], 4, -1530992060)
-    d = md5_hh(d, a, b, c, x[i + 4], 11, 1272893353)
-    c = md5_hh(c, d, a, b, x[i + 7], 16, -155497632)
-    b = md5_hh(b, c, d, a, x[i + 10], 23, -1094730640)
-    a = md5_hh(a, b, c, d, x[i + 13], 4, 681279174)
-    d = md5_hh(d, a, b, c, x[i + 0], 11, -358537222)
-    c = md5_hh(c, d, a, b, x[i + 3], 16, -722521979)
-    b = md5_hh(b, c, d, a, x[i + 6], 23, 76029189)
-    a = md5_hh(a, b, c, d, x[i + 9], 4, -640364487)
-    d = md5_hh(d, a, b, c, x[i + 12], 11, -421815835)
-    c = md5_hh(c, d, a, b, x[i + 15], 16, 530742520)
-    b = md5_hh(b, c, d, a, x[i + 2], 23, -995338651)
-
-    a = md5_ii(a, b, c, d, x[i + 0], 6, -198630844)
-    d = md5_ii(d, a, b, c, x[i + 7], 10, 1126891415)
-    c = md5_ii(c, d, a, b, x[i + 14], 15, -1416354905)
-    b = md5_ii(b, c, d, a, x[i + 5], 21, -57434055)
-    a = md5_ii(a, b, c, d, x[i + 12], 6, 1700485571)
-    d = md5_ii(d, a, b, c, x[i + 3], 10, -1894986606)
-    c = md5_ii(c, d, a, b, x[i + 10], 15, -1051523)
-    b = md5_ii(b, c, d, a, x[i + 1], 21, -2054922799)
-    a = md5_ii(a, b, c, d, x[i + 8], 6, 1873313359)
-    d = md5_ii(d, a, b, c, x[i + 15], 10, -30611744)
-    c = md5_ii(c, d, a, b, x[i + 6], 15, -1560198380)
-    b = md5_ii(b, c, d, a, x[i + 13], 21, 1309151649)
-    a = md5_ii(a, b, c, d, x[i + 4], 6, -145523070)
-    d = md5_ii(d, a, b, c, x[i + 11], 10, -1120210379)
-    c = md5_ii(c, d, a, b, x[i + 2], 15, 718787259)
-    b = md5_ii(b, c, d, a, x[i + 9], 21, -343485551)
-
-    a = safe_add(a, olda)
-    b = safe_add(b, oldb)
-    c = safe_add(c, oldc)
-    d = safe_add(d, oldd)
-  }
-
-  return [a, b, c, d]
-}
-
-/*
- * These functions implement the four basic operations the algorithm uses.
- */
-function md5_cmn (q, a, b, x, s, t) {
-  return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b)
-}
-
-function md5_ff (a, b, c, d, x, s, t) {
-  return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t)
-}
-
-function md5_gg (a, b, c, d, x, s, t) {
-  return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t)
-}
-
-function md5_hh (a, b, c, d, x, s, t) {
-  return md5_cmn(b ^ c ^ d, a, b, x, s, t)
-}
-
-function md5_ii (a, b, c, d, x, s, t) {
-  return md5_cmn(c ^ (b | (~d)), a, b, x, s, t)
-}
-
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
-function safe_add (x, y) {
-  var lsw = (x & 0xFFFF) + (y & 0xFFFF)
-  var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
-  return (msw << 16) | (lsw & 0xFFFF)
-}
-
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
-function bit_rol (num, cnt) {
-  return (num << cnt) | (num >>> (32 - cnt))
-}
-
-module.exports = function md5 (buf) {
-  return makeHash(buf, core_md5)
-}
-
-},{"./make-hash":202}],204:[function(require,module,exports){
+},{"md5.js":321}],211:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var Legacy = require('./legacy')
@@ -65386,7 +69266,7 @@ module.exports = function createHmac (alg, key) {
   return new Hmac(alg, key)
 }
 
-},{"./legacy":205,"cipher-base":198,"create-hash/md5":203,"inherits":300,"ripemd160":370,"safe-buffer":372,"sha.js":382}],205:[function(require,module,exports){
+},{"./legacy":212,"cipher-base":206,"create-hash/md5":210,"inherits":307,"ripemd160":375,"safe-buffer":377,"sha.js":387}],212:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var Buffer = require('safe-buffer').Buffer
@@ -65434,7 +69314,7 @@ Hmac.prototype._final = function () {
 }
 module.exports = Hmac
 
-},{"cipher-base":198,"inherits":300,"safe-buffer":372}],206:[function(require,module,exports){
+},{"cipher-base":206,"inherits":307,"safe-buffer":377}],213:[function(require,module,exports){
 'use strict'
 
 exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require('randombytes')
@@ -65502,6 +69382,11 @@ exports.privateDecrypt = publicEncrypt.privateDecrypt
 //   }
 // })
 
+var rf = require('randomfill')
+
+exports.randomFill = rf.randomFill
+exports.randomFillSync = rf.randomFillSync
+
 exports.createCredentials = function () {
   throw new Error([
     'sorry, createCredentials is not implemented yet',
@@ -65528,7 +69413,7 @@ exports.constants = {
   'POINT_CONVERSION_HYBRID': 6
 }
 
-},{"browserify-cipher":185,"browserify-sign":193,"browserify-sign/algos":190,"create-ecdh":200,"create-hash":201,"create-hmac":204,"diffie-hellman":248,"pbkdf2":329,"public-encrypt":336,"randombytes":352}],207:[function(require,module,exports){
+},{"browserify-cipher":191,"browserify-sign":199,"browserify-sign/algos":196,"create-ecdh":208,"create-hash":209,"create-hmac":211,"diffie-hellman":255,"pbkdf2":335,"public-encrypt":341,"randombytes":357,"randomfill":358}],214:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -65761,7 +69646,7 @@ exports.constants = {
 	return CryptoJS.AES;
 
 }));
-},{"./cipher-core":208,"./core":209,"./enc-base64":210,"./evpkdf":212,"./md5":217}],208:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216,"./enc-base64":217,"./evpkdf":219,"./md5":224}],215:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -66642,7 +70527,7 @@ exports.constants = {
 
 
 }));
-},{"./core":209,"./evpkdf":212}],209:[function(require,module,exports){
+},{"./core":216,"./evpkdf":219}],216:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -67403,7 +71288,7 @@ exports.constants = {
 	return CryptoJS;
 
 }));
-},{}],210:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -67539,7 +71424,7 @@ exports.constants = {
 	return CryptoJS.enc.Base64;
 
 }));
-},{"./core":209}],211:[function(require,module,exports){
+},{"./core":216}],218:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -67689,7 +71574,7 @@ exports.constants = {
 	return CryptoJS.enc.Utf16;
 
 }));
-},{"./core":209}],212:[function(require,module,exports){
+},{"./core":216}],219:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -67822,7 +71707,7 @@ exports.constants = {
 	return CryptoJS.EvpKDF;
 
 }));
-},{"./core":209,"./hmac":214,"./sha1":233}],213:[function(require,module,exports){
+},{"./core":216,"./hmac":221,"./sha1":240}],220:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -67889,7 +71774,7 @@ exports.constants = {
 	return CryptoJS.format.Hex;
 
 }));
-},{"./cipher-core":208,"./core":209}],214:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],221:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68033,7 +71918,7 @@ exports.constants = {
 
 
 }));
-},{"./core":209}],215:[function(require,module,exports){
+},{"./core":216}],222:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68052,7 +71937,7 @@ exports.constants = {
 	return CryptoJS;
 
 }));
-},{"./aes":207,"./cipher-core":208,"./core":209,"./enc-base64":210,"./enc-utf16":211,"./evpkdf":212,"./format-hex":213,"./hmac":214,"./lib-typedarrays":216,"./md5":217,"./mode-cfb":218,"./mode-ctr":220,"./mode-ctr-gladman":219,"./mode-ecb":221,"./mode-ofb":222,"./pad-ansix923":223,"./pad-iso10126":224,"./pad-iso97971":225,"./pad-nopadding":226,"./pad-zeropadding":227,"./pbkdf2":228,"./rabbit":230,"./rabbit-legacy":229,"./rc4":231,"./ripemd160":232,"./sha1":233,"./sha224":234,"./sha256":235,"./sha3":236,"./sha384":237,"./sha512":238,"./tripledes":239,"./x64-core":240}],216:[function(require,module,exports){
+},{"./aes":214,"./cipher-core":215,"./core":216,"./enc-base64":217,"./enc-utf16":218,"./evpkdf":219,"./format-hex":220,"./hmac":221,"./lib-typedarrays":223,"./md5":224,"./mode-cfb":225,"./mode-ctr":227,"./mode-ctr-gladman":226,"./mode-ecb":228,"./mode-ofb":229,"./pad-ansix923":230,"./pad-iso10126":231,"./pad-iso97971":232,"./pad-nopadding":233,"./pad-zeropadding":234,"./pbkdf2":235,"./rabbit":237,"./rabbit-legacy":236,"./rc4":238,"./ripemd160":239,"./sha1":240,"./sha224":241,"./sha256":242,"./sha3":243,"./sha384":244,"./sha512":245,"./tripledes":246,"./x64-core":247}],223:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68129,7 +72014,7 @@ exports.constants = {
 	return CryptoJS.lib.WordArray;
 
 }));
-},{"./core":209}],217:[function(require,module,exports){
+},{"./core":216}],224:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68398,7 +72283,7 @@ exports.constants = {
 	return CryptoJS.MD5;
 
 }));
-},{"./core":209}],218:[function(require,module,exports){
+},{"./core":216}],225:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68477,7 +72362,7 @@ exports.constants = {
 	return CryptoJS.mode.CFB;
 
 }));
-},{"./cipher-core":208,"./core":209}],219:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],226:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68594,7 +72479,7 @@ exports.constants = {
 	return CryptoJS.mode.CTRGladman;
 
 }));
-},{"./cipher-core":208,"./core":209}],220:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],227:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68653,7 +72538,7 @@ exports.constants = {
 	return CryptoJS.mode.CTR;
 
 }));
-},{"./cipher-core":208,"./core":209}],221:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],228:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68694,7 +72579,7 @@ exports.constants = {
 	return CryptoJS.mode.ECB;
 
 }));
-},{"./cipher-core":208,"./core":209}],222:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],229:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68749,7 +72634,7 @@ exports.constants = {
 	return CryptoJS.mode.OFB;
 
 }));
-},{"./cipher-core":208,"./core":209}],223:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],230:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68799,7 +72684,7 @@ exports.constants = {
 	return CryptoJS.pad.Ansix923;
 
 }));
-},{"./cipher-core":208,"./core":209}],224:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],231:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68844,7 +72729,7 @@ exports.constants = {
 	return CryptoJS.pad.Iso10126;
 
 }));
-},{"./cipher-core":208,"./core":209}],225:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],232:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68885,7 +72770,7 @@ exports.constants = {
 	return CryptoJS.pad.Iso97971;
 
 }));
-},{"./cipher-core":208,"./core":209}],226:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],233:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68916,7 +72801,7 @@ exports.constants = {
 	return CryptoJS.pad.NoPadding;
 
 }));
-},{"./cipher-core":208,"./core":209}],227:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],234:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -68962,7 +72847,7 @@ exports.constants = {
 	return CryptoJS.pad.ZeroPadding;
 
 }));
-},{"./cipher-core":208,"./core":209}],228:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216}],235:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -69108,7 +72993,7 @@ exports.constants = {
 	return CryptoJS.PBKDF2;
 
 }));
-},{"./core":209,"./hmac":214,"./sha1":233}],229:[function(require,module,exports){
+},{"./core":216,"./hmac":221,"./sha1":240}],236:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -69299,7 +73184,7 @@ exports.constants = {
 	return CryptoJS.RabbitLegacy;
 
 }));
-},{"./cipher-core":208,"./core":209,"./enc-base64":210,"./evpkdf":212,"./md5":217}],230:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216,"./enc-base64":217,"./evpkdf":219,"./md5":224}],237:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -69492,7 +73377,7 @@ exports.constants = {
 	return CryptoJS.Rabbit;
 
 }));
-},{"./cipher-core":208,"./core":209,"./enc-base64":210,"./evpkdf":212,"./md5":217}],231:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216,"./enc-base64":217,"./evpkdf":219,"./md5":224}],238:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -69632,7 +73517,7 @@ exports.constants = {
 	return CryptoJS.RC4;
 
 }));
-},{"./cipher-core":208,"./core":209,"./enc-base64":210,"./evpkdf":212,"./md5":217}],232:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216,"./enc-base64":217,"./evpkdf":219,"./md5":224}],239:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -69900,7 +73785,7 @@ exports.constants = {
 	return CryptoJS.RIPEMD160;
 
 }));
-},{"./core":209}],233:[function(require,module,exports){
+},{"./core":216}],240:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -70051,7 +73936,7 @@ exports.constants = {
 	return CryptoJS.SHA1;
 
 }));
-},{"./core":209}],234:[function(require,module,exports){
+},{"./core":216}],241:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -70132,7 +74017,7 @@ exports.constants = {
 	return CryptoJS.SHA224;
 
 }));
-},{"./core":209,"./sha256":235}],235:[function(require,module,exports){
+},{"./core":216,"./sha256":242}],242:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -70332,7 +74217,7 @@ exports.constants = {
 	return CryptoJS.SHA256;
 
 }));
-},{"./core":209}],236:[function(require,module,exports){
+},{"./core":216}],243:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -70656,7 +74541,7 @@ exports.constants = {
 	return CryptoJS.SHA3;
 
 }));
-},{"./core":209,"./x64-core":240}],237:[function(require,module,exports){
+},{"./core":216,"./x64-core":247}],244:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -70740,7 +74625,7 @@ exports.constants = {
 	return CryptoJS.SHA384;
 
 }));
-},{"./core":209,"./sha512":238,"./x64-core":240}],238:[function(require,module,exports){
+},{"./core":216,"./sha512":245,"./x64-core":247}],245:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -71064,7 +74949,7 @@ exports.constants = {
 	return CryptoJS.SHA512;
 
 }));
-},{"./core":209,"./x64-core":240}],239:[function(require,module,exports){
+},{"./core":216,"./x64-core":247}],246:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -71835,7 +75720,7 @@ exports.constants = {
 	return CryptoJS.TripleDES;
 
 }));
-},{"./cipher-core":208,"./core":209,"./enc-base64":210,"./evpkdf":212,"./md5":217}],240:[function(require,module,exports){
+},{"./cipher-core":215,"./core":216,"./enc-base64":217,"./evpkdf":219,"./md5":224}],247:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -72140,7 +76025,7 @@ exports.constants = {
 	return CryptoJS;
 
 }));
-},{"./core":209}],241:[function(require,module,exports){
+},{"./core":216}],248:[function(require,module,exports){
 'use strict';
 var token = '%[a-f0-9]{2}';
 var singleMatcher = new RegExp(token, 'gi');
@@ -72236,7 +76121,7 @@ module.exports = function (encodedURI) {
 	}
 };
 
-},{}],242:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 'use strict';
 
 exports.utils = require('./des/utils');
@@ -72245,7 +76130,7 @@ exports.DES = require('./des/des');
 exports.CBC = require('./des/cbc');
 exports.EDE = require('./des/ede');
 
-},{"./des/cbc":243,"./des/cipher":244,"./des/des":245,"./des/ede":246,"./des/utils":247}],243:[function(require,module,exports){
+},{"./des/cbc":250,"./des/cipher":251,"./des/des":252,"./des/ede":253,"./des/utils":254}],250:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -72312,7 +76197,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
   }
 };
 
-},{"inherits":300,"minimalistic-assert":317}],244:[function(require,module,exports){
+},{"inherits":307,"minimalistic-assert":323}],251:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -72455,7 +76340,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
   return this._unpad(out);
 };
 
-},{"minimalistic-assert":317}],245:[function(require,module,exports){
+},{"minimalistic-assert":323}],252:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -72600,7 +76485,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
   utils.rip(l, r, out, off);
 };
 
-},{"../des":242,"inherits":300,"minimalistic-assert":317}],246:[function(require,module,exports){
+},{"../des":249,"inherits":307,"minimalistic-assert":323}],253:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -72657,7 +76542,7 @@ EDE.prototype._update = function _update(inp, inOff, out, outOff) {
 EDE.prototype._pad = DES.prototype._pad;
 EDE.prototype._unpad = DES.prototype._unpad;
 
-},{"../des":242,"inherits":300,"minimalistic-assert":317}],247:[function(require,module,exports){
+},{"../des":249,"inherits":307,"minimalistic-assert":323}],254:[function(require,module,exports){
 'use strict';
 
 exports.readUInt32BE = function readUInt32BE(bytes, off) {
@@ -72915,7 +76800,7 @@ exports.padSplit = function padSplit(num, size, group) {
   return out.join(' ');
 };
 
-},{}],248:[function(require,module,exports){
+},{}],255:[function(require,module,exports){
 (function (Buffer){
 var generatePrime = require('./lib/generatePrime')
 var primes = require('./lib/primes.json')
@@ -72961,7 +76846,7 @@ exports.DiffieHellmanGroup = exports.createDiffieHellmanGroup = exports.getDiffi
 exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/dh":249,"./lib/generatePrime":250,"./lib/primes.json":251,"buffer":197}],249:[function(require,module,exports){
+},{"./lib/dh":256,"./lib/generatePrime":257,"./lib/primes.json":258,"buffer":205}],256:[function(require,module,exports){
 (function (Buffer){
 var BN = require('bn.js');
 var MillerRabin = require('miller-rabin');
@@ -73129,7 +77014,7 @@ function formatReturnValue(bn, enc) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./generatePrime":250,"bn.js":165,"buffer":197,"miller-rabin":316,"randombytes":352}],250:[function(require,module,exports){
+},{"./generatePrime":257,"bn.js":171,"buffer":205,"miller-rabin":322,"randombytes":357}],257:[function(require,module,exports){
 var randomBytes = require('randombytes');
 module.exports = findPrime;
 findPrime.simpleSieve = simpleSieve;
@@ -73236,7 +77121,7 @@ function findPrime(bits, gen) {
 
 }
 
-},{"bn.js":165,"miller-rabin":316,"randombytes":352}],251:[function(require,module,exports){
+},{"bn.js":171,"miller-rabin":322,"randombytes":357}],258:[function(require,module,exports){
 module.exports={
     "modp1": {
         "gen": "02",
@@ -73271,7 +77156,7 @@ module.exports={
         "prime": "ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c93402849236c3fab4d27c7026c1d4dcb2602646dec9751e763dba37bdf8ff9406ad9e530ee5db382f413001aeb06a53ed9027d831179727b0865a8918da3edbebcf9b14ed44ce6cbaced4bb1bdb7f1447e6cc254b332051512bd7af426fb8f401378cd2bf5983ca01c64b92ecf032ea15d1721d03f482d7ce6e74fef6d55e702f46980c82b5a84031900b1c9e59e7c97fbec7e8f323a97a7e36cc88be0f1d45b7ff585ac54bd407b22b4154aacc8f6d7ebf48e1d814cc5ed20f8037e0a79715eef29be32806a1d58bb7c5da76f550aa3d8a1fbff0eb19ccb1a313d55cda56c9ec2ef29632387fe8d76e3c0468043e8f663f4860ee12bf2d5b0b7474d6e694f91e6dbe115974a3926f12fee5e438777cb6a932df8cd8bec4d073b931ba3bc832b68d9dd300741fa7bf8afc47ed2576f6936ba424663aab639c5ae4f5683423b4742bf1c978238f16cbe39d652de3fdb8befc848ad922222e04a4037c0713eb57a81a23f0c73473fc646cea306b4bcbc8862f8385ddfa9d4b7fa2c087e879683303ed5bdd3a062b3cf5b3a278a66d2a13f83f44f82ddf310ee074ab6a364597e899a0255dc164f31cc50846851df9ab48195ded7ea1b1d510bd7ee74d73faf36bc31ecfa268359046f4eb879f924009438b481c6cd7889a002ed5ee382bc9190da6fc026e479558e4475677e9aa9e3050e2765694dfc81f56e880b96e7160c980dd98edd3dfffffffffffffffff"
     }
 }
-},{}],252:[function(require,module,exports){
+},{}],259:[function(require,module,exports){
 'use strict';
 
 var elliptic = exports;
@@ -73286,7 +77171,7 @@ elliptic.curves = require('./elliptic/curves');
 elliptic.ec = require('./elliptic/ec');
 elliptic.eddsa = require('./elliptic/eddsa');
 
-},{"../package.json":267,"./elliptic/curve":255,"./elliptic/curves":258,"./elliptic/ec":259,"./elliptic/eddsa":262,"./elliptic/utils":266,"brorand":166}],253:[function(require,module,exports){
+},{"../package.json":274,"./elliptic/curve":262,"./elliptic/curves":265,"./elliptic/ec":266,"./elliptic/eddsa":269,"./elliptic/utils":273,"brorand":172}],260:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -73663,7 +77548,7 @@ BasePoint.prototype.dblp = function dblp(k) {
   return r;
 };
 
-},{"../../elliptic":252,"bn.js":165}],254:[function(require,module,exports){
+},{"../../elliptic":259,"bn.js":171}],261:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -73740,10 +77625,10 @@ EdwardsCurve.prototype.pointFromY = function pointFromY(y, odd) {
   if (!y.red)
     y = y.toRed(this.red);
 
-  // x^2 = (y^2 - 1) / (d y^2 + 1)
+  // x^2 = (y^2 - c^2) / (c^2 d y^2 - a)
   var y2 = y.redSqr();
-  var lhs = y2.redSub(this.one);
-  var rhs = y2.redMul(this.d).redAdd(this.one);
+  var lhs = y2.redSub(this.c2);
+  var rhs = y2.redMul(this.d).redMul(this.c2).redSub(this.a);
   var x2 = lhs.redMul(rhs.redInvm());
 
   if (x2.cmp(this.zero) === 0) {
@@ -73757,7 +77642,7 @@ EdwardsCurve.prototype.pointFromY = function pointFromY(y, odd) {
   if (x.redSqr().redSub(x2).cmp(this.zero) !== 0)
     throw new Error('invalid point');
 
-  if (x.isOdd() !== odd)
+  if (x.fromRed().isOdd() !== odd)
     x = x.redNeg();
 
   return this.point(x, y);
@@ -73834,7 +77719,8 @@ Point.prototype.inspect = function inspect() {
 Point.prototype.isInfinity = function isInfinity() {
   // XXX This code assumes that zero is always zero in red
   return this.x.cmpn(0) === 0 &&
-         this.y.cmp(this.z) === 0;
+    (this.y.cmp(this.z) === 0 ||
+    (this.zOne && this.y.cmp(this.curve.c) === 0));
 };
 
 Point.prototype._extDbl = function _extDbl() {
@@ -73915,7 +77801,7 @@ Point.prototype._projDbl = function _projDbl() {
     // E = C + D
     var e = c.redAdd(d);
     // H = (c * Z1)^2
-    var h = this.curve._mulC(this.c.redMul(this.z)).redSqr();
+    var h = this.curve._mulC(this.z).redSqr();
     // J = E - 2 * H
     var j = e.redSub(h).redSub(h);
     // X3 = c * (B - E) * J
@@ -74091,14 +77977,13 @@ Point.prototype.eqXToP = function eqXToP(x) {
     if (this.x.cmp(rx) === 0)
       return true;
   }
-  return false;
 };
 
 // Compatibility with BaseCurve
 Point.prototype.toP = Point.prototype.normalize;
 Point.prototype.mixedAdd = Point.prototype.add;
 
-},{"../../elliptic":252,"../curve":255,"bn.js":165,"inherits":300}],255:[function(require,module,exports){
+},{"../../elliptic":259,"../curve":262,"bn.js":171,"inherits":307}],262:[function(require,module,exports){
 'use strict';
 
 var curve = exports;
@@ -74108,7 +77993,7 @@ curve.short = require('./short');
 curve.mont = require('./mont');
 curve.edwards = require('./edwards');
 
-},{"./base":253,"./edwards":254,"./mont":256,"./short":257}],256:[function(require,module,exports){
+},{"./base":260,"./edwards":261,"./mont":263,"./short":264}],263:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -74290,7 +78175,7 @@ Point.prototype.getX = function getX() {
   return this.x.fromRed();
 };
 
-},{"../../elliptic":252,"../curve":255,"bn.js":165,"inherits":300}],257:[function(require,module,exports){
+},{"../../elliptic":259,"../curve":262,"bn.js":171,"inherits":307}],264:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -75214,7 +79099,6 @@ JPoint.prototype.eqXToP = function eqXToP(x) {
     if (this.x.cmp(rx) === 0)
       return true;
   }
-  return false;
 };
 
 JPoint.prototype.inspect = function inspect() {
@@ -75230,7 +79114,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
   return this.z.cmpn(0) === 0;
 };
 
-},{"../../elliptic":252,"../curve":255,"bn.js":165,"inherits":300}],258:[function(require,module,exports){
+},{"../../elliptic":259,"../curve":262,"bn.js":171,"inherits":307}],265:[function(require,module,exports){
 'use strict';
 
 var curves = exports;
@@ -75437,7 +79321,7 @@ defineCurve('secp256k1', {
   ]
 });
 
-},{"../elliptic":252,"./precomputed/secp256k1":265,"hash.js":285}],259:[function(require,module,exports){
+},{"../elliptic":259,"./precomputed/secp256k1":272,"hash.js":292}],266:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -75679,7 +79563,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
   throw new Error('Unable to find valid recovery factor');
 };
 
-},{"../../elliptic":252,"./key":260,"./signature":261,"bn.js":165,"hmac-drbg":297}],260:[function(require,module,exports){
+},{"../../elliptic":259,"./key":267,"./signature":268,"bn.js":171,"hmac-drbg":304}],267:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -75800,7 +79684,7 @@ KeyPair.prototype.inspect = function inspect() {
          ' pub: ' + (this.pub && this.pub.inspect()) + ' >';
 };
 
-},{"../../elliptic":252,"bn.js":165}],261:[function(require,module,exports){
+},{"../../elliptic":259,"bn.js":171}],268:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -75937,7 +79821,7 @@ Signature.prototype.toDER = function toDER(enc) {
   return utils.encode(res, enc);
 };
 
-},{"../../elliptic":252,"bn.js":165}],262:[function(require,module,exports){
+},{"../../elliptic":259,"bn.js":171}],269:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -76057,7 +79941,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
   return val instanceof this.pointClass;
 };
 
-},{"../../elliptic":252,"./key":263,"./signature":264,"hash.js":285}],263:[function(require,module,exports){
+},{"../../elliptic":259,"./key":270,"./signature":271,"hash.js":292}],270:[function(require,module,exports){
 'use strict';
 
 var elliptic = require('../../elliptic');
@@ -76155,7 +80039,7 @@ KeyPair.prototype.getPublic = function getPublic(enc) {
 
 module.exports = KeyPair;
 
-},{"../../elliptic":252}],264:[function(require,module,exports){
+},{"../../elliptic":259}],271:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -76223,7 +80107,7 @@ Signature.prototype.toHex = function toHex() {
 
 module.exports = Signature;
 
-},{"../../elliptic":252,"bn.js":165}],265:[function(require,module,exports){
+},{"../../elliptic":259,"bn.js":171}],272:[function(require,module,exports){
 module.exports = {
   doubles: {
     step: 4,
@@ -77005,7 +80889,7 @@ module.exports = {
   }
 };
 
-},{}],266:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -77127,32 +81011,35 @@ function intFromLE(bytes) {
 utils.intFromLE = intFromLE;
 
 
-},{"bn.js":165,"minimalistic-assert":317,"minimalistic-crypto-utils":318}],267:[function(require,module,exports){
+},{"bn.js":171,"minimalistic-assert":323,"minimalistic-crypto-utils":324}],274:[function(require,module,exports){
 module.exports={
-  "_from": "elliptic@^6.0.0",
-  "_id": "elliptic@6.4.0",
+  "_from": "elliptic@^6.2.3",
+  "_id": "elliptic@6.4.1",
   "_inBundle": false,
-  "_integrity": "sha1-ysmvh2LIWDYYcAPI3+GT5eLq5d8=",
+  "_integrity": "sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==",
   "_location": "/elliptic",
   "_phantomChildren": {},
   "_requested": {
     "type": "range",
     "registry": true,
-    "raw": "elliptic@^6.0.0",
+    "raw": "elliptic@^6.2.3",
     "name": "elliptic",
     "escapedName": "elliptic",
-    "rawSpec": "^6.0.0",
+    "rawSpec": "^6.2.3",
     "saveSpec": null,
-    "fetchSpec": "^6.0.0"
+    "fetchSpec": "^6.2.3"
   },
   "_requiredBy": [
     "/browserify-sign",
-    "/create-ecdh"
+    "/create-ecdh",
+    "/eth-lib",
+    "/secp256k1",
+    "/web3-eth-accounts/eth-lib"
   ],
-  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.0.tgz",
-  "_shasum": "cac9af8762c85836187003c8dfe193e5e2eae5df",
-  "_spec": "elliptic@^6.0.0",
-  "_where": "/home/travis/build/ccxt/ccxt/node_modules/browserify-sign",
+  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
+  "_shasum": "c2d0b7776911b86722c632c3c06c60f2f819939a",
+  "_spec": "elliptic@^6.2.3",
+  "_where": "/home/travis/build/ccxt/ccxt/node_modules/secp256k1",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -77213,10 +81100,10 @@ module.exports={
     "unit": "istanbul test _mocha --reporter=spec test/index.js",
     "version": "grunt dist && git add dist/"
   },
-  "version": "6.4.0"
+  "version": "6.4.1"
 }
 
-},{}],268:[function(require,module,exports){
+},{}],275:[function(require,module,exports){
 var generate = function generate(num, fn) {
   var a = [];
   for (var i = 0; i < num; ++i) {
@@ -77257,7 +81144,7 @@ module.exports = {
   flatten: flatten,
   chunksOf: chunksOf
 };
-},{}],269:[function(require,module,exports){
+},{}],276:[function(require,module,exports){
 var A = require("./array.js");
 
 var at = function at(bytes, index) {
@@ -77446,7 +81333,7 @@ module.exports = {
   fromUint8Array: fromUint8Array,
   toUint8Array: toUint8Array
 };
-},{"./array.js":268}],270:[function(require,module,exports){
+},{"./array.js":275}],277:[function(require,module,exports){
 // This was ported from https://github.com/emn178/js-sha3, with some minor
 // modifications and pruning. It is licensed under MIT:
 //
@@ -77786,10 +81673,10 @@ module.exports = {
   keccak256s: keccak(256),
   keccak512s: keccak(512)
 };
-},{}],271:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 module.exports = require('./lib/index.js')
 
-},{"./lib/index.js":272}],272:[function(require,module,exports){
+},{"./lib/index.js":279}],279:[function(require,module,exports){
 (function (Buffer){
 const utils = require('ethereumjs-util')
 const BN = require('bn.js')
@@ -78350,7 +82237,7 @@ ABI.toSerpent = function (types) {
 module.exports = ABI
 
 }).call(this,require("buffer").Buffer)
-},{"bn.js":165,"buffer":197,"ethereumjs-util":273}],273:[function(require,module,exports){
+},{"bn.js":171,"buffer":205,"ethereumjs-util":280}],280:[function(require,module,exports){
 (function (Buffer){
 const SHA3 = require('keccakjs')
 const secp256k1 = require('secp256k1')
@@ -79055,7 +82942,7 @@ exports.defineProperties = function (self, fields, data) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"assert":161,"bn.js":165,"buffer":197,"create-hash":201,"keccakjs":313,"rlp":371,"secp256k1":375}],274:[function(require,module,exports){
+},{"assert":164,"bn.js":171,"buffer":205,"create-hash":209,"keccakjs":320,"rlp":376,"secp256k1":380}],281:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -79771,7 +83658,7 @@ exports.defineProperties = function (self, fields, data) {
     }
   }
 };
-},{"assert":161,"bn.js":165,"create-hash":201,"ethjs-util":277,"keccak":307,"rlp":371,"safe-buffer":372,"secp256k1":375}],275:[function(require,module,exports){
+},{"assert":164,"bn.js":171,"create-hash":209,"ethjs-util":284,"keccak":314,"rlp":376,"safe-buffer":377,"secp256k1":380}],282:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -79940,7 +83827,7 @@ module.exports = {
   fromWei: fromWei,
   toWei: toWei
 };
-},{"bn.js":276,"number-to-bn":320}],276:[function(require,module,exports){
+},{"bn.js":283,"number-to-bn":326}],283:[function(require,module,exports){
 (function (module, exports) {
   'use strict';
 
@@ -83369,7 +87256,7 @@ module.exports = {
   };
 })(typeof module === 'undefined' || module, this);
 
-},{}],277:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -83592,7 +87479,7 @@ module.exports = {
   isHexString: isHexString
 };
 }).call(this,require("buffer").Buffer)
-},{"buffer":197,"is-hex-prefixed":304,"strip-hex-prefix":392}],278:[function(require,module,exports){
+},{"buffer":205,"is-hex-prefixed":311,"strip-hex-prefix":397}],285:[function(require,module,exports){
 'use strict';
 
 //
@@ -83856,7 +87743,7 @@ if ('undefined' !== typeof module) {
   module.exports = EventEmitter;
 }
 
-},{}],279:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -84160,7 +88047,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],280:[function(require,module,exports){
+},{}],287:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var MD5 = require('md5.js')
 
@@ -84207,7 +88094,7 @@ function EVP_BytesToKey (password, salt, keyBits, ivLen) {
 
 module.exports = EVP_BytesToKey
 
-},{"md5.js":314,"safe-buffer":372}],281:[function(require,module,exports){
+},{"md5.js":321,"safe-buffer":377}],288:[function(require,module,exports){
 (function (self) {
   'use strict';
 
@@ -84708,7 +88595,7 @@ module.exports = EVP_BytesToKey
 }(typeof self === 'undefined' ? this : self));
 
 
-},{}],282:[function(require,module,exports){
+},{}],289:[function(require,module,exports){
 'use strict';
 
 var isCallable = require('is-callable');
@@ -84772,7 +88659,7 @@ var forEach = function forEach(list, iterator, thisArg) {
 
 module.exports = forEach;
 
-},{"is-callable":302}],283:[function(require,module,exports){
+},{"is-callable":309}],290:[function(require,module,exports){
 (function (global){
 var win;
 
@@ -84789,16 +88676,22 @@ if (typeof window !== "undefined") {
 module.exports = win;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],284:[function(require,module,exports){
-(function (Buffer){
+},{}],291:[function(require,module,exports){
 'use strict'
+var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
 var inherits = require('inherits')
+
+function throwIfNotStringOrBuffer (val, prefix) {
+  if (!Buffer.isBuffer(val) && typeof val !== 'string') {
+    throw new TypeError(prefix + ' must be a string or a buffer')
+  }
+}
 
 function HashBase (blockSize) {
   Transform.call(this)
 
-  this._block = new Buffer(blockSize)
+  this._block = Buffer.allocUnsafe(blockSize)
   this._blockSize = blockSize
   this._blockOffset = 0
   this._length = [0, 0, 0, 0]
@@ -84811,8 +88704,7 @@ inherits(HashBase, Transform)
 HashBase.prototype._transform = function (chunk, encoding, callback) {
   var error = null
   try {
-    if (encoding !== 'buffer') chunk = new Buffer(chunk, encoding)
-    this.update(chunk)
+    this.update(chunk, encoding)
   } catch (err) {
     error = err
   }
@@ -84823,7 +88715,7 @@ HashBase.prototype._transform = function (chunk, encoding, callback) {
 HashBase.prototype._flush = function (callback) {
   var error = null
   try {
-    this.push(this._digest())
+    this.push(this.digest())
   } catch (err) {
     error = err
   }
@@ -84832,9 +88724,9 @@ HashBase.prototype._flush = function (callback) {
 }
 
 HashBase.prototype.update = function (data, encoding) {
-  if (!Buffer.isBuffer(data) && typeof data !== 'string') throw new TypeError('Data must be a string or a buffer')
+  throwIfNotStringOrBuffer(data, 'Data')
   if (this._finalized) throw new Error('Digest already called')
-  if (!Buffer.isBuffer(data)) data = new Buffer(data, encoding || 'binary')
+  if (!Buffer.isBuffer(data)) data = Buffer.from(data, encoding)
 
   // consume data
   var block = this._block
@@ -84856,7 +88748,7 @@ HashBase.prototype.update = function (data, encoding) {
   return this
 }
 
-HashBase.prototype._update = function (data) {
+HashBase.prototype._update = function () {
   throw new Error('_update is not implemented')
 }
 
@@ -84866,6 +88758,12 @@ HashBase.prototype.digest = function (encoding) {
 
   var digest = this._digest()
   if (encoding !== undefined) digest = digest.toString(encoding)
+
+  // reset state
+  this._block.fill(0)
+  this._blockOffset = 0
+  for (var i = 0; i < 4; ++i) this._length[i] = 0
+
   return digest
 }
 
@@ -84875,8 +88773,7 @@ HashBase.prototype._digest = function () {
 
 module.exports = HashBase
 
-}).call(this,require("buffer").Buffer)
-},{"buffer":197,"inherits":300,"stream":389}],285:[function(require,module,exports){
+},{"inherits":307,"safe-buffer":377,"stream":394}],292:[function(require,module,exports){
 var hash = exports;
 
 hash.utils = require('./hash/utils');
@@ -84893,7 +88790,7 @@ hash.sha384 = hash.sha.sha384;
 hash.sha512 = hash.sha.sha512;
 hash.ripemd160 = hash.ripemd.ripemd160;
 
-},{"./hash/common":286,"./hash/hmac":287,"./hash/ripemd":288,"./hash/sha":289,"./hash/utils":296}],286:[function(require,module,exports){
+},{"./hash/common":293,"./hash/hmac":294,"./hash/ripemd":295,"./hash/sha":296,"./hash/utils":303}],293:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -84987,7 +88884,7 @@ BlockHash.prototype._pad = function pad() {
   return res;
 };
 
-},{"./utils":296,"minimalistic-assert":317}],287:[function(require,module,exports){
+},{"./utils":303,"minimalistic-assert":323}],294:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -85036,7 +88933,7 @@ Hmac.prototype.digest = function digest(enc) {
   return this.outer.digest(enc);
 };
 
-},{"./utils":296,"minimalistic-assert":317}],288:[function(require,module,exports){
+},{"./utils":303,"minimalistic-assert":323}],295:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -85184,7 +89081,7 @@ var sh = [
   8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
 ];
 
-},{"./common":286,"./utils":296}],289:[function(require,module,exports){
+},{"./common":293,"./utils":303}],296:[function(require,module,exports){
 'use strict';
 
 exports.sha1 = require('./sha/1');
@@ -85193,7 +89090,7 @@ exports.sha256 = require('./sha/256');
 exports.sha384 = require('./sha/384');
 exports.sha512 = require('./sha/512');
 
-},{"./sha/1":290,"./sha/224":291,"./sha/256":292,"./sha/384":293,"./sha/512":294}],290:[function(require,module,exports){
+},{"./sha/1":297,"./sha/224":298,"./sha/256":299,"./sha/384":300,"./sha/512":301}],297:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -85269,7 +89166,7 @@ SHA1.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":286,"../utils":296,"./common":295}],291:[function(require,module,exports){
+},{"../common":293,"../utils":303,"./common":302}],298:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -85301,7 +89198,7 @@ SHA224.prototype._digest = function digest(enc) {
 };
 
 
-},{"../utils":296,"./256":292}],292:[function(require,module,exports){
+},{"../utils":303,"./256":299}],299:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -85408,7 +89305,7 @@ SHA256.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":286,"../utils":296,"./common":295,"minimalistic-assert":317}],293:[function(require,module,exports){
+},{"../common":293,"../utils":303,"./common":302,"minimalistic-assert":323}],300:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -85445,7 +89342,7 @@ SHA384.prototype._digest = function digest(enc) {
     return utils.split32(this.h.slice(0, 12), 'big');
 };
 
-},{"../utils":296,"./512":294}],294:[function(require,module,exports){
+},{"../utils":303,"./512":301}],301:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -85777,7 +89674,7 @@ function g1_512_lo(xh, xl) {
   return r;
 }
 
-},{"../common":286,"../utils":296,"minimalistic-assert":317}],295:[function(require,module,exports){
+},{"../common":293,"../utils":303,"minimalistic-assert":323}],302:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -85828,7 +89725,7 @@ function g1_256(x) {
 }
 exports.g1_256 = g1_256;
 
-},{"../utils":296}],296:[function(require,module,exports){
+},{"../utils":303}],303:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -86083,7 +89980,7 @@ function shr64_lo(ah, al, num) {
 }
 exports.shr64_lo = shr64_lo;
 
-},{"inherits":300,"minimalistic-assert":317}],297:[function(require,module,exports){
+},{"inherits":307,"minimalistic-assert":323}],304:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -86198,10 +90095,10 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
   return utils.encode(res, enc);
 };
 
-},{"hash.js":285,"minimalistic-assert":317,"minimalistic-crypto-utils":318}],298:[function(require,module,exports){
+},{"hash.js":292,"minimalistic-assert":323,"minimalistic-crypto-utils":324}],305:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
-  var eLen = nBytes * 8 - mLen - 1
+  var eLen = (nBytes * 8) - mLen - 1
   var eMax = (1 << eLen) - 1
   var eBias = eMax >> 1
   var nBits = -7
@@ -86214,12 +90111,12 @@ exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   e = s & ((1 << (-nBits)) - 1)
   s >>= (-nBits)
   nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
 
   m = e & ((1 << (-nBits)) - 1)
   e >>= (-nBits)
   nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
 
   if (e === 0) {
     e = 1 - eBias
@@ -86234,7 +90131,7 @@ exports.read = function (buffer, offset, isLE, mLen, nBytes) {
 
 exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
+  var eLen = (nBytes * 8) - mLen - 1
   var eMax = (1 << eLen) - 1
   var eBias = eMax >> 1
   var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
@@ -86267,7 +90164,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
       m = 0
       e = eMax
     } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
+      m = ((value * c) - 1) * Math.pow(2, mLen)
       e = e + eBias
     } else {
       m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
@@ -86284,7 +90181,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],299:[function(require,module,exports){
+},{}],306:[function(require,module,exports){
 
 var indexOf = [].indexOf;
 
@@ -86295,32 +90192,9 @@ module.exports = function(arr, obj){
   }
   return -1;
 };
-},{}],300:[function(require,module,exports){
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-},{}],301:[function(require,module,exports){
+},{}],307:[function(require,module,exports){
+arguments[4][165][0].apply(exports,arguments)
+},{"dup":165}],308:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -86343,7 +90217,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],302:[function(require,module,exports){
+},{}],309:[function(require,module,exports){
 'use strict';
 
 var fnToStr = Function.prototype.toString;
@@ -86382,7 +90256,7 @@ module.exports = function isCallable(value) {
 	return strClass === fnClass || strClass === genClass;
 };
 
-},{}],303:[function(require,module,exports){
+},{}],310:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -86399,7 +90273,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],304:[function(require,module,exports){
+},{}],311:[function(require,module,exports){
 /**
  * Returns a `Boolean` on whether or not the a `String` starts with '0x'
  * @param {String} str the string input value
@@ -86414,14 +90288,14 @@ module.exports = function isHexPrefixed(str) {
   return str.slice(0, 2) === '0x';
 }
 
-},{}],305:[function(require,module,exports){
+},{}],312:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],306:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
 (function (global){
 /*
  * js-sha3 v0.3.1
@@ -86857,11 +90731,11 @@ module.exports = Array.isArray || function (arr) {
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],307:[function(require,module,exports){
+},{}],314:[function(require,module,exports){
 'use strict'
 module.exports = require('./lib/api')(require('./lib/keccak'))
 
-},{"./lib/api":308,"./lib/keccak":312}],308:[function(require,module,exports){
+},{"./lib/api":315,"./lib/keccak":319}],315:[function(require,module,exports){
 'use strict'
 var createKeccak = require('./keccak')
 var createShake = require('./shake')
@@ -86891,7 +90765,7 @@ module.exports = function (KeccakState) {
   }
 }
 
-},{"./keccak":309,"./shake":310}],309:[function(require,module,exports){
+},{"./keccak":316,"./shake":317}],316:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
@@ -86977,7 +90851,7 @@ module.exports = function (KeccakState) {
   return Keccak
 }
 
-},{"inherits":300,"safe-buffer":372,"stream":389}],310:[function(require,module,exports){
+},{"inherits":307,"safe-buffer":377,"stream":394}],317:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
@@ -87054,7 +90928,7 @@ module.exports = function (KeccakState) {
   return Shake
 }
 
-},{"inherits":300,"safe-buffer":372,"stream":389}],311:[function(require,module,exports){
+},{"inherits":307,"safe-buffer":377,"stream":394}],318:[function(require,module,exports){
 'use strict'
 var P1600_ROUND_CONSTANTS = [1, 0, 32898, 0, 32906, 2147483648, 2147516416, 2147483648, 32907, 0, 2147483649, 0, 2147516545, 2147483648, 32777, 2147483648, 138, 0, 136, 0, 2147516425, 0, 2147483658, 0, 2147516555, 0, 139, 2147483648, 32905, 2147483648, 32771, 2147483648, 32770, 2147483648, 128, 2147483648, 32778, 0, 2147483658, 2147483648, 2147516545, 2147483648, 32896, 2147483648, 2147483649, 0, 2147516424, 2147483648]
 
@@ -87243,7 +91117,7 @@ exports.p1600 = function (s) {
   }
 }
 
-},{}],312:[function(require,module,exports){
+},{}],319:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var keccakState = require('./keccak-state-unroll')
@@ -87315,10 +91189,10 @@ Keccak.prototype.copy = function (dest) {
 
 module.exports = Keccak
 
-},{"./keccak-state-unroll":311,"safe-buffer":372}],313:[function(require,module,exports){
+},{"./keccak-state-unroll":318,"safe-buffer":377}],320:[function(require,module,exports){
 module.exports = require('browserify-sha3').SHA3Hash
 
-},{"browserify-sha3":189}],314:[function(require,module,exports){
+},{"browserify-sha3":195}],321:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var inherits = require('inherits')
@@ -87467,104 +91341,7 @@ function fnI (a, b, c, d, m, k, s) {
 module.exports = MD5
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":197,"hash-base":315,"inherits":300}],315:[function(require,module,exports){
-'use strict'
-var Buffer = require('safe-buffer').Buffer
-var Transform = require('stream').Transform
-var inherits = require('inherits')
-
-function throwIfNotStringOrBuffer (val, prefix) {
-  if (!Buffer.isBuffer(val) && typeof val !== 'string') {
-    throw new TypeError(prefix + ' must be a string or a buffer')
-  }
-}
-
-function HashBase (blockSize) {
-  Transform.call(this)
-
-  this._block = Buffer.allocUnsafe(blockSize)
-  this._blockSize = blockSize
-  this._blockOffset = 0
-  this._length = [0, 0, 0, 0]
-
-  this._finalized = false
-}
-
-inherits(HashBase, Transform)
-
-HashBase.prototype._transform = function (chunk, encoding, callback) {
-  var error = null
-  try {
-    this.update(chunk, encoding)
-  } catch (err) {
-    error = err
-  }
-
-  callback(error)
-}
-
-HashBase.prototype._flush = function (callback) {
-  var error = null
-  try {
-    this.push(this.digest())
-  } catch (err) {
-    error = err
-  }
-
-  callback(error)
-}
-
-HashBase.prototype.update = function (data, encoding) {
-  throwIfNotStringOrBuffer(data, 'Data')
-  if (this._finalized) throw new Error('Digest already called')
-  if (!Buffer.isBuffer(data)) data = Buffer.from(data, encoding)
-
-  // consume data
-  var block = this._block
-  var offset = 0
-  while (this._blockOffset + data.length - offset >= this._blockSize) {
-    for (var i = this._blockOffset; i < this._blockSize;) block[i++] = data[offset++]
-    this._update()
-    this._blockOffset = 0
-  }
-  while (offset < data.length) block[this._blockOffset++] = data[offset++]
-
-  // update length
-  for (var j = 0, carry = data.length * 8; carry > 0; ++j) {
-    this._length[j] += carry
-    carry = (this._length[j] / 0x0100000000) | 0
-    if (carry > 0) this._length[j] -= 0x0100000000 * carry
-  }
-
-  return this
-}
-
-HashBase.prototype._update = function () {
-  throw new Error('_update is not implemented')
-}
-
-HashBase.prototype.digest = function (encoding) {
-  if (this._finalized) throw new Error('Digest already called')
-  this._finalized = true
-
-  var digest = this._digest()
-  if (encoding !== undefined) digest = digest.toString(encoding)
-
-  // reset state
-  this._block.fill(0)
-  this._blockOffset = 0
-  for (var i = 0; i < 4; ++i) this._length[i] = 0
-
-  return digest
-}
-
-HashBase.prototype._digest = function () {
-  throw new Error('_digest is not implemented')
-}
-
-module.exports = HashBase
-
-},{"inherits":300,"safe-buffer":372,"stream":389}],316:[function(require,module,exports){
+},{"buffer":205,"hash-base":291,"inherits":307}],322:[function(require,module,exports){
 var bn = require('bn.js');
 var brorand = require('brorand');
 
@@ -87681,7 +91458,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
   return false;
 };
 
-},{"bn.js":165,"brorand":166}],317:[function(require,module,exports){
+},{"bn.js":171,"brorand":172}],323:[function(require,module,exports){
 module.exports = assert;
 
 function assert(val, msg) {
@@ -87694,7 +91471,7 @@ assert.equal = function assertEqual(l, r, msg) {
     throw new Error(msg || ('Assertion failed: ' + l + ' != ' + r));
 };
 
-},{}],318:[function(require,module,exports){
+},{}],324:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -87754,9 +91531,9 @@ utils.encode = function encode(arr, enc) {
     return arr;
 };
 
-},{}],319:[function(require,module,exports){
-arguments[4][276][0].apply(exports,arguments)
-},{"dup":276}],320:[function(require,module,exports){
+},{}],325:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],326:[function(require,module,exports){
 var BN = require('bn.js');
 var stripHexPrefix = require('strip-hex-prefix');
 
@@ -87796,7 +91573,7 @@ module.exports = function numberToBN(arg) {
   throw new Error('[number-to-bn] while converting number ' + JSON.stringify(arg) + ' to BN.js instance, error: invalid number value. Value must be an integer, hex string, BN or BigNumber instance. Note, decimals are not supported.');
 }
 
-},{"bn.js":319,"strip-hex-prefix":392}],321:[function(require,module,exports){
+},{"bn.js":325,"strip-hex-prefix":397}],327:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -87888,7 +91665,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],322:[function(require,module,exports){
+},{}],328:[function(require,module,exports){
 // This file is the concatenation of many js files.
 // See http://github.com/jimhigson/oboe.js for the raw source
 
@@ -90592,7 +94369,7 @@ oboe.drop = function() {
       }
    }()), Object, Array, Error, JSON);
 
-},{}],323:[function(require,module,exports){
+},{}],329:[function(require,module,exports){
 module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
@@ -90606,7 +94383,7 @@ module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.43": "aes-256-ofb",
 "2.16.840.1.101.3.4.1.44": "aes-256-cfb"
 }
-},{}],324:[function(require,module,exports){
+},{}],330:[function(require,module,exports){
 // from https://github.com/indutny/self-signed/blob/gh-pages/lib/asn1.js
 // Fedor, you are amazing.
 'use strict'
@@ -90730,7 +94507,7 @@ exports.signature = asn1.define('signature', function () {
   )
 })
 
-},{"./certificate":325,"asn1.js":147}],325:[function(require,module,exports){
+},{"./certificate":331,"asn1.js":150}],331:[function(require,module,exports){
 // from https://github.com/Rantanen/node-dtls/blob/25a7dc861bda38cfeac93a723500eea4f0ac2e86/Certificate.js
 // thanks to @Rantanen
 
@@ -90820,12 +94597,12 @@ var X509Certificate = asn.define('X509Certificate', function () {
 
 module.exports = X509Certificate
 
-},{"asn1.js":147}],326:[function(require,module,exports){
+},{"asn1.js":150}],332:[function(require,module,exports){
 (function (Buffer){
 // adapted from https://github.com/apatil/pemstrip
-var findProc = /Proc-Type: 4,ENCRYPTED\n\r?DEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)\n\r?\n\r?([0-9A-z\n\r\+\/\=]+)\n\r?/m
-var startRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----\n/m
-var fullRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----\n\r?([0-9A-z\n\r\+\/\=]+)\n\r?-----END \1-----$/m
+var findProc = /Proc-Type: 4,ENCRYPTED[\n\r]+DEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)[\n\r]+([0-9A-z\n\r\+\/\=]+)[\n\r]+/m
+var startRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----/m
+var fullRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----([0-9A-z\n\r\+\/\=]+)-----END \1-----$/m
 var evp = require('evp_bytestokey')
 var ciphers = require('browserify-aes')
 module.exports = function (okey, password) {
@@ -90834,11 +94611,11 @@ module.exports = function (okey, password) {
   var decrypted
   if (!match) {
     var match2 = key.match(fullRegex)
-    decrypted = new Buffer(match2[2].replace(/\r?\n/g, ''), 'base64')
+    decrypted = new Buffer(match2[2].replace(/[\r\n]/g, ''), 'base64')
   } else {
     var suite = 'aes' + match[1]
     var iv = new Buffer(match[2], 'hex')
-    var cipherText = new Buffer(match[3].replace(/\r?\n/g, ''), 'base64')
+    var cipherText = new Buffer(match[3].replace(/[\r\n]/g, ''), 'base64')
     var cipherKey = evp(password, iv.slice(0, 8), parseInt(match[1], 10)).key
     var out = []
     var cipher = ciphers.createDecipheriv(suite, cipherKey, iv)
@@ -90854,7 +94631,7 @@ module.exports = function (okey, password) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"browserify-aes":170,"buffer":197,"evp_bytestokey":280}],327:[function(require,module,exports){
+},{"browserify-aes":176,"buffer":205,"evp_bytestokey":287}],333:[function(require,module,exports){
 (function (Buffer){
 var asn1 = require('./asn1')
 var aesid = require('./aesid.json')
@@ -90964,7 +94741,7 @@ function decrypt (data, password) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./aesid.json":323,"./asn1":324,"./fixProc":326,"browserify-aes":170,"buffer":197,"pbkdf2":329}],328:[function(require,module,exports){
+},{"./aesid.json":329,"./asn1":330,"./fixProc":332,"browserify-aes":176,"buffer":205,"pbkdf2":335}],334:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -90996,13 +94773,11 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":282,"trim":397}],329:[function(require,module,exports){
-
+},{"for-each":289,"trim":404}],335:[function(require,module,exports){
 exports.pbkdf2 = require('./lib/async')
-
 exports.pbkdf2Sync = require('./lib/sync')
 
-},{"./lib/async":330,"./lib/sync":333}],330:[function(require,module,exports){
+},{"./lib/async":336,"./lib/sync":339}],336:[function(require,module,exports){
 (function (process,global){
 var checkParameters = require('./precondition')
 var defaultEncoding = require('./default-encoding')
@@ -91043,6 +94818,7 @@ function checkNative (algo) {
   checks[algo] = prom
   return prom
 }
+
 function browserPbkdf2 (password, salt, iterations, length, algo) {
   return subtle.importKey(
     'raw', password, {name: 'PBKDF2'}, false, ['deriveBits']
@@ -91059,6 +94835,7 @@ function browserPbkdf2 (password, salt, iterations, length, algo) {
     return Buffer.from(res)
   })
 }
+
 function resolvePromise (promise, callback) {
   promise.then(function (out) {
     process.nextTick(function () {
@@ -91071,18 +94848,14 @@ function resolvePromise (promise, callback) {
   })
 }
 module.exports = function (password, salt, iterations, keylen, digest, callback) {
-  if (!Buffer.isBuffer(password)) password = Buffer.from(password, defaultEncoding)
-  if (!Buffer.isBuffer(salt)) salt = Buffer.from(salt, defaultEncoding)
-
-  checkParameters(iterations, keylen)
   if (typeof digest === 'function') {
     callback = digest
     digest = undefined
   }
-  if (typeof callback !== 'function') throw new Error('No callback provided to pbkdf2')
 
   digest = digest || 'sha1'
   var algo = toBrowser[digest.toLowerCase()]
+
   if (!algo || typeof global.Promise !== 'function') {
     return process.nextTick(function () {
       var out
@@ -91094,17 +94867,21 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
       callback(null, out)
     })
   }
+
+  checkParameters(password, salt, iterations, keylen)
+  if (typeof callback !== 'function') throw new Error('No callback provided to pbkdf2')
+  if (!Buffer.isBuffer(password)) password = Buffer.from(password, defaultEncoding)
+  if (!Buffer.isBuffer(salt)) salt = Buffer.from(salt, defaultEncoding)
+
   resolvePromise(checkNative(algo).then(function (resp) {
-    if (resp) {
-      return browserPbkdf2(password, salt, iterations, keylen, algo)
-    } else {
-      return sync(password, salt, iterations, keylen, digest)
-    }
+    if (resp) return browserPbkdf2(password, salt, iterations, keylen, algo)
+
+    return sync(password, salt, iterations, keylen, digest)
   }), callback)
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./default-encoding":331,"./precondition":332,"./sync":333,"_process":335,"safe-buffer":372}],331:[function(require,module,exports){
+},{"./default-encoding":337,"./precondition":338,"./sync":339,"_process":202,"safe-buffer":377}],337:[function(require,module,exports){
 (function (process){
 var defaultEncoding
 /* istanbul ignore next */
@@ -91118,9 +94895,20 @@ if (process.browser) {
 module.exports = defaultEncoding
 
 }).call(this,require('_process'))
-},{"_process":335}],332:[function(require,module,exports){
+},{"_process":202}],338:[function(require,module,exports){
+(function (Buffer){
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
-module.exports = function (iterations, keylen) {
+
+function checkBuffer (buf, name) {
+  if (typeof buf !== 'string' && !Buffer.isBuffer(buf)) {
+    throw new TypeError(name + ' must be a buffer or string')
+  }
+}
+
+module.exports = function (password, salt, iterations, keylen) {
+  checkBuffer(password, 'Password')
+  checkBuffer(salt, 'Salt')
+
   if (typeof iterations !== 'number') {
     throw new TypeError('Iterations not a number')
   }
@@ -91138,7 +94926,8 @@ module.exports = function (iterations, keylen) {
   }
 }
 
-},{}],333:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../is-buffer/index.js")})
+},{"../../is-buffer/index.js":308}],339:[function(require,module,exports){
 var md5 = require('create-hash/md5')
 var rmd160 = require('ripemd160')
 var sha = require('sha.js')
@@ -91204,10 +94993,10 @@ function getDigest (alg) {
 }
 
 function pbkdf2 (password, salt, iterations, keylen, digest) {
+  checkParameters(password, salt, iterations, keylen)
+
   if (!Buffer.isBuffer(password)) password = Buffer.from(password, defaultEncoding)
   if (!Buffer.isBuffer(salt)) salt = Buffer.from(salt, defaultEncoding)
-
-  checkParameters(iterations, keylen)
 
   digest = digest || 'sha1'
 
@@ -91241,16 +95030,16 @@ function pbkdf2 (password, salt, iterations, keylen, digest) {
 
 module.exports = pbkdf2
 
-},{"./default-encoding":331,"./precondition":332,"create-hash/md5":203,"ripemd160":370,"safe-buffer":372,"sha.js":382}],334:[function(require,module,exports){
+},{"./default-encoding":337,"./precondition":338,"create-hash/md5":210,"ripemd160":375,"safe-buffer":377,"sha.js":387}],340:[function(require,module,exports){
 (function (process){
 'use strict';
 
 if (!process.version ||
     process.version.indexOf('v0.') === 0 ||
     process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {
-  module.exports = nextTick;
+  module.exports = { nextTick: nextTick };
 } else {
-  module.exports = process.nextTick;
+  module.exports = process
 }
 
 function nextTick(fn, arg1, arg2, arg3) {
@@ -91287,194 +95076,9 @@ function nextTick(fn, arg1, arg2, arg3) {
   }
 }
 
+
 }).call(this,require('_process'))
-},{"_process":335}],335:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],336:[function(require,module,exports){
+},{"_process":202}],341:[function(require,module,exports){
 exports.publicEncrypt = require('./publicEncrypt');
 exports.privateDecrypt = require('./privateDecrypt');
 
@@ -91485,7 +95089,7 @@ exports.privateEncrypt = function privateEncrypt(key, buf) {
 exports.publicDecrypt = function publicDecrypt(key, buf) {
   return exports.privateDecrypt(key, buf, true);
 };
-},{"./privateDecrypt":338,"./publicEncrypt":339}],337:[function(require,module,exports){
+},{"./privateDecrypt":343,"./publicEncrypt":344}],342:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('create-hash');
 module.exports = function (seed, len) {
@@ -91504,7 +95108,7 @@ function i2ops(c) {
   return out;
 }
 }).call(this,require("buffer").Buffer)
-},{"buffer":197,"create-hash":201}],338:[function(require,module,exports){
+},{"buffer":205,"create-hash":209}],343:[function(require,module,exports){
 (function (Buffer){
 var parseKeys = require('parse-asn1');
 var mgf = require('./mgf');
@@ -91615,7 +95219,7 @@ function compare(a, b){
   return dif;
 }
 }).call(this,require("buffer").Buffer)
-},{"./mgf":337,"./withPublic":340,"./xor":341,"bn.js":165,"browserify-rsa":188,"buffer":197,"create-hash":201,"parse-asn1":327}],339:[function(require,module,exports){
+},{"./mgf":342,"./withPublic":345,"./xor":346,"bn.js":171,"browserify-rsa":194,"buffer":205,"create-hash":209,"parse-asn1":333}],344:[function(require,module,exports){
 (function (Buffer){
 var parseKeys = require('parse-asn1');
 var randomBytes = require('randombytes');
@@ -91713,7 +95317,7 @@ function nonZero(len, crypto) {
   return out;
 }
 }).call(this,require("buffer").Buffer)
-},{"./mgf":337,"./withPublic":340,"./xor":341,"bn.js":165,"browserify-rsa":188,"buffer":197,"create-hash":201,"parse-asn1":327,"randombytes":352}],340:[function(require,module,exports){
+},{"./mgf":342,"./withPublic":345,"./xor":346,"bn.js":171,"browserify-rsa":194,"buffer":205,"create-hash":209,"parse-asn1":333,"randombytes":357}],345:[function(require,module,exports){
 (function (Buffer){
 var bn = require('bn.js');
 function withPublic(paddedMsg, key) {
@@ -91726,7 +95330,7 @@ function withPublic(paddedMsg, key) {
 
 module.exports = withPublic;
 }).call(this,require("buffer").Buffer)
-},{"bn.js":165,"buffer":197}],341:[function(require,module,exports){
+},{"bn.js":171,"buffer":205}],346:[function(require,module,exports){
 module.exports = function xor(a, b) {
   var len = a.length;
   var i = -1;
@@ -91735,7 +95339,7 @@ module.exports = function xor(a, b) {
   }
   return a
 };
-},{}],342:[function(require,module,exports){
+},{}],347:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -92272,7 +95876,7 @@ module.exports = function xor(a, b) {
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],343:[function(require,module,exports){
+},{}],348:[function(require,module,exports){
 'use strict';
 
 var replace = String.prototype.replace;
@@ -92292,7 +95896,7 @@ module.exports = {
     RFC3986: 'RFC3986'
 };
 
-},{}],344:[function(require,module,exports){
+},{}],349:[function(require,module,exports){
 'use strict';
 
 var stringify = require('./stringify');
@@ -92305,7 +95909,7 @@ module.exports = {
     stringify: stringify
 };
 
-},{"./formats":343,"./parse":345,"./stringify":346}],345:[function(require,module,exports){
+},{"./formats":348,"./parse":350,"./stringify":351}],350:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -92481,7 +96085,7 @@ module.exports = function (str, opts) {
     return utils.compact(obj);
 };
 
-},{"./utils":347}],346:[function(require,module,exports){
+},{"./utils":352}],351:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -92693,7 +96297,7 @@ module.exports = function (object, opts) {
     return joined.length > 0 ? prefix + joined : '';
 };
 
-},{"./formats":343,"./utils":347}],347:[function(require,module,exports){
+},{"./formats":348,"./utils":352}],352:[function(require,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty;
@@ -92897,7 +96501,7 @@ exports.isBuffer = function isBuffer(obj) {
     return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
 };
 
-},{}],348:[function(require,module,exports){
+},{}],353:[function(require,module,exports){
 'use strict';
 var strictUriEncode = require('strict-uri-encode');
 var objectAssign = require('object-assign');
@@ -93123,7 +96727,7 @@ exports.parseUrl = function (str, opts) {
 	};
 };
 
-},{"decode-uri-component":241,"object-assign":321,"strict-uri-encode":390}],349:[function(require,module,exports){
+},{"decode-uri-component":248,"object-assign":327,"strict-uri-encode":395}],354:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -93209,7 +96813,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],350:[function(require,module,exports){
+},{}],355:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -93296,18 +96900,18 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],351:[function(require,module,exports){
+},{}],356:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":349,"./encode":350}],352:[function(require,module,exports){
+},{"./decode":354,"./encode":355}],357:[function(require,module,exports){
 (function (process,global){
 'use strict'
 
 function oldBrowser () {
-  throw new Error('secure random number generation not supported by this browser\nuse chrome, FireFox or Internet Explorer 11')
+  throw new Error('Secure random number generation is not supported by this browser.\nUse Chrome, Firefox or Internet Explorer 11')
 }
 
 var Buffer = require('safe-buffer').Buffer
@@ -93344,7 +96948,7 @@ function randomBytes (size, cb) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":335,"safe-buffer":372}],353:[function(require,module,exports){
+},{"_process":202,"safe-buffer":377}],358:[function(require,module,exports){
 (function (process,global){
 'use strict'
 
@@ -93456,11 +97060,11 @@ function randomFillSync (buf, offset, size) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":335,"randombytes":352,"safe-buffer":372}],354:[function(require,module,exports){
+},{"_process":202,"randombytes":357,"safe-buffer":377}],359:[function(require,module,exports){
 module.exports = window.crypto;
-},{}],355:[function(require,module,exports){
+},{}],360:[function(require,module,exports){
 module.exports = require('crypto');
-},{"crypto":354}],356:[function(require,module,exports){
+},{"crypto":359}],361:[function(require,module,exports){
 var randomHex = function(size, callback) {
     var crypto = require('./crypto.js');
     var isCallback = (typeof callback === 'function');
@@ -93526,10 +97130,10 @@ var randomHex = function(size, callback) {
 
 module.exports = randomHex;
 
-},{"./crypto.js":355}],357:[function(require,module,exports){
+},{"./crypto.js":360}],362:[function(require,module,exports){
 module.exports = require('./lib/_stream_duplex.js');
 
-},{"./lib/_stream_duplex.js":358}],358:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":363}],363:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -93560,7 +97164,7 @@ module.exports = require('./lib/_stream_duplex.js');
 
 /*<replacement>*/
 
-var processNextTick = require('process-nextick-args');
+var pna = require('process-nextick-args');
 /*</replacement>*/
 
 /*<replacement>*/
@@ -93584,10 +97188,13 @@ var Writable = require('./_stream_writable');
 
 util.inherits(Duplex, Readable);
 
-var keys = objectKeys(Writable.prototype);
-for (var v = 0; v < keys.length; v++) {
-  var method = keys[v];
-  if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
+{
+  // avoid scope creep, the keys array can then be collected
+  var keys = objectKeys(Writable.prototype);
+  for (var v = 0; v < keys.length; v++) {
+    var method = keys[v];
+    if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
+  }
 }
 
 function Duplex(options) {
@@ -93606,6 +97213,16 @@ function Duplex(options) {
   this.once('end', onend);
 }
 
+Object.defineProperty(Duplex.prototype, 'writableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._writableState.highWaterMark;
+  }
+});
+
 // the no-half-open enforcer
 function onend() {
   // if we allow half-open state, or if the writable side ended,
@@ -93614,7 +97231,7 @@ function onend() {
 
   // no more data can be written.
   // But allow more writes to happen in this tick.
-  processNextTick(onEndNT, this);
+  pna.nextTick(onEndNT, this);
 }
 
 function onEndNT(self) {
@@ -93646,15 +97263,9 @@ Duplex.prototype._destroy = function (err, cb) {
   this.push(null);
   this.end();
 
-  processNextTick(cb, err);
+  pna.nextTick(cb, err);
 };
-
-function forEach(xs, f) {
-  for (var i = 0, l = xs.length; i < l; i++) {
-    f(xs[i], i);
-  }
-}
-},{"./_stream_readable":360,"./_stream_writable":362,"core-util-is":199,"inherits":300,"process-nextick-args":334}],359:[function(require,module,exports){
+},{"./_stream_readable":365,"./_stream_writable":367,"core-util-is":207,"inherits":307,"process-nextick-args":340}],364:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -93702,7 +97313,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":361,"core-util-is":199,"inherits":300}],360:[function(require,module,exports){
+},{"./_stream_transform":366,"core-util-is":207,"inherits":307}],365:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -93729,7 +97340,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 
 /*<replacement>*/
 
-var processNextTick = require('process-nextick-args');
+var pna = require('process-nextick-args');
 /*</replacement>*/
 
 module.exports = Readable;
@@ -93756,9 +97367,8 @@ var EElistenerCount = function (emitter, type) {
 var Stream = require('./internal/streams/stream');
 /*</replacement>*/
 
-// TODO(bmeurer): Change this back to const once hole checks are
-// properly optimized away early in Ignition+TurboFan.
 /*<replacement>*/
+
 var Buffer = require('safe-buffer').Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
@@ -93767,6 +97377,7 @@ function _uint8ArrayToBuffer(chunk) {
 function _isUint8Array(obj) {
   return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
 }
+
 /*</replacement>*/
 
 /*<replacement>*/
@@ -93795,15 +97406,13 @@ var kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];
 function prependListener(emitter, event, fn) {
   // Sadly this is not cacheable as some libraries bundle their own
   // event emitter implementation with them.
-  if (typeof emitter.prependListener === 'function') {
-    return emitter.prependListener(event, fn);
-  } else {
-    // This is a hack to make sure that our error handler is attached before any
-    // userland ones.  NEVER DO THIS. This is here only because this code needs
-    // to continue to work with older versions of Node.js that do not include
-    // the prependListener() method. The goal is to eventually remove this hack.
-    if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
-  }
+  if (typeof emitter.prependListener === 'function') return emitter.prependListener(event, fn);
+
+  // This is a hack to make sure that our error handler is attached before any
+  // userland ones.  NEVER DO THIS. This is here only because this code needs
+  // to continue to work with older versions of Node.js that do not include
+  // the prependListener() method. The goal is to eventually remove this hack.
+  if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
 }
 
 function ReadableState(options, stream) {
@@ -93811,17 +97420,26 @@ function ReadableState(options, stream) {
 
   options = options || {};
 
+  // Duplex streams are both readable and writable, but share
+  // the same options object.
+  // However, some cases require setting options to different
+  // values for the readable and the writable sides of the duplex stream.
+  // These options can be provided separately as readableXXX and writableXXX.
+  var isDuplex = stream instanceof Duplex;
+
   // object stream flag. Used to make read(n) ignore n and to
   // make all the buffer merging and length checks go away
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
+  if (isDuplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
 
   // the point at which it stops calling _read() to fill the buffer
   // Note: 0 is a valid value, means "don't call _read preemptively ever"
   var hwm = options.highWaterMark;
+  var readableHwm = options.readableHighWaterMark;
   var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
+
+  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (readableHwm || readableHwm === 0)) this.highWaterMark = readableHwm;else this.highWaterMark = defaultHwm;
 
   // cast to ints.
   this.highWaterMark = Math.floor(this.highWaterMark);
@@ -94194,7 +97812,7 @@ function emitReadable(stream) {
   if (!state.emittedReadable) {
     debug('emitReadable', state.flowing);
     state.emittedReadable = true;
-    if (state.sync) processNextTick(emitReadable_, stream);else emitReadable_(stream);
+    if (state.sync) pna.nextTick(emitReadable_, stream);else emitReadable_(stream);
   }
 }
 
@@ -94213,7 +97831,7 @@ function emitReadable_(stream) {
 function maybeReadMore(stream, state) {
   if (!state.readingMore) {
     state.readingMore = true;
-    processNextTick(maybeReadMore_, stream, state);
+    pna.nextTick(maybeReadMore_, stream, state);
   }
 }
 
@@ -94258,7 +97876,7 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
   var doEnd = (!pipeOpts || pipeOpts.end !== false) && dest !== process.stdout && dest !== process.stderr;
 
   var endFn = doEnd ? onend : unpipe;
-  if (state.endEmitted) processNextTick(endFn);else src.once('end', endFn);
+  if (state.endEmitted) pna.nextTick(endFn);else src.once('end', endFn);
 
   dest.on('unpipe', onunpipe);
   function onunpipe(readable, unpipeInfo) {
@@ -94448,7 +98066,7 @@ Readable.prototype.on = function (ev, fn) {
       state.readableListening = state.needReadable = true;
       state.emittedReadable = false;
       if (!state.reading) {
-        processNextTick(nReadingNextTick, this);
+        pna.nextTick(nReadingNextTick, this);
       } else if (state.length) {
         emitReadable(this);
       }
@@ -94479,7 +98097,7 @@ Readable.prototype.resume = function () {
 function resume(stream, state) {
   if (!state.resumeScheduled) {
     state.resumeScheduled = true;
-    processNextTick(resume_, stream, state);
+    pna.nextTick(resume_, stream, state);
   }
 }
 
@@ -94516,18 +98134,19 @@ function flow(stream) {
 // This is *not* part of the readable stream interface.
 // It is an ugly unfortunate mess of history.
 Readable.prototype.wrap = function (stream) {
+  var _this = this;
+
   var state = this._readableState;
   var paused = false;
 
-  var self = this;
   stream.on('end', function () {
     debug('wrapped end');
     if (state.decoder && !state.ended) {
       var chunk = state.decoder.end();
-      if (chunk && chunk.length) self.push(chunk);
+      if (chunk && chunk.length) _this.push(chunk);
     }
 
-    self.push(null);
+    _this.push(null);
   });
 
   stream.on('data', function (chunk) {
@@ -94537,7 +98156,7 @@ Readable.prototype.wrap = function (stream) {
     // don't skip over falsy values in objectMode
     if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
 
-    var ret = self.push(chunk);
+    var ret = _this.push(chunk);
     if (!ret) {
       paused = true;
       stream.pause();
@@ -94558,12 +98177,12 @@ Readable.prototype.wrap = function (stream) {
 
   // proxy certain important events.
   for (var n = 0; n < kProxyEvents.length; n++) {
-    stream.on(kProxyEvents[n], self.emit.bind(self, kProxyEvents[n]));
+    stream.on(kProxyEvents[n], this.emit.bind(this, kProxyEvents[n]));
   }
 
   // when we try to consume some more bytes, simply unpause the
   // underlying stream.
-  self._read = function (n) {
+  this._read = function (n) {
     debug('wrapped _read', n);
     if (paused) {
       paused = false;
@@ -94571,8 +98190,18 @@ Readable.prototype.wrap = function (stream) {
     }
   };
 
-  return self;
+  return this;
 };
+
+Object.defineProperty(Readable.prototype, 'readableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._readableState.highWaterMark;
+  }
+});
 
 // exposed for testing purposes only.
 Readable._fromList = fromList;
@@ -94686,7 +98315,7 @@ function endReadable(stream) {
 
   if (!state.endEmitted) {
     state.ended = true;
-    processNextTick(endReadableNT, state, stream);
+    pna.nextTick(endReadableNT, state, stream);
   }
 }
 
@@ -94699,12 +98328,6 @@ function endReadableNT(state, stream) {
   }
 }
 
-function forEach(xs, f) {
-  for (var i = 0, l = xs.length; i < l; i++) {
-    f(xs[i], i);
-  }
-}
-
 function indexOf(xs, x) {
   for (var i = 0, l = xs.length; i < l; i++) {
     if (xs[i] === x) return i;
@@ -94712,7 +98335,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":358,"./internal/streams/BufferList":363,"./internal/streams/destroy":364,"./internal/streams/stream":365,"_process":335,"core-util-is":199,"events":279,"inherits":300,"isarray":305,"process-nextick-args":334,"safe-buffer":372,"string_decoder/":391,"util":167}],361:[function(require,module,exports){
+},{"./_stream_duplex":363,"./internal/streams/BufferList":368,"./internal/streams/destroy":369,"./internal/streams/stream":370,"_process":202,"core-util-is":207,"events":286,"inherits":307,"isarray":312,"process-nextick-args":340,"safe-buffer":377,"string_decoder/":396,"util":173}],366:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -94789,39 +98412,28 @@ util.inherits = require('inherits');
 
 util.inherits(Transform, Duplex);
 
-function TransformState(stream) {
-  this.afterTransform = function (er, data) {
-    return afterTransform(stream, er, data);
-  };
-
-  this.needTransform = false;
-  this.transforming = false;
-  this.writecb = null;
-  this.writechunk = null;
-  this.writeencoding = null;
-}
-
-function afterTransform(stream, er, data) {
-  var ts = stream._transformState;
+function afterTransform(er, data) {
+  var ts = this._transformState;
   ts.transforming = false;
 
   var cb = ts.writecb;
 
   if (!cb) {
-    return stream.emit('error', new Error('write callback called multiple times'));
+    return this.emit('error', new Error('write callback called multiple times'));
   }
 
   ts.writechunk = null;
   ts.writecb = null;
 
-  if (data !== null && data !== undefined) stream.push(data);
+  if (data != null) // single equals check for both `null` and `undefined`
+    this.push(data);
 
   cb(er);
 
-  var rs = stream._readableState;
+  var rs = this._readableState;
   rs.reading = false;
   if (rs.needReadable || rs.length < rs.highWaterMark) {
-    stream._read(rs.highWaterMark);
+    this._read(rs.highWaterMark);
   }
 }
 
@@ -94830,9 +98442,14 @@ function Transform(options) {
 
   Duplex.call(this, options);
 
-  this._transformState = new TransformState(this);
-
-  var stream = this;
+  this._transformState = {
+    afterTransform: afterTransform.bind(this),
+    needTransform: false,
+    transforming: false,
+    writecb: null,
+    writechunk: null,
+    writeencoding: null
+  };
 
   // start out asking for a readable event once data is transformed.
   this._readableState.needReadable = true;
@@ -94849,11 +98466,19 @@ function Transform(options) {
   }
 
   // When the writable side finishes, then flush out anything remaining.
-  this.once('prefinish', function () {
-    if (typeof this._flush === 'function') this._flush(function (er, data) {
-      done(stream, er, data);
-    });else done(stream);
-  });
+  this.on('prefinish', prefinish);
+}
+
+function prefinish() {
+  var _this = this;
+
+  if (typeof this._flush === 'function') {
+    this._flush(function (er, data) {
+      done(_this, er, data);
+    });
+  } else {
+    done(this, null, null);
+  }
 }
 
 Transform.prototype.push = function (chunk, encoding) {
@@ -94903,32 +98528,30 @@ Transform.prototype._read = function (n) {
 };
 
 Transform.prototype._destroy = function (err, cb) {
-  var _this = this;
+  var _this2 = this;
 
   Duplex.prototype._destroy.call(this, err, function (err2) {
     cb(err2);
-    _this.emit('close');
+    _this2.emit('close');
   });
 };
 
 function done(stream, er, data) {
   if (er) return stream.emit('error', er);
 
-  if (data !== null && data !== undefined) stream.push(data);
+  if (data != null) // single equals check for both `null` and `undefined`
+    stream.push(data);
 
   // if there's nothing in the write buffer, then that means
   // that nothing more will ever be provided
-  var ws = stream._writableState;
-  var ts = stream._transformState;
+  if (stream._writableState.length) throw new Error('Calling transform done when ws.length != 0');
 
-  if (ws.length) throw new Error('Calling transform done when ws.length != 0');
-
-  if (ts.transforming) throw new Error('Calling transform done when still transforming');
+  if (stream._transformState.transforming) throw new Error('Calling transform done when still transforming');
 
   return stream.push(null);
 }
-},{"./_stream_duplex":358,"core-util-is":199,"inherits":300}],362:[function(require,module,exports){
-(function (process,global){
+},{"./_stream_duplex":363,"core-util-is":207,"inherits":307}],367:[function(require,module,exports){
+(function (process,global,setImmediate){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -94958,7 +98581,7 @@ function done(stream, er, data) {
 
 /*<replacement>*/
 
-var processNextTick = require('process-nextick-args');
+var pna = require('process-nextick-args');
 /*</replacement>*/
 
 module.exports = Writable;
@@ -94985,7 +98608,7 @@ function CorkedRequest(state) {
 /* </replacement> */
 
 /*<replacement>*/
-var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : processNextTick;
+var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : pna.nextTick;
 /*</replacement>*/
 
 /*<replacement>*/
@@ -95010,6 +98633,7 @@ var Stream = require('./internal/streams/stream');
 /*</replacement>*/
 
 /*<replacement>*/
+
 var Buffer = require('safe-buffer').Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
@@ -95018,6 +98642,7 @@ function _uint8ArrayToBuffer(chunk) {
 function _isUint8Array(obj) {
   return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
 }
+
 /*</replacement>*/
 
 var destroyImpl = require('./internal/streams/destroy');
@@ -95031,18 +98656,27 @@ function WritableState(options, stream) {
 
   options = options || {};
 
+  // Duplex streams are both readable and writable, but share
+  // the same options object.
+  // However, some cases require setting options to different
+  // values for the readable and the writable sides of the duplex stream.
+  // These options can be provided separately as readableXXX and writableXXX.
+  var isDuplex = stream instanceof Duplex;
+
   // object stream flag to indicate whether or not this stream
   // contains buffers or objects.
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
+  if (isDuplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
 
   // the point at which write() starts returning false
   // Note: 0 is a valid value, means that we always return false if
   // the entire buffer is not flushed immediately on write()
   var hwm = options.highWaterMark;
+  var writableHwm = options.writableHighWaterMark;
   var defaultHwm = this.objectMode ? 16 : 16 * 1024;
-  this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
+
+  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (writableHwm || writableHwm === 0)) this.highWaterMark = writableHwm;else this.highWaterMark = defaultHwm;
 
   // cast to ints.
   this.highWaterMark = Math.floor(this.highWaterMark);
@@ -95156,6 +98790,7 @@ if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.protot
   Object.defineProperty(Writable, Symbol.hasInstance, {
     value: function (object) {
       if (realHasInstance.call(this, object)) return true;
+      if (this !== Writable) return false;
 
       return object && object._writableState instanceof WritableState;
     }
@@ -95207,7 +98842,7 @@ function writeAfterEnd(stream, cb) {
   var er = new Error('write after end');
   // TODO: defer error events consistently everywhere, not just the cb
   stream.emit('error', er);
-  processNextTick(cb, er);
+  pna.nextTick(cb, er);
 }
 
 // Checks that a user-supplied chunk is valid, especially for the particular
@@ -95224,7 +98859,7 @@ function validChunk(stream, state, chunk, cb) {
   }
   if (er) {
     stream.emit('error', er);
-    processNextTick(cb, er);
+    pna.nextTick(cb, er);
     valid = false;
   }
   return valid;
@@ -95233,7 +98868,7 @@ function validChunk(stream, state, chunk, cb) {
 Writable.prototype.write = function (chunk, encoding, cb) {
   var state = this._writableState;
   var ret = false;
-  var isBuf = _isUint8Array(chunk) && !state.objectMode;
+  var isBuf = !state.objectMode && _isUint8Array(chunk);
 
   if (isBuf && !Buffer.isBuffer(chunk)) {
     chunk = _uint8ArrayToBuffer(chunk);
@@ -95286,6 +98921,16 @@ function decodeChunk(state, chunk, encoding) {
   }
   return chunk;
 }
+
+Object.defineProperty(Writable.prototype, 'writableHighWaterMark', {
+  // making it explicit this property is not enumerable
+  // because otherwise some prototype manipulation in
+  // userland will fail
+  enumerable: false,
+  get: function () {
+    return this._writableState.highWaterMark;
+  }
+});
 
 // if we're already writing something, then just put this
 // in the queue, and wait our turn.  Otherwise, call _write
@@ -95344,10 +98989,10 @@ function onwriteError(stream, state, sync, er, cb) {
   if (sync) {
     // defer the callback if we are being called synchronously
     // to avoid piling up things on the stack
-    processNextTick(cb, er);
+    pna.nextTick(cb, er);
     // this can emit finish, and it will always happen
     // after error
-    processNextTick(finishMaybe, stream, state);
+    pna.nextTick(finishMaybe, stream, state);
     stream._writableState.errorEmitted = true;
     stream.emit('error', er);
   } else {
@@ -95445,6 +99090,7 @@ function clearBuffer(stream, state) {
     } else {
       state.corkedRequestsFree = new CorkedRequest(state);
     }
+    state.bufferedRequestCount = 0;
   } else {
     // Slow case, write chunks one-by-one
     while (entry) {
@@ -95455,6 +99101,7 @@ function clearBuffer(stream, state) {
 
       doWrite(stream, state, false, len, chunk, encoding, cb);
       entry = entry.next;
+      state.bufferedRequestCount--;
       // if we didn't call the onwrite immediately, then
       // it means that we need to wait until it does.
       // also, that means that the chunk and cb are currently
@@ -95467,7 +99114,6 @@ function clearBuffer(stream, state) {
     if (entry === null) state.lastBufferedRequest = null;
   }
 
-  state.bufferedRequestCount = 0;
   state.bufferedRequest = entry;
   state.bufferProcessing = false;
 }
@@ -95521,7 +99167,7 @@ function prefinish(stream, state) {
     if (typeof stream._final === 'function') {
       state.pendingcb++;
       state.finalCalled = true;
-      processNextTick(callFinal, stream, state);
+      pna.nextTick(callFinal, stream, state);
     } else {
       state.prefinished = true;
       stream.emit('prefinish');
@@ -95545,7 +99191,7 @@ function endWritable(stream, state, cb) {
   state.ending = true;
   finishMaybe(stream, state);
   if (cb) {
-    if (state.finished) processNextTick(cb);else stream.once('finish', cb);
+    if (state.finished) pna.nextTick(cb);else stream.once('finish', cb);
   }
   state.ended = true;
   stream.writable = false;
@@ -95593,16 +99239,14 @@ Writable.prototype._destroy = function (err, cb) {
   this.end();
   cb(err);
 };
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":358,"./internal/streams/destroy":364,"./internal/streams/stream":365,"_process":335,"core-util-is":199,"inherits":300,"process-nextick-args":334,"safe-buffer":372,"util-deprecate":403}],363:[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
+},{"./_stream_duplex":363,"./internal/streams/destroy":369,"./internal/streams/stream":370,"_process":202,"core-util-is":207,"inherits":307,"process-nextick-args":340,"safe-buffer":377,"timers":402,"util-deprecate":410}],368:[function(require,module,exports){
 'use strict';
-
-/*<replacement>*/
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Buffer = require('safe-buffer').Buffer;
-/*</replacement>*/
+var util = require('util');
 
 function copyBuffer(src, target, offset) {
   src.copy(target, offset);
@@ -95669,12 +99313,19 @@ module.exports = function () {
 
   return BufferList;
 }();
-},{"safe-buffer":372}],364:[function(require,module,exports){
+
+if (util && util.inspect && util.inspect.custom) {
+  module.exports.prototype[util.inspect.custom] = function () {
+    var obj = util.inspect({ length: this.length });
+    return this.constructor.name + ' ' + obj;
+  };
+}
+},{"safe-buffer":377,"util":173}],369:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
 
-var processNextTick = require('process-nextick-args');
+var pna = require('process-nextick-args');
 /*</replacement>*/
 
 // undocumented cb() API, needed for core, not for public API
@@ -95688,9 +99339,9 @@ function destroy(err, cb) {
     if (cb) {
       cb(err);
     } else if (err && (!this._writableState || !this._writableState.errorEmitted)) {
-      processNextTick(emitErrorNT, this, err);
+      pna.nextTick(emitErrorNT, this, err);
     }
-    return;
+    return this;
   }
 
   // we set destroyed to true before firing error callbacks in order
@@ -95707,7 +99358,7 @@ function destroy(err, cb) {
 
   this._destroy(err || null, function (err) {
     if (!cb && err) {
-      processNextTick(emitErrorNT, _this, err);
+      pna.nextTick(emitErrorNT, _this, err);
       if (_this._writableState) {
         _this._writableState.errorEmitted = true;
       }
@@ -95715,6 +99366,8 @@ function destroy(err, cb) {
       cb(err);
     }
   });
+
+  return this;
 }
 
 function undestroy() {
@@ -95742,13 +99395,13 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":334}],365:[function(require,module,exports){
+},{"process-nextick-args":340}],370:[function(require,module,exports){
 module.exports = require('events').EventEmitter;
 
-},{"events":279}],366:[function(require,module,exports){
+},{"events":286}],371:[function(require,module,exports){
 module.exports = require('./readable').PassThrough
 
-},{"./readable":367}],367:[function(require,module,exports){
+},{"./readable":372}],372:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -95757,17 +99410,54 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":358,"./lib/_stream_passthrough.js":359,"./lib/_stream_readable.js":360,"./lib/_stream_transform.js":361,"./lib/_stream_writable.js":362}],368:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":363,"./lib/_stream_passthrough.js":364,"./lib/_stream_readable.js":365,"./lib/_stream_transform.js":366,"./lib/_stream_writable.js":367}],373:[function(require,module,exports){
 module.exports = require('./readable').Transform
 
-},{"./readable":367}],369:[function(require,module,exports){
+},{"./readable":372}],374:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":362}],370:[function(require,module,exports){
-(function (Buffer){
+},{"./lib/_stream_writable.js":367}],375:[function(require,module,exports){
 'use strict'
+var Buffer = require('buffer').Buffer
 var inherits = require('inherits')
 var HashBase = require('hash-base')
+
+var ARRAY16 = new Array(16)
+
+var zl = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+  7, 4, 13, 1, 10, 6, 15, 3, 12, 0, 9, 5, 2, 14, 11, 8,
+  3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11, 5, 12,
+  1, 9, 11, 10, 0, 8, 12, 4, 13, 3, 7, 15, 14, 5, 6, 2,
+  4, 0, 5, 9, 7, 12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13
+]
+
+var zr = [
+  5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12,
+  6, 11, 3, 7, 0, 13, 5, 10, 14, 15, 8, 12, 4, 9, 1, 2,
+  15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0, 4, 13,
+  8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2, 13, 9, 7, 10, 14,
+  12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11
+]
+
+var sl = [
+  11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8,
+  7, 6, 8, 13, 11, 9, 7, 15, 7, 12, 15, 9, 11, 7, 13, 12,
+  11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5, 12, 7, 5,
+  11, 12, 14, 15, 14, 15, 9, 8, 9, 14, 5, 6, 8, 6, 5, 12,
+  9, 15, 5, 11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6
+]
+
+var sr = [
+  8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6,
+  9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7, 6, 15, 13, 11,
+  9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5,
+  15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8,
+  8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
+]
+
+var hl = [0x00000000, 0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xa953fd4e]
+var hr = [0x50a28be6, 0x5c4dd124, 0x6d703ef3, 0x7a6d76e9, 0x00000000]
 
 function RIPEMD160 () {
   HashBase.call(this, 64)
@@ -95783,222 +99473,56 @@ function RIPEMD160 () {
 inherits(RIPEMD160, HashBase)
 
 RIPEMD160.prototype._update = function () {
-  var m = new Array(16)
-  for (var i = 0; i < 16; ++i) m[i] = this._block.readInt32LE(i * 4)
+  var words = ARRAY16
+  for (var j = 0; j < 16; ++j) words[j] = this._block.readInt32LE(j * 4)
 
-  var al = this._a
-  var bl = this._b
-  var cl = this._c
-  var dl = this._d
-  var el = this._e
+  var al = this._a | 0
+  var bl = this._b | 0
+  var cl = this._c | 0
+  var dl = this._d | 0
+  var el = this._e | 0
 
-  // Mj = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-  // K = 0x00000000
-  // Sj = 11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8
-  al = fn1(al, bl, cl, dl, el, m[0], 0x00000000, 11); cl = rotl(cl, 10)
-  el = fn1(el, al, bl, cl, dl, m[1], 0x00000000, 14); bl = rotl(bl, 10)
-  dl = fn1(dl, el, al, bl, cl, m[2], 0x00000000, 15); al = rotl(al, 10)
-  cl = fn1(cl, dl, el, al, bl, m[3], 0x00000000, 12); el = rotl(el, 10)
-  bl = fn1(bl, cl, dl, el, al, m[4], 0x00000000, 5); dl = rotl(dl, 10)
-  al = fn1(al, bl, cl, dl, el, m[5], 0x00000000, 8); cl = rotl(cl, 10)
-  el = fn1(el, al, bl, cl, dl, m[6], 0x00000000, 7); bl = rotl(bl, 10)
-  dl = fn1(dl, el, al, bl, cl, m[7], 0x00000000, 9); al = rotl(al, 10)
-  cl = fn1(cl, dl, el, al, bl, m[8], 0x00000000, 11); el = rotl(el, 10)
-  bl = fn1(bl, cl, dl, el, al, m[9], 0x00000000, 13); dl = rotl(dl, 10)
-  al = fn1(al, bl, cl, dl, el, m[10], 0x00000000, 14); cl = rotl(cl, 10)
-  el = fn1(el, al, bl, cl, dl, m[11], 0x00000000, 15); bl = rotl(bl, 10)
-  dl = fn1(dl, el, al, bl, cl, m[12], 0x00000000, 6); al = rotl(al, 10)
-  cl = fn1(cl, dl, el, al, bl, m[13], 0x00000000, 7); el = rotl(el, 10)
-  bl = fn1(bl, cl, dl, el, al, m[14], 0x00000000, 9); dl = rotl(dl, 10)
-  al = fn1(al, bl, cl, dl, el, m[15], 0x00000000, 8); cl = rotl(cl, 10)
+  var ar = this._a | 0
+  var br = this._b | 0
+  var cr = this._c | 0
+  var dr = this._d | 0
+  var er = this._e | 0
 
-  // Mj = 7, 4, 13, 1, 10, 6, 15, 3, 12, 0, 9, 5, 2, 14, 11, 8
-  // K = 0x5a827999
-  // Sj = 7, 6, 8, 13, 11, 9, 7, 15, 7, 12, 15, 9, 11, 7, 13, 12
-  el = fn2(el, al, bl, cl, dl, m[7], 0x5a827999, 7); bl = rotl(bl, 10)
-  dl = fn2(dl, el, al, bl, cl, m[4], 0x5a827999, 6); al = rotl(al, 10)
-  cl = fn2(cl, dl, el, al, bl, m[13], 0x5a827999, 8); el = rotl(el, 10)
-  bl = fn2(bl, cl, dl, el, al, m[1], 0x5a827999, 13); dl = rotl(dl, 10)
-  al = fn2(al, bl, cl, dl, el, m[10], 0x5a827999, 11); cl = rotl(cl, 10)
-  el = fn2(el, al, bl, cl, dl, m[6], 0x5a827999, 9); bl = rotl(bl, 10)
-  dl = fn2(dl, el, al, bl, cl, m[15], 0x5a827999, 7); al = rotl(al, 10)
-  cl = fn2(cl, dl, el, al, bl, m[3], 0x5a827999, 15); el = rotl(el, 10)
-  bl = fn2(bl, cl, dl, el, al, m[12], 0x5a827999, 7); dl = rotl(dl, 10)
-  al = fn2(al, bl, cl, dl, el, m[0], 0x5a827999, 12); cl = rotl(cl, 10)
-  el = fn2(el, al, bl, cl, dl, m[9], 0x5a827999, 15); bl = rotl(bl, 10)
-  dl = fn2(dl, el, al, bl, cl, m[5], 0x5a827999, 9); al = rotl(al, 10)
-  cl = fn2(cl, dl, el, al, bl, m[2], 0x5a827999, 11); el = rotl(el, 10)
-  bl = fn2(bl, cl, dl, el, al, m[14], 0x5a827999, 7); dl = rotl(dl, 10)
-  al = fn2(al, bl, cl, dl, el, m[11], 0x5a827999, 13); cl = rotl(cl, 10)
-  el = fn2(el, al, bl, cl, dl, m[8], 0x5a827999, 12); bl = rotl(bl, 10)
+  // computation
+  for (var i = 0; i < 80; i += 1) {
+    var tl
+    var tr
+    if (i < 16) {
+      tl = fn1(al, bl, cl, dl, el, words[zl[i]], hl[0], sl[i])
+      tr = fn5(ar, br, cr, dr, er, words[zr[i]], hr[0], sr[i])
+    } else if (i < 32) {
+      tl = fn2(al, bl, cl, dl, el, words[zl[i]], hl[1], sl[i])
+      tr = fn4(ar, br, cr, dr, er, words[zr[i]], hr[1], sr[i])
+    } else if (i < 48) {
+      tl = fn3(al, bl, cl, dl, el, words[zl[i]], hl[2], sl[i])
+      tr = fn3(ar, br, cr, dr, er, words[zr[i]], hr[2], sr[i])
+    } else if (i < 64) {
+      tl = fn4(al, bl, cl, dl, el, words[zl[i]], hl[3], sl[i])
+      tr = fn2(ar, br, cr, dr, er, words[zr[i]], hr[3], sr[i])
+    } else { // if (i<80) {
+      tl = fn5(al, bl, cl, dl, el, words[zl[i]], hl[4], sl[i])
+      tr = fn1(ar, br, cr, dr, er, words[zr[i]], hr[4], sr[i])
+    }
 
-  // Mj = 3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11, 5, 12
-  // K = 0x6ed9eba1
-  // Sj = 11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5, 12, 7, 5
-  dl = fn3(dl, el, al, bl, cl, m[3], 0x6ed9eba1, 11); al = rotl(al, 10)
-  cl = fn3(cl, dl, el, al, bl, m[10], 0x6ed9eba1, 13); el = rotl(el, 10)
-  bl = fn3(bl, cl, dl, el, al, m[14], 0x6ed9eba1, 6); dl = rotl(dl, 10)
-  al = fn3(al, bl, cl, dl, el, m[4], 0x6ed9eba1, 7); cl = rotl(cl, 10)
-  el = fn3(el, al, bl, cl, dl, m[9], 0x6ed9eba1, 14); bl = rotl(bl, 10)
-  dl = fn3(dl, el, al, bl, cl, m[15], 0x6ed9eba1, 9); al = rotl(al, 10)
-  cl = fn3(cl, dl, el, al, bl, m[8], 0x6ed9eba1, 13); el = rotl(el, 10)
-  bl = fn3(bl, cl, dl, el, al, m[1], 0x6ed9eba1, 15); dl = rotl(dl, 10)
-  al = fn3(al, bl, cl, dl, el, m[2], 0x6ed9eba1, 14); cl = rotl(cl, 10)
-  el = fn3(el, al, bl, cl, dl, m[7], 0x6ed9eba1, 8); bl = rotl(bl, 10)
-  dl = fn3(dl, el, al, bl, cl, m[0], 0x6ed9eba1, 13); al = rotl(al, 10)
-  cl = fn3(cl, dl, el, al, bl, m[6], 0x6ed9eba1, 6); el = rotl(el, 10)
-  bl = fn3(bl, cl, dl, el, al, m[13], 0x6ed9eba1, 5); dl = rotl(dl, 10)
-  al = fn3(al, bl, cl, dl, el, m[11], 0x6ed9eba1, 12); cl = rotl(cl, 10)
-  el = fn3(el, al, bl, cl, dl, m[5], 0x6ed9eba1, 7); bl = rotl(bl, 10)
-  dl = fn3(dl, el, al, bl, cl, m[12], 0x6ed9eba1, 5); al = rotl(al, 10)
+    al = el
+    el = dl
+    dl = rotl(cl, 10)
+    cl = bl
+    bl = tl
 
-  // Mj = 1, 9, 11, 10, 0, 8, 12, 4, 13, 3, 7, 15, 14, 5, 6, 2
-  // K = 0x8f1bbcdc
-  // Sj = 11, 12, 14, 15, 14, 15, 9, 8, 9, 14, 5, 6, 8, 6, 5, 12
-  cl = fn4(cl, dl, el, al, bl, m[1], 0x8f1bbcdc, 11); el = rotl(el, 10)
-  bl = fn4(bl, cl, dl, el, al, m[9], 0x8f1bbcdc, 12); dl = rotl(dl, 10)
-  al = fn4(al, bl, cl, dl, el, m[11], 0x8f1bbcdc, 14); cl = rotl(cl, 10)
-  el = fn4(el, al, bl, cl, dl, m[10], 0x8f1bbcdc, 15); bl = rotl(bl, 10)
-  dl = fn4(dl, el, al, bl, cl, m[0], 0x8f1bbcdc, 14); al = rotl(al, 10)
-  cl = fn4(cl, dl, el, al, bl, m[8], 0x8f1bbcdc, 15); el = rotl(el, 10)
-  bl = fn4(bl, cl, dl, el, al, m[12], 0x8f1bbcdc, 9); dl = rotl(dl, 10)
-  al = fn4(al, bl, cl, dl, el, m[4], 0x8f1bbcdc, 8); cl = rotl(cl, 10)
-  el = fn4(el, al, bl, cl, dl, m[13], 0x8f1bbcdc, 9); bl = rotl(bl, 10)
-  dl = fn4(dl, el, al, bl, cl, m[3], 0x8f1bbcdc, 14); al = rotl(al, 10)
-  cl = fn4(cl, dl, el, al, bl, m[7], 0x8f1bbcdc, 5); el = rotl(el, 10)
-  bl = fn4(bl, cl, dl, el, al, m[15], 0x8f1bbcdc, 6); dl = rotl(dl, 10)
-  al = fn4(al, bl, cl, dl, el, m[14], 0x8f1bbcdc, 8); cl = rotl(cl, 10)
-  el = fn4(el, al, bl, cl, dl, m[5], 0x8f1bbcdc, 6); bl = rotl(bl, 10)
-  dl = fn4(dl, el, al, bl, cl, m[6], 0x8f1bbcdc, 5); al = rotl(al, 10)
-  cl = fn4(cl, dl, el, al, bl, m[2], 0x8f1bbcdc, 12); el = rotl(el, 10)
+    ar = er
+    er = dr
+    dr = rotl(cr, 10)
+    cr = br
+    br = tr
+  }
 
-  // Mj = 4, 0, 5, 9, 7, 12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13
-  // K = 0xa953fd4e
-  // Sj = 9, 15, 5, 11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6
-  bl = fn5(bl, cl, dl, el, al, m[4], 0xa953fd4e, 9); dl = rotl(dl, 10)
-  al = fn5(al, bl, cl, dl, el, m[0], 0xa953fd4e, 15); cl = rotl(cl, 10)
-  el = fn5(el, al, bl, cl, dl, m[5], 0xa953fd4e, 5); bl = rotl(bl, 10)
-  dl = fn5(dl, el, al, bl, cl, m[9], 0xa953fd4e, 11); al = rotl(al, 10)
-  cl = fn5(cl, dl, el, al, bl, m[7], 0xa953fd4e, 6); el = rotl(el, 10)
-  bl = fn5(bl, cl, dl, el, al, m[12], 0xa953fd4e, 8); dl = rotl(dl, 10)
-  al = fn5(al, bl, cl, dl, el, m[2], 0xa953fd4e, 13); cl = rotl(cl, 10)
-  el = fn5(el, al, bl, cl, dl, m[10], 0xa953fd4e, 12); bl = rotl(bl, 10)
-  dl = fn5(dl, el, al, bl, cl, m[14], 0xa953fd4e, 5); al = rotl(al, 10)
-  cl = fn5(cl, dl, el, al, bl, m[1], 0xa953fd4e, 12); el = rotl(el, 10)
-  bl = fn5(bl, cl, dl, el, al, m[3], 0xa953fd4e, 13); dl = rotl(dl, 10)
-  al = fn5(al, bl, cl, dl, el, m[8], 0xa953fd4e, 14); cl = rotl(cl, 10)
-  el = fn5(el, al, bl, cl, dl, m[11], 0xa953fd4e, 11); bl = rotl(bl, 10)
-  dl = fn5(dl, el, al, bl, cl, m[6], 0xa953fd4e, 8); al = rotl(al, 10)
-  cl = fn5(cl, dl, el, al, bl, m[15], 0xa953fd4e, 5); el = rotl(el, 10)
-  bl = fn5(bl, cl, dl, el, al, m[13], 0xa953fd4e, 6); dl = rotl(dl, 10)
-
-  var ar = this._a
-  var br = this._b
-  var cr = this._c
-  var dr = this._d
-  var er = this._e
-
-  // M'j = 5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12
-  // K' = 0x50a28be6
-  // S'j = 8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6
-  ar = fn5(ar, br, cr, dr, er, m[5], 0x50a28be6, 8); cr = rotl(cr, 10)
-  er = fn5(er, ar, br, cr, dr, m[14], 0x50a28be6, 9); br = rotl(br, 10)
-  dr = fn5(dr, er, ar, br, cr, m[7], 0x50a28be6, 9); ar = rotl(ar, 10)
-  cr = fn5(cr, dr, er, ar, br, m[0], 0x50a28be6, 11); er = rotl(er, 10)
-  br = fn5(br, cr, dr, er, ar, m[9], 0x50a28be6, 13); dr = rotl(dr, 10)
-  ar = fn5(ar, br, cr, dr, er, m[2], 0x50a28be6, 15); cr = rotl(cr, 10)
-  er = fn5(er, ar, br, cr, dr, m[11], 0x50a28be6, 15); br = rotl(br, 10)
-  dr = fn5(dr, er, ar, br, cr, m[4], 0x50a28be6, 5); ar = rotl(ar, 10)
-  cr = fn5(cr, dr, er, ar, br, m[13], 0x50a28be6, 7); er = rotl(er, 10)
-  br = fn5(br, cr, dr, er, ar, m[6], 0x50a28be6, 7); dr = rotl(dr, 10)
-  ar = fn5(ar, br, cr, dr, er, m[15], 0x50a28be6, 8); cr = rotl(cr, 10)
-  er = fn5(er, ar, br, cr, dr, m[8], 0x50a28be6, 11); br = rotl(br, 10)
-  dr = fn5(dr, er, ar, br, cr, m[1], 0x50a28be6, 14); ar = rotl(ar, 10)
-  cr = fn5(cr, dr, er, ar, br, m[10], 0x50a28be6, 14); er = rotl(er, 10)
-  br = fn5(br, cr, dr, er, ar, m[3], 0x50a28be6, 12); dr = rotl(dr, 10)
-  ar = fn5(ar, br, cr, dr, er, m[12], 0x50a28be6, 6); cr = rotl(cr, 10)
-
-  // M'j = 6, 11, 3, 7, 0, 13, 5, 10, 14, 15, 8, 12, 4, 9, 1, 2
-  // K' = 0x5c4dd124
-  // S'j = 9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7, 6, 15, 13, 11
-  er = fn4(er, ar, br, cr, dr, m[6], 0x5c4dd124, 9); br = rotl(br, 10)
-  dr = fn4(dr, er, ar, br, cr, m[11], 0x5c4dd124, 13); ar = rotl(ar, 10)
-  cr = fn4(cr, dr, er, ar, br, m[3], 0x5c4dd124, 15); er = rotl(er, 10)
-  br = fn4(br, cr, dr, er, ar, m[7], 0x5c4dd124, 7); dr = rotl(dr, 10)
-  ar = fn4(ar, br, cr, dr, er, m[0], 0x5c4dd124, 12); cr = rotl(cr, 10)
-  er = fn4(er, ar, br, cr, dr, m[13], 0x5c4dd124, 8); br = rotl(br, 10)
-  dr = fn4(dr, er, ar, br, cr, m[5], 0x5c4dd124, 9); ar = rotl(ar, 10)
-  cr = fn4(cr, dr, er, ar, br, m[10], 0x5c4dd124, 11); er = rotl(er, 10)
-  br = fn4(br, cr, dr, er, ar, m[14], 0x5c4dd124, 7); dr = rotl(dr, 10)
-  ar = fn4(ar, br, cr, dr, er, m[15], 0x5c4dd124, 7); cr = rotl(cr, 10)
-  er = fn4(er, ar, br, cr, dr, m[8], 0x5c4dd124, 12); br = rotl(br, 10)
-  dr = fn4(dr, er, ar, br, cr, m[12], 0x5c4dd124, 7); ar = rotl(ar, 10)
-  cr = fn4(cr, dr, er, ar, br, m[4], 0x5c4dd124, 6); er = rotl(er, 10)
-  br = fn4(br, cr, dr, er, ar, m[9], 0x5c4dd124, 15); dr = rotl(dr, 10)
-  ar = fn4(ar, br, cr, dr, er, m[1], 0x5c4dd124, 13); cr = rotl(cr, 10)
-  er = fn4(er, ar, br, cr, dr, m[2], 0x5c4dd124, 11); br = rotl(br, 10)
-
-  // M'j = 15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0, 4, 13
-  // K' = 0x6d703ef3
-  // S'j = 9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5
-  dr = fn3(dr, er, ar, br, cr, m[15], 0x6d703ef3, 9); ar = rotl(ar, 10)
-  cr = fn3(cr, dr, er, ar, br, m[5], 0x6d703ef3, 7); er = rotl(er, 10)
-  br = fn3(br, cr, dr, er, ar, m[1], 0x6d703ef3, 15); dr = rotl(dr, 10)
-  ar = fn3(ar, br, cr, dr, er, m[3], 0x6d703ef3, 11); cr = rotl(cr, 10)
-  er = fn3(er, ar, br, cr, dr, m[7], 0x6d703ef3, 8); br = rotl(br, 10)
-  dr = fn3(dr, er, ar, br, cr, m[14], 0x6d703ef3, 6); ar = rotl(ar, 10)
-  cr = fn3(cr, dr, er, ar, br, m[6], 0x6d703ef3, 6); er = rotl(er, 10)
-  br = fn3(br, cr, dr, er, ar, m[9], 0x6d703ef3, 14); dr = rotl(dr, 10)
-  ar = fn3(ar, br, cr, dr, er, m[11], 0x6d703ef3, 12); cr = rotl(cr, 10)
-  er = fn3(er, ar, br, cr, dr, m[8], 0x6d703ef3, 13); br = rotl(br, 10)
-  dr = fn3(dr, er, ar, br, cr, m[12], 0x6d703ef3, 5); ar = rotl(ar, 10)
-  cr = fn3(cr, dr, er, ar, br, m[2], 0x6d703ef3, 14); er = rotl(er, 10)
-  br = fn3(br, cr, dr, er, ar, m[10], 0x6d703ef3, 13); dr = rotl(dr, 10)
-  ar = fn3(ar, br, cr, dr, er, m[0], 0x6d703ef3, 13); cr = rotl(cr, 10)
-  er = fn3(er, ar, br, cr, dr, m[4], 0x6d703ef3, 7); br = rotl(br, 10)
-  dr = fn3(dr, er, ar, br, cr, m[13], 0x6d703ef3, 5); ar = rotl(ar, 10)
-
-  // M'j = 8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2, 13, 9, 7, 10, 14
-  // K' = 0x7a6d76e9
-  // S'j = 15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8
-  cr = fn2(cr, dr, er, ar, br, m[8], 0x7a6d76e9, 15); er = rotl(er, 10)
-  br = fn2(br, cr, dr, er, ar, m[6], 0x7a6d76e9, 5); dr = rotl(dr, 10)
-  ar = fn2(ar, br, cr, dr, er, m[4], 0x7a6d76e9, 8); cr = rotl(cr, 10)
-  er = fn2(er, ar, br, cr, dr, m[1], 0x7a6d76e9, 11); br = rotl(br, 10)
-  dr = fn2(dr, er, ar, br, cr, m[3], 0x7a6d76e9, 14); ar = rotl(ar, 10)
-  cr = fn2(cr, dr, er, ar, br, m[11], 0x7a6d76e9, 14); er = rotl(er, 10)
-  br = fn2(br, cr, dr, er, ar, m[15], 0x7a6d76e9, 6); dr = rotl(dr, 10)
-  ar = fn2(ar, br, cr, dr, er, m[0], 0x7a6d76e9, 14); cr = rotl(cr, 10)
-  er = fn2(er, ar, br, cr, dr, m[5], 0x7a6d76e9, 6); br = rotl(br, 10)
-  dr = fn2(dr, er, ar, br, cr, m[12], 0x7a6d76e9, 9); ar = rotl(ar, 10)
-  cr = fn2(cr, dr, er, ar, br, m[2], 0x7a6d76e9, 12); er = rotl(er, 10)
-  br = fn2(br, cr, dr, er, ar, m[13], 0x7a6d76e9, 9); dr = rotl(dr, 10)
-  ar = fn2(ar, br, cr, dr, er, m[9], 0x7a6d76e9, 12); cr = rotl(cr, 10)
-  er = fn2(er, ar, br, cr, dr, m[7], 0x7a6d76e9, 5); br = rotl(br, 10)
-  dr = fn2(dr, er, ar, br, cr, m[10], 0x7a6d76e9, 15); ar = rotl(ar, 10)
-  cr = fn2(cr, dr, er, ar, br, m[14], 0x7a6d76e9, 8); er = rotl(er, 10)
-
-  // M'j = 12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11
-  // K' = 0x00000000
-  // S'j = 8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
-  br = fn1(br, cr, dr, er, ar, m[12], 0x00000000, 8); dr = rotl(dr, 10)
-  ar = fn1(ar, br, cr, dr, er, m[15], 0x00000000, 5); cr = rotl(cr, 10)
-  er = fn1(er, ar, br, cr, dr, m[10], 0x00000000, 12); br = rotl(br, 10)
-  dr = fn1(dr, er, ar, br, cr, m[4], 0x00000000, 9); ar = rotl(ar, 10)
-  cr = fn1(cr, dr, er, ar, br, m[1], 0x00000000, 12); er = rotl(er, 10)
-  br = fn1(br, cr, dr, er, ar, m[5], 0x00000000, 5); dr = rotl(dr, 10)
-  ar = fn1(ar, br, cr, dr, er, m[8], 0x00000000, 14); cr = rotl(cr, 10)
-  er = fn1(er, ar, br, cr, dr, m[7], 0x00000000, 6); br = rotl(br, 10)
-  dr = fn1(dr, er, ar, br, cr, m[6], 0x00000000, 8); ar = rotl(ar, 10)
-  cr = fn1(cr, dr, er, ar, br, m[2], 0x00000000, 13); er = rotl(er, 10)
-  br = fn1(br, cr, dr, er, ar, m[13], 0x00000000, 6); dr = rotl(dr, 10)
-  ar = fn1(ar, br, cr, dr, er, m[14], 0x00000000, 5); cr = rotl(cr, 10)
-  er = fn1(er, ar, br, cr, dr, m[0], 0x00000000, 15); br = rotl(br, 10)
-  dr = fn1(dr, er, ar, br, cr, m[3], 0x00000000, 13); ar = rotl(ar, 10)
-  cr = fn1(cr, dr, er, ar, br, m[9], 0x00000000, 11); er = rotl(er, 10)
-  br = fn1(br, cr, dr, er, ar, m[11], 0x00000000, 11); dr = rotl(dr, 10)
-
-  // change state
+  // update state
   var t = (this._b + cl + dr) | 0
   this._b = (this._c + dl + er) | 0
   this._c = (this._d + el + ar) | 0
@@ -96022,7 +99546,7 @@ RIPEMD160.prototype._digest = function () {
   this._update()
 
   // produce result
-  var buffer = new Buffer(20)
+  var buffer = Buffer.alloc ? Buffer.alloc(20) : new Buffer(20)
   buffer.writeInt32LE(this._a, 0)
   buffer.writeInt32LE(this._b, 4)
   buffer.writeInt32LE(this._c, 8)
@@ -96057,8 +99581,7 @@ function fn5 (a, b, c, d, e, m, k, s) {
 
 module.exports = RIPEMD160
 
-}).call(this,require("buffer").Buffer)
-},{"buffer":197,"hash-base":284,"inherits":300}],371:[function(require,module,exports){
+},{"buffer":205,"hash-base":291,"inherits":307}],376:[function(require,module,exports){
 const assert = require('assert')
 const Buffer = require('safe-buffer').Buffer
 /**
@@ -96290,7 +99813,7 @@ function toBuffer (v) {
   return v
 }
 
-},{"assert":161,"safe-buffer":372}],372:[function(require,module,exports){
+},{"assert":164,"safe-buffer":377}],377:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -96354,10 +99877,10 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":197}],373:[function(require,module,exports){
+},{"buffer":205}],378:[function(require,module,exports){
 module.exports = require('scryptsy')
 
-},{"scryptsy":374}],374:[function(require,module,exports){
+},{"scryptsy":379}],379:[function(require,module,exports){
 (function (Buffer){
 var pbkdf2Sync = require('pbkdf2').pbkdf2Sync
 
@@ -96540,11 +100063,11 @@ function arraycopy (src, srcPos, dest, destPos, length) {
 module.exports = scrypt
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":197,"pbkdf2":329}],375:[function(require,module,exports){
+},{"buffer":205,"pbkdf2":335}],380:[function(require,module,exports){
 'use strict'
 module.exports = require('./lib')(require('./lib/elliptic'))
 
-},{"./lib":379,"./lib/elliptic":378}],376:[function(require,module,exports){
+},{"./lib":384,"./lib/elliptic":383}],381:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var toString = Object.prototype.toString
@@ -96592,7 +100115,7 @@ exports.isNumberInInterval = function (number, x, y, message) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":301}],377:[function(require,module,exports){
+},{"../../is-buffer/index.js":308}],382:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var bip66 = require('bip66')
@@ -96787,7 +100310,7 @@ exports.signatureImportLax = function (sig) {
   return { r: r, s: s }
 }
 
-},{"bip66":164,"safe-buffer":372}],378:[function(require,module,exports){
+},{"bip66":170,"safe-buffer":377}],383:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var createHash = require('create-hash')
@@ -97049,7 +100572,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
   return Buffer.from(pair.pub.mul(scalar).encode(true, compressed))
 }
 
-},{"../messages.json":380,"bn.js":165,"create-hash":201,"elliptic":252,"safe-buffer":372}],379:[function(require,module,exports){
+},{"../messages.json":385,"bn.js":171,"create-hash":209,"elliptic":259,"safe-buffer":377}],384:[function(require,module,exports){
 'use strict'
 var assert = require('./assert')
 var der = require('./der')
@@ -97296,7 +100819,7 @@ module.exports = function (secp256k1) {
   }
 }
 
-},{"./assert":376,"./der":377,"./messages.json":380}],380:[function(require,module,exports){
+},{"./assert":381,"./der":382,"./messages.json":385}],385:[function(require,module,exports){
 module.exports={
   "COMPRESSED_TYPE_INVALID": "compressed should be a boolean",
   "EC_PRIVATE_KEY_TYPE_INVALID": "private key should be a Buffer",
@@ -97335,7 +100858,7 @@ module.exports={
   "TWEAK_LENGTH_INVALID": "tweak length is invalid"
 }
 
-},{}],381:[function(require,module,exports){
+},{}],386:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 // prototype class for hash functions
@@ -97399,7 +100922,7 @@ Hash.prototype.digest = function (enc) {
 
   // uint64
   } else {
-    var lowBits = bits & 0xffffffff
+    var lowBits = (bits & 0xffffffff) >>> 0
     var highBits = (bits - lowBits) / 0x100000000
 
     this._block.writeUInt32BE(highBits, this._blockSize - 8)
@@ -97418,7 +100941,7 @@ Hash.prototype._update = function () {
 
 module.exports = Hash
 
-},{"safe-buffer":372}],382:[function(require,module,exports){
+},{"safe-buffer":377}],387:[function(require,module,exports){
 var exports = module.exports = function SHA (algorithm) {
   algorithm = algorithm.toLowerCase()
 
@@ -97435,7 +100958,7 @@ exports.sha256 = require('./sha256')
 exports.sha384 = require('./sha384')
 exports.sha512 = require('./sha512')
 
-},{"./sha":383,"./sha1":384,"./sha224":385,"./sha256":386,"./sha384":387,"./sha512":388}],383:[function(require,module,exports){
+},{"./sha":388,"./sha1":389,"./sha224":390,"./sha256":391,"./sha384":392,"./sha512":393}],388:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-0, as defined
  * in FIPS PUB 180-1
@@ -97531,7 +101054,7 @@ Sha.prototype._hash = function () {
 
 module.exports = Sha
 
-},{"./hash":381,"inherits":300,"safe-buffer":372}],384:[function(require,module,exports){
+},{"./hash":386,"inherits":307,"safe-buffer":377}],389:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -97632,7 +101155,7 @@ Sha1.prototype._hash = function () {
 
 module.exports = Sha1
 
-},{"./hash":381,"inherits":300,"safe-buffer":372}],385:[function(require,module,exports){
+},{"./hash":386,"inherits":307,"safe-buffer":377}],390:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -97687,7 +101210,7 @@ Sha224.prototype._hash = function () {
 
 module.exports = Sha224
 
-},{"./hash":381,"./sha256":386,"inherits":300,"safe-buffer":372}],386:[function(require,module,exports){
+},{"./hash":386,"./sha256":391,"inherits":307,"safe-buffer":377}],391:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -97824,7 +101347,7 @@ Sha256.prototype._hash = function () {
 
 module.exports = Sha256
 
-},{"./hash":381,"inherits":300,"safe-buffer":372}],387:[function(require,module,exports){
+},{"./hash":386,"inherits":307,"safe-buffer":377}],392:[function(require,module,exports){
 var inherits = require('inherits')
 var SHA512 = require('./sha512')
 var Hash = require('./hash')
@@ -97883,7 +101406,7 @@ Sha384.prototype._hash = function () {
 
 module.exports = Sha384
 
-},{"./hash":381,"./sha512":388,"inherits":300,"safe-buffer":372}],388:[function(require,module,exports){
+},{"./hash":386,"./sha512":393,"inherits":307,"safe-buffer":377}],393:[function(require,module,exports){
 var inherits = require('inherits')
 var Hash = require('./hash')
 var Buffer = require('safe-buffer').Buffer
@@ -98145,7 +101668,7 @@ Sha512.prototype._hash = function () {
 
 module.exports = Sha512
 
-},{"./hash":381,"inherits":300,"safe-buffer":372}],389:[function(require,module,exports){
+},{"./hash":386,"inherits":307,"safe-buffer":377}],394:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -98274,7 +101797,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":279,"inherits":300,"readable-stream/duplex.js":357,"readable-stream/passthrough.js":366,"readable-stream/readable.js":367,"readable-stream/transform.js":368,"readable-stream/writable.js":369}],390:[function(require,module,exports){
+},{"events":286,"inherits":307,"readable-stream/duplex.js":362,"readable-stream/passthrough.js":371,"readable-stream/readable.js":372,"readable-stream/transform.js":373,"readable-stream/writable.js":374}],395:[function(require,module,exports){
 'use strict';
 module.exports = function (str) {
 	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
@@ -98282,10 +101805,34 @@ module.exports = function (str) {
 	});
 };
 
-},{}],391:[function(require,module,exports){
+},{}],396:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 'use strict';
 
+/*<replacement>*/
+
 var Buffer = require('safe-buffer').Buffer;
+/*</replacement>*/
 
 var isEncoding = Buffer.isEncoding || function (encoding) {
   encoding = '' + encoding;
@@ -98397,10 +101944,10 @@ StringDecoder.prototype.fillLast = function (buf) {
 };
 
 // Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a
-// continuation byte.
+// continuation byte. If an invalid byte is detected, -2 is returned.
 function utf8CheckByte(byte) {
   if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;
-  return -1;
+  return byte >> 6 === 0x02 ? -1 : -2;
 }
 
 // Checks at most 3 bytes at the end of a Buffer in order to detect an
@@ -98414,13 +101961,13 @@ function utf8CheckIncomplete(self, buf, i) {
     if (nb > 0) self.lastNeed = nb - 1;
     return nb;
   }
-  if (--j < i) return 0;
+  if (--j < i || nb === -2) return 0;
   nb = utf8CheckByte(buf[j]);
   if (nb >= 0) {
     if (nb > 0) self.lastNeed = nb - 2;
     return nb;
   }
-  if (--j < i) return 0;
+  if (--j < i || nb === -2) return 0;
   nb = utf8CheckByte(buf[j]);
   if (nb >= 0) {
     if (nb > 0) {
@@ -98434,7 +101981,7 @@ function utf8CheckIncomplete(self, buf, i) {
 // Validates as many continuation bytes for a multi-byte UTF-8 character as
 // needed or are available. If we see a non-continuation byte where we expect
 // one, we "replace" the validated continuation bytes we've seen so far with
-// UTF-8 replacement characters ('\ufffd'), to match v8's UTF-8 decoding
+// a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
 // behavior. The continuation byte check is included three times in the case
 // where all of the continuation bytes for a character exist in the same buffer.
 // It is also done this way as a slight performance increase instead of using a
@@ -98442,17 +101989,17 @@ function utf8CheckIncomplete(self, buf, i) {
 function utf8CheckExtraBytes(self, buf, p) {
   if ((buf[0] & 0xC0) !== 0x80) {
     self.lastNeed = 0;
-    return '\ufffd'.repeat(p);
+    return '\ufffd';
   }
   if (self.lastNeed > 1 && buf.length > 1) {
     if ((buf[1] & 0xC0) !== 0x80) {
       self.lastNeed = 1;
-      return '\ufffd'.repeat(p + 1);
+      return '\ufffd';
     }
     if (self.lastNeed > 2 && buf.length > 2) {
       if ((buf[2] & 0xC0) !== 0x80) {
         self.lastNeed = 2;
-        return '\ufffd'.repeat(p + 2);
+        return '\ufffd';
       }
     }
   }
@@ -98483,11 +102030,11 @@ function utf8Text(buf, i) {
   return buf.toString('utf8', i, end);
 }
 
-// For UTF-8, a replacement character for each buffered byte of a (partial)
-// character needs to be added to the output.
+// For UTF-8, a replacement character is added when ending on a partial
+// character.
 function utf8End(buf) {
   var r = buf && buf.length ? this.write(buf) : '';
-  if (this.lastNeed) return r + '\ufffd'.repeat(this.lastTotal - this.lastNeed);
+  if (this.lastNeed) return r + '\ufffd';
   return r;
 }
 
@@ -98555,7 +102102,7 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":372}],392:[function(require,module,exports){
+},{"safe-buffer":377}],397:[function(require,module,exports){
 var isHexPrefixed = require('is-hex-prefixed');
 
 /**
@@ -98571,7 +102118,7 @@ module.exports = function stripHexPrefix(str) {
   return isHexPrefixed(str) ? str.slice(2) : str;
 }
 
-},{"is-hex-prefixed":304}],393:[function(require,module,exports){
+},{"is-hex-prefixed":311}],398:[function(require,module,exports){
 var unavailable = function unavailable() {
   throw "This swarm.js function isn't available on the browser.";
 };
@@ -98604,7 +102151,7 @@ module.exports = swarm({
   hash: hash,
   pick: pick
 });
-},{"./pick.js":394,"./swarm":396,"./swarm-hash.js":395,"eth-lib/lib/bytes":269,"xhr-request-promise":464}],394:[function(require,module,exports){
+},{"./pick.js":399,"./swarm":401,"./swarm-hash.js":400,"eth-lib/lib/bytes":276,"xhr-request-promise":467}],399:[function(require,module,exports){
 var picker = function picker(type) {
   return function () {
     return new Promise(function (resolve, reject) {
@@ -98662,7 +102209,7 @@ module.exports = {
   file: picker("file"),
   directory: picker("directory")
 };
-},{}],395:[function(require,module,exports){
+},{}],400:[function(require,module,exports){
 // Thanks https://github.com/axic/swarmhash
 
 var keccak = require("eth-lib/lib/hash").keccak256;
@@ -98703,7 +102250,7 @@ var swarmHash = function swarmHash(data) {
 };
 
 module.exports = swarmHash;
-},{"eth-lib/lib/bytes":269,"eth-lib/lib/hash":270}],396:[function(require,module,exports){
+},{"eth-lib/lib/bytes":276,"eth-lib/lib/hash":277}],401:[function(require,module,exports){
 // TODO: this is a temporary fix to hide those libraries from the browser. A
 // slightly better long-term solution would be to split this file into two,
 // separating the functions that are used on Node.js from the functions that
@@ -99330,7 +102877,88 @@ module.exports = function (_ref) {
   };
 };
 
-},{}],397:[function(require,module,exports){
+},{}],402:[function(require,module,exports){
+(function (setImmediate,clearImmediate){
+var nextTick = require('process/browser.js').nextTick;
+var apply = Function.prototype.apply;
+var slice = Array.prototype.slice;
+var immediateIds = {};
+var nextImmediateId = 0;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) { timeout.close(); };
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// That's not how node.js implements it but the exposed api is the same.
+exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+  var id = nextImmediateId++;
+  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+  immediateIds[id] = true;
+
+  nextTick(function onNextTick() {
+    if (immediateIds[id]) {
+      // fn.call() is faster so we optimize for the common use-case
+      // @see http://jsperf.com/call-apply-segu
+      if (args) {
+        fn.apply(null, args);
+      } else {
+        fn.call(null);
+      }
+      // Prevent ids from leaking
+      exports.clearImmediate(id);
+    }
+  });
+
+  return id;
+};
+
+exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+  delete immediateIds[id];
+};
+}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
+},{"process/browser.js":403,"timers":402}],403:[function(require,module,exports){
+arguments[4][202][0].apply(exports,arguments)
+},{"dup":202}],404:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -99346,7 +102974,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],398:[function(require,module,exports){
+},{}],405:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -100896,7 +104524,7 @@ exports.right = function(str){
   }
 }.call(this));
 
-},{}],399:[function(require,module,exports){
+},{}],406:[function(require,module,exports){
 module.exports = urlSetQuery
 function urlSetQuery (url, query) {
   if (query) {
@@ -100921,7 +104549,7 @@ function urlSetQuery (url, query) {
   return url
 }
 
-},{}],400:[function(require,module,exports){
+},{}],407:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -101655,7 +105283,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":401,"punycode":342,"querystring":351}],401:[function(require,module,exports){
+},{"./util":408,"punycode":347,"querystring":356}],408:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -101673,7 +105301,7 @@ module.exports = {
   }
 };
 
-},{}],402:[function(require,module,exports){
+},{}],409:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/utf8js v2.0.0 by @mathias */
 ;(function(root) {
@@ -101921,7 +105549,7 @@ module.exports = {
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],403:[function(require,module,exports){
+},{}],410:[function(require,module,exports){
 (function (global){
 
 /**
@@ -101992,606 +105620,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],404:[function(require,module,exports){
-arguments[4][300][0].apply(exports,arguments)
-},{"dup":300}],405:[function(require,module,exports){
-module.exports = function isBuffer(arg) {
-  return arg && typeof arg === 'object'
-    && typeof arg.copy === 'function'
-    && typeof arg.fill === 'function'
-    && typeof arg.readUInt8 === 'function';
-}
-},{}],406:[function(require,module,exports){
-(function (process,global){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-var formatRegExp = /%[sdj%]/g;
-exports.format = function(f) {
-  if (!isString(f)) {
-    var objects = [];
-    for (var i = 0; i < arguments.length; i++) {
-      objects.push(inspect(arguments[i]));
-    }
-    return objects.join(' ');
-  }
-
-  var i = 1;
-  var args = arguments;
-  var len = args.length;
-  var str = String(f).replace(formatRegExp, function(x) {
-    if (x === '%%') return '%';
-    if (i >= len) return x;
-    switch (x) {
-      case '%s': return String(args[i++]);
-      case '%d': return Number(args[i++]);
-      case '%j':
-        try {
-          return JSON.stringify(args[i++]);
-        } catch (_) {
-          return '[Circular]';
-        }
-      default:
-        return x;
-    }
-  });
-  for (var x = args[i]; i < len; x = args[++i]) {
-    if (isNull(x) || !isObject(x)) {
-      str += ' ' + x;
-    } else {
-      str += ' ' + inspect(x);
-    }
-  }
-  return str;
-};
-
-
-// Mark that a method should not be used.
-// Returns a modified function which warns once by default.
-// If --no-deprecation is set, then it is a no-op.
-exports.deprecate = function(fn, msg) {
-  // Allow for deprecating things in the process of starting up.
-  if (isUndefined(global.process)) {
-    return function() {
-      return exports.deprecate(fn, msg).apply(this, arguments);
-    };
-  }
-
-  if (process.noDeprecation === true) {
-    return fn;
-  }
-
-  var warned = false;
-  function deprecated() {
-    if (!warned) {
-      if (process.throwDeprecation) {
-        throw new Error(msg);
-      } else if (process.traceDeprecation) {
-        console.trace(msg);
-      } else {
-        console.error(msg);
-      }
-      warned = true;
-    }
-    return fn.apply(this, arguments);
-  }
-
-  return deprecated;
-};
-
-
-var debugs = {};
-var debugEnviron;
-exports.debuglog = function(set) {
-  if (isUndefined(debugEnviron))
-    debugEnviron = process.env.NODE_DEBUG || '';
-  set = set.toUpperCase();
-  if (!debugs[set]) {
-    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
-      var pid = process.pid;
-      debugs[set] = function() {
-        var msg = exports.format.apply(exports, arguments);
-        console.error('%s %d: %s', set, pid, msg);
-      };
-    } else {
-      debugs[set] = function() {};
-    }
-  }
-  return debugs[set];
-};
-
-
-/**
- * Echos the value of a value. Trys to print the value out
- * in the best way possible given the different types.
- *
- * @param {Object} obj The object to print out.
- * @param {Object} opts Optional options object that alters the output.
- */
-/* legacy: obj, showHidden, depth, colors*/
-function inspect(obj, opts) {
-  // default options
-  var ctx = {
-    seen: [],
-    stylize: stylizeNoColor
-  };
-  // legacy...
-  if (arguments.length >= 3) ctx.depth = arguments[2];
-  if (arguments.length >= 4) ctx.colors = arguments[3];
-  if (isBoolean(opts)) {
-    // legacy...
-    ctx.showHidden = opts;
-  } else if (opts) {
-    // got an "options" object
-    exports._extend(ctx, opts);
-  }
-  // set default options
-  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
-  if (isUndefined(ctx.depth)) ctx.depth = 2;
-  if (isUndefined(ctx.colors)) ctx.colors = false;
-  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
-  if (ctx.colors) ctx.stylize = stylizeWithColor;
-  return formatValue(ctx, obj, ctx.depth);
-}
-exports.inspect = inspect;
-
-
-// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
-inspect.colors = {
-  'bold' : [1, 22],
-  'italic' : [3, 23],
-  'underline' : [4, 24],
-  'inverse' : [7, 27],
-  'white' : [37, 39],
-  'grey' : [90, 39],
-  'black' : [30, 39],
-  'blue' : [34, 39],
-  'cyan' : [36, 39],
-  'green' : [32, 39],
-  'magenta' : [35, 39],
-  'red' : [31, 39],
-  'yellow' : [33, 39]
-};
-
-// Don't use 'blue' not visible on cmd.exe
-inspect.styles = {
-  'special': 'cyan',
-  'number': 'yellow',
-  'boolean': 'yellow',
-  'undefined': 'grey',
-  'null': 'bold',
-  'string': 'green',
-  'date': 'magenta',
-  // "name": intentionally not styling
-  'regexp': 'red'
-};
-
-
-function stylizeWithColor(str, styleType) {
-  var style = inspect.styles[styleType];
-
-  if (style) {
-    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
-           '\u001b[' + inspect.colors[style][1] + 'm';
-  } else {
-    return str;
-  }
-}
-
-
-function stylizeNoColor(str, styleType) {
-  return str;
-}
-
-
-function arrayToHash(array) {
-  var hash = {};
-
-  array.forEach(function(val, idx) {
-    hash[val] = true;
-  });
-
-  return hash;
-}
-
-
-function formatValue(ctx, value, recurseTimes) {
-  // Provide a hook for user-specified inspect functions.
-  // Check that value is an object with an inspect function on it
-  if (ctx.customInspect &&
-      value &&
-      isFunction(value.inspect) &&
-      // Filter out the util module, it's inspect function is special
-      value.inspect !== exports.inspect &&
-      // Also filter out any prototype objects using the circular check.
-      !(value.constructor && value.constructor.prototype === value)) {
-    var ret = value.inspect(recurseTimes, ctx);
-    if (!isString(ret)) {
-      ret = formatValue(ctx, ret, recurseTimes);
-    }
-    return ret;
-  }
-
-  // Primitive types cannot have properties
-  var primitive = formatPrimitive(ctx, value);
-  if (primitive) {
-    return primitive;
-  }
-
-  // Look up the keys of the object.
-  var keys = Object.keys(value);
-  var visibleKeys = arrayToHash(keys);
-
-  if (ctx.showHidden) {
-    keys = Object.getOwnPropertyNames(value);
-  }
-
-  // IE doesn't make error fields non-enumerable
-  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
-  if (isError(value)
-      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
-    return formatError(value);
-  }
-
-  // Some type of object without properties can be shortcutted.
-  if (keys.length === 0) {
-    if (isFunction(value)) {
-      var name = value.name ? ': ' + value.name : '';
-      return ctx.stylize('[Function' + name + ']', 'special');
-    }
-    if (isRegExp(value)) {
-      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
-    }
-    if (isDate(value)) {
-      return ctx.stylize(Date.prototype.toString.call(value), 'date');
-    }
-    if (isError(value)) {
-      return formatError(value);
-    }
-  }
-
-  var base = '', array = false, braces = ['{', '}'];
-
-  // Make Array say that they are Array
-  if (isArray(value)) {
-    array = true;
-    braces = ['[', ']'];
-  }
-
-  // Make functions say that they are functions
-  if (isFunction(value)) {
-    var n = value.name ? ': ' + value.name : '';
-    base = ' [Function' + n + ']';
-  }
-
-  // Make RegExps say that they are RegExps
-  if (isRegExp(value)) {
-    base = ' ' + RegExp.prototype.toString.call(value);
-  }
-
-  // Make dates with properties first say the date
-  if (isDate(value)) {
-    base = ' ' + Date.prototype.toUTCString.call(value);
-  }
-
-  // Make error with message first say the error
-  if (isError(value)) {
-    base = ' ' + formatError(value);
-  }
-
-  if (keys.length === 0 && (!array || value.length == 0)) {
-    return braces[0] + base + braces[1];
-  }
-
-  if (recurseTimes < 0) {
-    if (isRegExp(value)) {
-      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
-    } else {
-      return ctx.stylize('[Object]', 'special');
-    }
-  }
-
-  ctx.seen.push(value);
-
-  var output;
-  if (array) {
-    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
-  } else {
-    output = keys.map(function(key) {
-      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
-    });
-  }
-
-  ctx.seen.pop();
-
-  return reduceToSingleString(output, base, braces);
-}
-
-
-function formatPrimitive(ctx, value) {
-  if (isUndefined(value))
-    return ctx.stylize('undefined', 'undefined');
-  if (isString(value)) {
-    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
-                                             .replace(/'/g, "\\'")
-                                             .replace(/\\"/g, '"') + '\'';
-    return ctx.stylize(simple, 'string');
-  }
-  if (isNumber(value))
-    return ctx.stylize('' + value, 'number');
-  if (isBoolean(value))
-    return ctx.stylize('' + value, 'boolean');
-  // For some reason typeof null is "object", so special case here.
-  if (isNull(value))
-    return ctx.stylize('null', 'null');
-}
-
-
-function formatError(value) {
-  return '[' + Error.prototype.toString.call(value) + ']';
-}
-
-
-function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
-  var output = [];
-  for (var i = 0, l = value.length; i < l; ++i) {
-    if (hasOwnProperty(value, String(i))) {
-      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
-          String(i), true));
-    } else {
-      output.push('');
-    }
-  }
-  keys.forEach(function(key) {
-    if (!key.match(/^\d+$/)) {
-      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
-          key, true));
-    }
-  });
-  return output;
-}
-
-
-function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
-  var name, str, desc;
-  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
-  if (desc.get) {
-    if (desc.set) {
-      str = ctx.stylize('[Getter/Setter]', 'special');
-    } else {
-      str = ctx.stylize('[Getter]', 'special');
-    }
-  } else {
-    if (desc.set) {
-      str = ctx.stylize('[Setter]', 'special');
-    }
-  }
-  if (!hasOwnProperty(visibleKeys, key)) {
-    name = '[' + key + ']';
-  }
-  if (!str) {
-    if (ctx.seen.indexOf(desc.value) < 0) {
-      if (isNull(recurseTimes)) {
-        str = formatValue(ctx, desc.value, null);
-      } else {
-        str = formatValue(ctx, desc.value, recurseTimes - 1);
-      }
-      if (str.indexOf('\n') > -1) {
-        if (array) {
-          str = str.split('\n').map(function(line) {
-            return '  ' + line;
-          }).join('\n').substr(2);
-        } else {
-          str = '\n' + str.split('\n').map(function(line) {
-            return '   ' + line;
-          }).join('\n');
-        }
-      }
-    } else {
-      str = ctx.stylize('[Circular]', 'special');
-    }
-  }
-  if (isUndefined(name)) {
-    if (array && key.match(/^\d+$/)) {
-      return str;
-    }
-    name = JSON.stringify('' + key);
-    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
-      name = name.substr(1, name.length - 2);
-      name = ctx.stylize(name, 'name');
-    } else {
-      name = name.replace(/'/g, "\\'")
-                 .replace(/\\"/g, '"')
-                 .replace(/(^"|"$)/g, "'");
-      name = ctx.stylize(name, 'string');
-    }
-  }
-
-  return name + ': ' + str;
-}
-
-
-function reduceToSingleString(output, base, braces) {
-  var numLinesEst = 0;
-  var length = output.reduce(function(prev, cur) {
-    numLinesEst++;
-    if (cur.indexOf('\n') >= 0) numLinesEst++;
-    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
-  }, 0);
-
-  if (length > 60) {
-    return braces[0] +
-           (base === '' ? '' : base + '\n ') +
-           ' ' +
-           output.join(',\n  ') +
-           ' ' +
-           braces[1];
-  }
-
-  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
-}
-
-
-// NOTE: These type checking functions intentionally don't use `instanceof`
-// because it is fragile and can be easily faked with `Object.create()`.
-function isArray(ar) {
-  return Array.isArray(ar);
-}
-exports.isArray = isArray;
-
-function isBoolean(arg) {
-  return typeof arg === 'boolean';
-}
-exports.isBoolean = isBoolean;
-
-function isNull(arg) {
-  return arg === null;
-}
-exports.isNull = isNull;
-
-function isNullOrUndefined(arg) {
-  return arg == null;
-}
-exports.isNullOrUndefined = isNullOrUndefined;
-
-function isNumber(arg) {
-  return typeof arg === 'number';
-}
-exports.isNumber = isNumber;
-
-function isString(arg) {
-  return typeof arg === 'string';
-}
-exports.isString = isString;
-
-function isSymbol(arg) {
-  return typeof arg === 'symbol';
-}
-exports.isSymbol = isSymbol;
-
-function isUndefined(arg) {
-  return arg === void 0;
-}
-exports.isUndefined = isUndefined;
-
-function isRegExp(re) {
-  return isObject(re) && objectToString(re) === '[object RegExp]';
-}
-exports.isRegExp = isRegExp;
-
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
-}
-exports.isObject = isObject;
-
-function isDate(d) {
-  return isObject(d) && objectToString(d) === '[object Date]';
-}
-exports.isDate = isDate;
-
-function isError(e) {
-  return isObject(e) &&
-      (objectToString(e) === '[object Error]' || e instanceof Error);
-}
-exports.isError = isError;
-
-function isFunction(arg) {
-  return typeof arg === 'function';
-}
-exports.isFunction = isFunction;
-
-function isPrimitive(arg) {
-  return arg === null ||
-         typeof arg === 'boolean' ||
-         typeof arg === 'number' ||
-         typeof arg === 'string' ||
-         typeof arg === 'symbol' ||  // ES6 symbol
-         typeof arg === 'undefined';
-}
-exports.isPrimitive = isPrimitive;
-
-exports.isBuffer = require('./support/isBuffer');
-
-function objectToString(o) {
-  return Object.prototype.toString.call(o);
-}
-
-
-function pad(n) {
-  return n < 10 ? '0' + n.toString(10) : n.toString(10);
-}
-
-
-var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-              'Oct', 'Nov', 'Dec'];
-
-// 26 Feb 16:19:34
-function timestamp() {
-  var d = new Date();
-  var time = [pad(d.getHours()),
-              pad(d.getMinutes()),
-              pad(d.getSeconds())].join(':');
-  return [d.getDate(), months[d.getMonth()], time].join(' ');
-}
-
-
-// log is just a thin wrapper to console.log that prepends a timestamp
-exports.log = function() {
-  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
-};
-
-
-/**
- * Inherit the prototype methods from one constructor into another.
- *
- * The Function.prototype.inherits from lang.js rewritten as a standalone
- * function (not on Function.prototype). NOTE: If this file is to be loaded
- * during bootstrapping this function needs to be rewritten using some native
- * functions as prototype setup using normal JavaScript does not work as
- * expected during bootstrapping (see mirror.js in r114903).
- *
- * @param {function} ctor Constructor function which needs to inherit the
- *     prototype.
- * @param {function} superCtor Constructor function to inherit prototype from.
- */
-exports.inherits = require('inherits');
-
-exports._extend = function(origin, add) {
-  // Don't do anything if add isn't an object
-  if (!add || !isObject(add)) return origin;
-
-  var keys = Object.keys(add);
-  var i = keys.length;
-  while (i--) {
-    origin[keys[i]] = add[keys[i]];
-  }
-  return origin;
-};
-
-function hasOwnProperty(obj, prop) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":405,"_process":335,"inherits":404}],407:[function(require,module,exports){
+},{}],411:[function(require,module,exports){
 var indexOf = require('indexof');
 
 var Object_keys = function (obj) {
@@ -102731,7 +105760,7 @@ exports.createContext = Script.createContext = function (context) {
     return copy;
 };
 
-},{"indexof":299}],408:[function(require,module,exports){
+},{"indexof":306}],412:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -102821,7 +105850,7 @@ Bzz.prototype.setProvider = function(provider) {
 module.exports = Bzz;
 
 
-},{"swarm-js":393,"underscore":398}],409:[function(require,module,exports){
+},{"swarm-js":398,"underscore":405}],413:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -102870,7 +105899,7 @@ module.exports = {
     }
 };
 
-},{}],410:[function(require,module,exports){
+},{}],414:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -103308,7 +106337,7 @@ module.exports = {
 };
 
 
-},{"underscore":398,"web3-eth-iban":446,"web3-utils":456}],411:[function(require,module,exports){
+},{"underscore":405,"web3-eth-iban":449,"web3-utils":459}],415:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -103342,7 +106371,7 @@ module.exports = {
 };
 
 
-},{"./errors":409,"./formatters":410}],412:[function(require,module,exports){
+},{"./errors":413,"./formatters":414}],416:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -103953,7 +106982,7 @@ Method.prototype.request = function () {
 
 module.exports = Method;
 
-},{"underscore":398,"web3-core-helpers":411,"web3-core-promievent":413,"web3-core-subscriptions":418,"web3-utils":456}],413:[function(require,module,exports){
+},{"underscore":405,"web3-core-helpers":415,"web3-core-promievent":417,"web3-core-subscriptions":422,"web3-utils":459}],417:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -104030,7 +107059,7 @@ PromiEvent.resolve = function(value) {
 
 module.exports = PromiEvent;
 
-},{"any-promise":144,"eventemitter3":278}],414:[function(require,module,exports){
+},{"any-promise":147,"eventemitter3":285}],418:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -104104,7 +107133,7 @@ Batch.prototype.execute = function () {
 module.exports = Batch;
 
 
-},{"./jsonrpc":417,"web3-core-helpers":411}],415:[function(require,module,exports){
+},{"./jsonrpc":421,"web3-core-helpers":415}],419:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -104192,7 +107221,7 @@ if(typeof global.ethereumProvider !== 'undefined') {
 
 module.exports = givenProvider;
 
-},{}],416:[function(require,module,exports){
+},{}],420:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -104440,7 +107469,7 @@ module.exports = {
     BatchManager: BatchManager
 };
 
-},{"./batch.js":414,"./givenProvider.js":415,"./jsonrpc.js":417,"underscore":398,"web3-core-helpers":411,"web3-providers-http":451,"web3-providers-ipc":452,"web3-providers-ws":453}],417:[function(require,module,exports){
+},{"./batch.js":418,"./givenProvider.js":419,"./jsonrpc.js":421,"underscore":405,"web3-core-helpers":415,"web3-providers-http":454,"web3-providers-ipc":455,"web3-providers-ws":456}],421:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -104531,7 +107560,7 @@ Jsonrpc.toBatchPayload = function (messages) {
 module.exports = Jsonrpc;
 
 
-},{}],418:[function(require,module,exports){
+},{}],422:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -104609,7 +107638,7 @@ module.exports = {
     subscription: Subscription
 };
 
-},{"./subscription.js":419}],419:[function(require,module,exports){
+},{"./subscription.js":423}],423:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -104926,7 +107955,7 @@ Subscription.prototype.subscribe = function() {
 
 module.exports = Subscription;
 
-},{"eventemitter3":278,"underscore":398,"web3-core-helpers":411}],420:[function(require,module,exports){
+},{"eventemitter3":285,"underscore":405,"web3-core-helpers":415}],424:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -104997,7 +108026,7 @@ var extend = function (pckg) {
 module.exports = extend;
 
 
-},{"web3-core-helpers":411,"web3-core-method":412,"web3-utils":456}],421:[function(require,module,exports){
+},{"web3-core-helpers":415,"web3-core-method":416,"web3-utils":459}],425:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -105085,9 +108114,9 @@ module.exports = {
 };
 
 
-},{"./extend.js":420,"web3-core-requestmanager":416}],422:[function(require,module,exports){
-arguments[4][276][0].apply(exports,arguments)
-},{"dup":276}],423:[function(require,module,exports){
+},{"./extend.js":424,"web3-core-requestmanager":420}],426:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],427:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -105377,7 +108406,7 @@ module.exports = {
     toTwosComplement: utils.toTwosComplement
 };
 
-},{"./param":425,"bn.js":422,"underscore":398,"web3-utils":456}],424:[function(require,module,exports){
+},{"./param":429,"bn.js":426,"underscore":405,"web3-utils":459}],428:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -105787,7 +108816,7 @@ var coder = new ABICoder([
 
 module.exports = coder;
 
-},{"./formatters":423,"./types/address":427,"./types/bool":428,"./types/bytes":429,"./types/dynamicbytes":430,"./types/int":431,"./types/string":432,"./types/uint":433,"underscore":398,"web3-utils":456}],425:[function(require,module,exports){
+},{"./formatters":427,"./types/address":431,"./types/bool":432,"./types/bytes":433,"./types/dynamicbytes":434,"./types/int":435,"./types/string":436,"./types/uint":437,"underscore":405,"web3-utils":459}],429:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -105942,7 +108971,7 @@ SolidityParam.encodeList = function (params) {
 module.exports = SolidityParam;
 
 
-},{"./formatters.js":423}],426:[function(require,module,exports){
+},{"./formatters.js":427}],430:[function(require,module,exports){
 var f = require('./formatters');
 var SolidityParam = require('./param');
 
@@ -106199,7 +109228,7 @@ SolidityType.prototype.decode = function (bytes, offset, name) {
 
 module.exports = SolidityType;
 
-},{"./formatters":423,"./param":425}],427:[function(require,module,exports){
+},{"./formatters":427,"./param":429}],431:[function(require,module,exports){
 var f = require('../formatters');
 var formatters = require('web3-core-helpers').formatters;
 var SolidityType = require('../type');
@@ -106232,7 +109261,7 @@ SolidityTypeAddress.prototype.isType = function (name) {
 
 module.exports = SolidityTypeAddress;
 
-},{"../formatters":423,"../type":426,"web3-core-helpers":411}],428:[function(require,module,exports){
+},{"../formatters":427,"../type":430,"web3-core-helpers":415}],432:[function(require,module,exports){
 var f = require('../formatters');
 var SolidityType = require('../type');
 
@@ -106260,7 +109289,7 @@ SolidityTypeBool.prototype.isType = function (name) {
 
 module.exports = SolidityTypeBool;
 
-},{"../formatters":423,"../type":426}],429:[function(require,module,exports){
+},{"../formatters":427,"../type":430}],433:[function(require,module,exports){
 var f = require('../formatters');
 var SolidityType = require('../type');
 
@@ -106291,7 +109320,7 @@ SolidityTypeBytes.prototype.isType = function (name) {
 
 module.exports = SolidityTypeBytes;
 
-},{"../formatters":423,"../type":426}],430:[function(require,module,exports){
+},{"../formatters":427,"../type":430}],434:[function(require,module,exports){
 var f = require('../formatters');
 var SolidityType = require('../type');
 
@@ -106313,7 +109342,7 @@ SolidityTypeDynamicBytes.prototype.isDynamicType = function () {
 
 module.exports = SolidityTypeDynamicBytes;
 
-},{"../formatters":423,"../type":426}],431:[function(require,module,exports){
+},{"../formatters":427,"../type":430}],435:[function(require,module,exports){
 var f = require('../formatters');
 var SolidityType = require('../type');
 
@@ -106347,7 +109376,7 @@ SolidityTypeInt.prototype.isType = function (name) {
 
 module.exports = SolidityTypeInt;
 
-},{"../formatters":423,"../type":426}],432:[function(require,module,exports){
+},{"../formatters":427,"../type":430}],436:[function(require,module,exports){
 var f = require('../formatters');
 var SolidityType = require('../type');
 
@@ -106369,7 +109398,7 @@ SolidityTypeString.prototype.isDynamicType = function () {
 
 module.exports = SolidityTypeString;
 
-},{"../formatters":423,"../type":426}],433:[function(require,module,exports){
+},{"../formatters":427,"../type":430}],437:[function(require,module,exports){
 var f = require('../formatters');
 var SolidityType = require('../type');
 
@@ -106403,106 +109432,7 @@ SolidityTypeUInt.prototype.isType = function (name) {
 
 module.exports = SolidityTypeUInt;
 
-},{"../formatters":423,"../type":426}],434:[function(require,module,exports){
-'use strict'
-
-exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require('randombytes')
-exports.createHash = exports.Hash = require('create-hash')
-exports.createHmac = exports.Hmac = require('create-hmac')
-
-var algos = require('browserify-sign/algos')
-var algoKeys = Object.keys(algos)
-var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(algoKeys)
-exports.getHashes = function () {
-  return hashes
-}
-
-var p = require('pbkdf2')
-exports.pbkdf2 = p.pbkdf2
-exports.pbkdf2Sync = p.pbkdf2Sync
-
-var aes = require('browserify-cipher')
-
-exports.Cipher = aes.Cipher
-exports.createCipher = aes.createCipher
-exports.Cipheriv = aes.Cipheriv
-exports.createCipheriv = aes.createCipheriv
-exports.Decipher = aes.Decipher
-exports.createDecipher = aes.createDecipher
-exports.Decipheriv = aes.Decipheriv
-exports.createDecipheriv = aes.createDecipheriv
-exports.getCiphers = aes.getCiphers
-exports.listCiphers = aes.listCiphers
-
-var dh = require('diffie-hellman')
-
-exports.DiffieHellmanGroup = dh.DiffieHellmanGroup
-exports.createDiffieHellmanGroup = dh.createDiffieHellmanGroup
-exports.getDiffieHellman = dh.getDiffieHellman
-exports.createDiffieHellman = dh.createDiffieHellman
-exports.DiffieHellman = dh.DiffieHellman
-
-var sign = require('browserify-sign')
-
-exports.createSign = sign.createSign
-exports.Sign = sign.Sign
-exports.createVerify = sign.createVerify
-exports.Verify = sign.Verify
-
-exports.createECDH = require('create-ecdh')
-
-var publicEncrypt = require('public-encrypt')
-
-exports.publicEncrypt = publicEncrypt.publicEncrypt
-exports.privateEncrypt = publicEncrypt.privateEncrypt
-exports.publicDecrypt = publicEncrypt.publicDecrypt
-exports.privateDecrypt = publicEncrypt.privateDecrypt
-
-// the least I can do is make error messages for the rest of the node.js/crypto api.
-// ;[
-//   'createCredentials'
-// ].forEach(function (name) {
-//   exports[name] = function () {
-//     throw new Error([
-//       'sorry, ' + name + ' is not implemented yet',
-//       'we accept pull requests',
-//       'https://github.com/crypto-browserify/crypto-browserify'
-//     ].join('\n'))
-//   }
-// })
-
-var rf = require('randomfill')
-
-exports.randomFill = rf.randomFill
-exports.randomFillSync = rf.randomFillSync
-
-exports.createCredentials = function () {
-  throw new Error([
-    'sorry, createCredentials is not implemented yet',
-    'we accept pull requests',
-    'https://github.com/crypto-browserify/crypto-browserify'
-  ].join('\n'))
-}
-
-exports.constants = {
-  'DH_CHECK_P_NOT_SAFE_PRIME': 2,
-  'DH_CHECK_P_NOT_PRIME': 1,
-  'DH_UNABLE_TO_CHECK_GENERATOR': 4,
-  'DH_NOT_SUITABLE_GENERATOR': 8,
-  'NPN_ENABLED': 1,
-  'ALPN_ENABLED': 1,
-  'RSA_PKCS1_PADDING': 1,
-  'RSA_SSLV23_PADDING': 2,
-  'RSA_NO_PADDING': 3,
-  'RSA_PKCS1_OAEP_PADDING': 4,
-  'RSA_X931_PADDING': 5,
-  'RSA_PKCS1_PSS_PADDING': 6,
-  'POINT_CONVERSION_COMPRESSED': 2,
-  'POINT_CONVERSION_UNCOMPRESSED': 4,
-  'POINT_CONVERSION_HYBRID': 6
-}
-
-},{"browserify-cipher":185,"browserify-sign":193,"browserify-sign/algos":190,"create-ecdh":200,"create-hash":201,"create-hmac":204,"diffie-hellman":248,"pbkdf2":329,"public-encrypt":336,"randombytes":352,"randomfill":353}],435:[function(require,module,exports){
+},{"../formatters":427,"../type":430}],438:[function(require,module,exports){
 (function (Buffer){
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -106586,13 +109516,13 @@ module.exports = {
   decodeSignature: decodeSignature
 };
 }).call(this,require("buffer").Buffer)
-},{"./bytes":437,"./hash":438,"./nat":439,"./rlp":440,"buffer":197,"elliptic":252}],436:[function(require,module,exports){
-arguments[4][268][0].apply(exports,arguments)
-},{"dup":268}],437:[function(require,module,exports){
-arguments[4][269][0].apply(exports,arguments)
-},{"./array.js":436,"dup":269}],438:[function(require,module,exports){
-arguments[4][270][0].apply(exports,arguments)
-},{"dup":270}],439:[function(require,module,exports){
+},{"./bytes":440,"./hash":441,"./nat":442,"./rlp":443,"buffer":205,"elliptic":259}],439:[function(require,module,exports){
+arguments[4][275][0].apply(exports,arguments)
+},{"dup":275}],440:[function(require,module,exports){
+arguments[4][276][0].apply(exports,arguments)
+},{"./array.js":439,"dup":276}],441:[function(require,module,exports){
+arguments[4][277][0].apply(exports,arguments)
+},{"dup":277}],442:[function(require,module,exports){
 var BN = require("bn.js");
 var Bytes = require("./bytes");
 
@@ -106657,7 +109587,7 @@ module.exports = {
   div: div,
   sub: sub
 };
-},{"./bytes":437,"bn.js":165}],440:[function(require,module,exports){
+},{"./bytes":440,"bn.js":171}],443:[function(require,module,exports){
 // The RLP format
 // Serialization and deserialization for the BytesTree type, under the following grammar:
 // | First byte | Meaning                                                                    |
@@ -106731,7 +109661,7 @@ var decode = function decode(hex) {
 };
 
 module.exports = { encode: encode, decode: decode };
-},{}],441:[function(require,module,exports){
+},{}],444:[function(require,module,exports){
 (function (global){
 
 var rng;
@@ -106766,7 +109696,7 @@ module.exports = rng;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],442:[function(require,module,exports){
+},{}],445:[function(require,module,exports){
 //     uuid.js
 //
 //     Copyright (c) 2010-2012 Robert Kieffer
@@ -106951,7 +109881,7 @@ uuid.unparse = unparse;
 
 module.exports = uuid;
 
-},{"./rng":441}],443:[function(require,module,exports){
+},{"./rng":444}],446:[function(require,module,exports){
 (function (global,Buffer){
 /*
  This file is part of web3.js.
@@ -107489,7 +110419,7 @@ if (typeof localStorage === 'undefined') {
 module.exports = Accounts;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"any-promise":144,"buffer":197,"crypto":206,"crypto-browserify":434,"eth-lib/lib/account":435,"eth-lib/lib/bytes":437,"eth-lib/lib/hash":438,"eth-lib/lib/nat":439,"eth-lib/lib/rlp":440,"scrypt.js":373,"underscore":398,"uuid":442,"web3-core":421,"web3-core-helpers":411,"web3-core-method":412,"web3-utils":456}],444:[function(require,module,exports){
+},{"any-promise":147,"buffer":205,"crypto":213,"crypto-browserify":213,"eth-lib/lib/account":438,"eth-lib/lib/bytes":440,"eth-lib/lib/hash":441,"eth-lib/lib/nat":442,"eth-lib/lib/rlp":443,"scrypt.js":378,"underscore":405,"uuid":445,"web3-core":425,"web3-core-helpers":415,"web3-core-method":416,"web3-utils":459}],447:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -108390,9 +111320,9 @@ Contract.prototype._executeMethod = function _executeMethod(){
 
 module.exports = Contract;
 
-},{"underscore":398,"web3-core":421,"web3-core-helpers":411,"web3-core-method":412,"web3-core-promievent":413,"web3-core-subscriptions":418,"web3-eth-abi":424,"web3-utils":456}],445:[function(require,module,exports){
-arguments[4][276][0].apply(exports,arguments)
-},{"dup":276}],446:[function(require,module,exports){
+},{"underscore":405,"web3-core":425,"web3-core-helpers":415,"web3-core-method":416,"web3-core-promievent":417,"web3-core-subscriptions":422,"web3-eth-abi":428,"web3-utils":459}],448:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],449:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -108661,7 +111591,7 @@ Iban.prototype.toString = function () {
 
 module.exports = Iban;
 
-},{"bn.js":445,"web3-utils":456}],447:[function(require,module,exports){
+},{"bn.js":448,"web3-utils":459}],450:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -108813,7 +111743,7 @@ module.exports = Personal;
 
 
 
-},{"web3-core":421,"web3-core-helpers":411,"web3-core-method":412,"web3-net":450,"web3-utils":456}],448:[function(require,module,exports){
+},{"web3-core":425,"web3-core-helpers":415,"web3-core-method":416,"web3-net":453,"web3-utils":459}],451:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -108893,7 +111823,7 @@ var getNetworkType = function (callback) {
 
 module.exports = getNetworkType;
 
-},{"underscore":398}],449:[function(require,module,exports){
+},{"underscore":405}],452:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -109366,7 +112296,7 @@ core.addProviders(Eth);
 module.exports = Eth;
 
 
-},{"./getNetworkType.js":448,"underscore":398,"web3-core":421,"web3-core-helpers":411,"web3-core-method":412,"web3-core-subscriptions":418,"web3-eth-abi":424,"web3-eth-accounts":443,"web3-eth-contract":444,"web3-eth-iban":446,"web3-eth-personal":447,"web3-net":450,"web3-utils":456}],450:[function(require,module,exports){
+},{"./getNetworkType.js":451,"underscore":405,"web3-core":425,"web3-core-helpers":415,"web3-core-method":416,"web3-core-subscriptions":422,"web3-eth-abi":428,"web3-eth-accounts":446,"web3-eth-contract":447,"web3-eth-iban":449,"web3-eth-personal":450,"web3-net":453,"web3-utils":459}],453:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -109435,7 +112365,7 @@ module.exports = Net;
 
 
 
-},{"web3-core":421,"web3-core-method":412,"web3-utils":456}],451:[function(require,module,exports){
+},{"web3-core":425,"web3-core-method":416,"web3-utils":459}],454:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -109532,7 +112462,7 @@ HttpProvider.prototype.send = function (payload, callback) {
 
 module.exports = HttpProvider;
 
-},{"web3-core-helpers":411,"xhr2":470}],452:[function(require,module,exports){
+},{"web3-core-helpers":415,"xhr2":473}],455:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -109843,7 +112773,7 @@ IpcProvider.prototype.reset = function () {
 module.exports = IpcProvider;
 
 
-},{"oboe":322,"underscore":398,"web3-core-helpers":411}],453:[function(require,module,exports){
+},{"oboe":328,"underscore":405,"web3-core-helpers":415}],456:[function(require,module,exports){
 (function (Buffer){
 /*
  This file is part of web3.js.
@@ -110213,7 +113143,7 @@ WebsocketProvider.prototype.reset = function () {
 module.exports = WebsocketProvider;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":197,"underscore":398,"url":400,"web3-core-helpers":411,"websocket":461}],454:[function(require,module,exports){
+},{"buffer":205,"underscore":405,"url":407,"web3-core-helpers":415,"websocket":464}],457:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -110398,9 +113328,9 @@ module.exports = Shh;
 
 
 
-},{"web3-core":421,"web3-core-method":412,"web3-core-subscriptions":418,"web3-net":450}],455:[function(require,module,exports){
-arguments[4][276][0].apply(exports,arguments)
-},{"dup":276}],456:[function(require,module,exports){
+},{"web3-core":425,"web3-core-method":416,"web3-core-subscriptions":422,"web3-net":453}],458:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],459:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -110722,7 +113652,7 @@ module.exports = {
 };
 
 
-},{"./soliditySha3.js":457,"./utils.js":458,"ethjs-unit":275,"randomhex":356,"underscore":398}],457:[function(require,module,exports){
+},{"./soliditySha3.js":460,"./utils.js":461,"ethjs-unit":282,"randomhex":361,"underscore":405}],460:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -110969,7 +113899,7 @@ var soliditySha3 = function () {
 
 module.exports = soliditySha3;
 
-},{"./utils.js":458,"bn.js":455,"underscore":398}],458:[function(require,module,exports){
+},{"./utils.js":461,"bn.js":458,"underscore":405}],461:[function(require,module,exports){
 /*
  This file is part of web3.js.
 
@@ -111438,7 +114368,7 @@ module.exports = {
     sha3: sha3
 };
 
-},{"bn.js":455,"eth-lib/lib/hash":270,"number-to-bn":320,"underscore":398,"utf8":402}],459:[function(require,module,exports){
+},{"bn.js":458,"eth-lib/lib/hash":277,"number-to-bn":326,"underscore":405,"utf8":409}],462:[function(require,module,exports){
 module.exports={
   "_from": "web3@1.0.0-beta.34",
   "_id": "web3@1.0.0-beta.34",
@@ -111524,7 +114454,7 @@ module.exports={
   "version": "1.0.0-beta.34"
 }
 
-},{}],460:[function(require,module,exports){
+},{}],463:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -111605,7 +114535,7 @@ core.addProviders(Web3);
 module.exports = Web3;
 
 
-},{"../package.json":459,"web3-bzz":408,"web3-core":421,"web3-eth":449,"web3-eth-personal":447,"web3-net":450,"web3-shh":454,"web3-utils":456}],461:[function(require,module,exports){
+},{"../package.json":462,"web3-bzz":412,"web3-core":425,"web3-eth":452,"web3-eth-personal":450,"web3-net":453,"web3-shh":457,"web3-utils":459}],464:[function(require,module,exports){
 var _global = (function() { return this || {}; })();
 var NativeWebSocket = _global.WebSocket || _global.MozWebSocket;
 var websocket_version = require('./version');
@@ -111649,10 +114579,10 @@ module.exports = {
     'version'      : websocket_version
 };
 
-},{"./version":462}],462:[function(require,module,exports){
+},{"./version":465}],465:[function(require,module,exports){
 module.exports = require('../package.json').version;
 
-},{"../package.json":463}],463:[function(require,module,exports){
+},{"../package.json":466}],466:[function(require,module,exports){
 module.exports={
   "_from": "git://github.com/frozeman/WebSocket-Node.git#browserifyCompatible",
   "_id": "websocket@1.0.26",
@@ -111747,7 +114677,7 @@ module.exports={
   "version": "1.0.26"
 }
 
-},{}],464:[function(require,module,exports){
+},{}],467:[function(require,module,exports){
 var request = require('xhr-request')
 
 module.exports = function (url, options) {
@@ -111759,7 +114689,7 @@ module.exports = function (url, options) {
   });
 };
 
-},{"xhr-request":465}],465:[function(require,module,exports){
+},{"xhr-request":468}],468:[function(require,module,exports){
 var queryString = require('query-string')
 var setQuery = require('url-set-query')
 var assign = require('object-assign')
@@ -111820,7 +114750,7 @@ function xhrRequest (url, opt, cb) {
   return request(opt, cb)
 }
 
-},{"./lib/ensure-header.js":466,"./lib/request.js":468,"object-assign":321,"query-string":348,"url-set-query":399}],466:[function(require,module,exports){
+},{"./lib/ensure-header.js":469,"./lib/request.js":471,"object-assign":327,"query-string":353,"url-set-query":406}],469:[function(require,module,exports){
 module.exports = ensureHeader
 function ensureHeader (headers, key, value) {
   var lower = key.toLowerCase()
@@ -111829,7 +114759,7 @@ function ensureHeader (headers, key, value) {
   }
 }
 
-},{}],467:[function(require,module,exports){
+},{}],470:[function(require,module,exports){
 module.exports = getResponse
 function getResponse (opt, resp) {
   if (!resp) return null
@@ -111843,7 +114773,7 @@ function getResponse (opt, resp) {
   }
 }
 
-},{}],468:[function(require,module,exports){
+},{}],471:[function(require,module,exports){
 var xhr = require('xhr')
 var normalize = require('./normalize-response')
 var noop = function () {}
@@ -111887,7 +114817,7 @@ function xhrRequest (opt, cb) {
   return req
 }
 
-},{"./normalize-response":467,"xhr":469}],469:[function(require,module,exports){
+},{"./normalize-response":470,"xhr":472}],472:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var isFunction = require("is-function")
@@ -112136,10 +115066,10 @@ function getXml(xhr) {
 
 function noop() {}
 
-},{"global/window":283,"is-function":303,"parse-headers":328,"xtend":471}],470:[function(require,module,exports){
+},{"global/window":290,"is-function":310,"parse-headers":334,"xtend":474}],473:[function(require,module,exports){
 module.exports = XMLHttpRequest;
 
-},{}],471:[function(require,module,exports){
+},{}],474:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;

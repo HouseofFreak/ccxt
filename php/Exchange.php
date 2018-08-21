@@ -34,7 +34,7 @@ use kornrunner\Eth;
 use kornrunner\Secp256k1;
 use kornrunner\Solidity;
 
-$version = '1.17.37';
+$version = '1.17.161';
 
 // rounding mode
 const TRUNCATE = 0;
@@ -50,7 +50,7 @@ const PAD_WITH_ZERO = 1;
 
 class Exchange {
 
-    const VERSION = '1.17.37';
+    const VERSION = '1.17.161';
 
     public static $eth_units = array (
         'wei'        => '1',
@@ -86,6 +86,7 @@ class Exchange {
         'allcoin',
         'anxpro',
         'anybits',
+        'bcex',
         'bibox',
         'bigone',
         'binance',
@@ -95,6 +96,7 @@ class Exchange {
         'bitfinex',
         'bitfinex2',
         'bitflyer',
+        'bitforex',
         'bithumb',
         'bitkk',
         'bitlish',
@@ -197,6 +199,7 @@ class Exchange {
         'therock',
         'tidebit',
         'tidex',
+        'uex',
         'urdubit',
         'vaultoro',
         'vbtc',
@@ -673,6 +676,22 @@ class Exchange {
 
     public function __construct ($options = array ()) {
 
+        // todo auto-camelcasing for methods in PHP
+        // $method_names = get_class_methods ($this);
+        // foreach ($method_names as $method_name) {
+        //     if ($method_name) {
+        //         if (($method_name[0] != '_') && ($method_name[-1] != '_') && (mb_strpos ($method_name, '_') !== false)) {
+        //             $parts = explode ('_', $method_name);
+        //             $camelcase = $parts[0];
+        //             for ($i = 1; $i < count ($parts); $i++) {
+        //                 $camelcase .= static::capitalize ($parts[$i]);
+        //             }
+        //             // $this->$camelcase = $this->$method_name;
+        //             // echo $method_name . " " . method_exists ($this, $method_name) . " " . $camelcase . " " . method_exists ($this, $camelcase) . "\n";
+        //         }
+        //     }
+        // }
+
         $this->curl         = curl_init ();
         $this->curl_options = array (); // overrideable by user, empty by default
 
@@ -687,13 +706,14 @@ class Exchange {
             'defaultCost' => 1.0,
             'maxCapacity' => 1000,
         );
-        $this->timeout     = 10000; // in milliseconds
-        $this->proxy       = '';
-        $this->origin      = '*'; // CORS origin
-        $this->headers     = array ();
-        $this->curlopt_interface = null;
 
-        $this->options     = array (); // exchange-specific options if any
+        $this->curlopt_interface = null;
+        $this->timeout   = 10000; // in milliseconds
+        $this->proxy     = '';
+        $this->origin    = '*'; // CORS origin
+        $this->headers   = array ();
+
+        $this->options   = array (); // exchange-specific options if any
 
         $this->skipJsonOnStatusCodes = false; // TODO: reserved, rewrite the curl routine to parse JSON body anyway
 
@@ -705,27 +725,29 @@ class Exchange {
         $this->api       = array ();
         $this->comment   = null;
 
-        $this->markets     = null;
-        $this->symbols     = null;
-        $this->ids         = null;
-        $this->currencies  = array ();
-        $this->balance     = array ();
-        $this->orderbooks  = array ();
-        $this->fees        = array ('trading' => array (), 'funding' => array ());
-        $this->precision   = array ();
-        $this->limits      = array ();
-        $this->orders      = array ();
-        $this->trades      = array ();
-        $this->exceptions  = array ();
-        $this->verbose     = false;
-        $this->apiKey      = '';
-        $this->secret      = '';
-        $this->password    = '';
-        $this->uid         = '';
-        $this->privateKey  = '';
+        $this->markets       = null;
+        $this->symbols       = null;
+        $this->ids           = null;
+        $this->currencies    = array ();
+        $this->balance       = array ();
+        $this->orderbooks    = array ();
+        $this->fees          = array ('trading' => array (), 'funding' => array ());
+        $this->precision     = array ();
+        $this->limits        = array ();
+        $this->orders        = array ();
+        $this->trades        = array ();
+        $this->transactions  = array ();
+        $this->exceptions    = array ();
+        $this->verbose       = false;
+        $this->apiKey        = '';
+        $this->secret        = '';
+        $this->password      = '';
+        $this->uid           = '';
+        $this->privateKey    = '';
         $this->walletAddress = '';
-        $this->twofa       = false;
-        $this->marketsById = null;
+
+        $this->twofa         = false;
+        $this->marketsById   = null;
         $this->markets_by_id = null;
         $this->currencies_by_id = null;
         $this->userAgent   = null; // 'ccxt/' . $this::VERSION . ' (+https://github.com/ccxt/ccxt) PHP/' . PHP_VERSION;
@@ -765,6 +787,7 @@ class Exchange {
             'fetchClosedOrders' => false,
             'fetchCurrencies' => false,
             'fetchDepositAddress' => false,
+            'fetchDeposits' => false,
             'fetchFundingFees' => false,
             'fetchL2OrderBook' => true,
             'fetchMarkets' => true,
@@ -780,6 +803,8 @@ class Exchange {
             'fetchTrades' => true,
             'fetchTradingFees' => false,
             'fetchTradingLimits' => false,
+            'fetchTransactions' => false,
+            'fetchWithdrawals' => false,
             'withdraw' => false,
         );
 
@@ -1262,7 +1287,7 @@ class Exchange {
                 continue;
             $result[] = $ohlcv;
         }
-        return $result;
+        return $this->sort_by ($result, 0);
     }
 
     public function parseOHLCVs ($ohlcvs, $market = null, $timeframe = 60, $since = null, $limit = null) {
@@ -1413,6 +1438,20 @@ class Exchange {
         return $this->parse_trades ($trades, $market, $since, $limit);
     }
 
+    public function parse_transactions ($transactions, $currency = null, $since = null, $limit = null) {
+        $array = is_array ($transactions) ? array_values ($transactions) : array ();
+        $result = array ();
+        foreach ($array as $transaction)
+            $result[] = $this->parse_transaction ($transaction, $currency);
+        $result = $this->sort_by ($result, 'timestamp');
+        $code = isset ($currency) ? $currency['code'] : null;
+        return $this->filter_by_currency_since_limit ($result, $code, $since, $limit);
+    }
+
+    public function parseTransactions ($transactions, $side, $market = null, $since = null, $limit = null) {
+        return $this->parse_transactions ($transactions, $side, $market, $since, $limit);
+    }
+
     public function parse_orders ($orders, $market = null, $since = null, $limit = null) {
         $array = is_array ($orders) ? array_values ($orders) : array ();
         $result = array ();
@@ -1441,19 +1480,31 @@ class Exchange {
         return $this->filter_by_symbol ($orders, $symbol);
     }
 
-    public function filter_by_symbol_since_limit ($array, $symbol = null, $since = null, $limit = null) {
+    public function filter_by_value_since_limit ($array, $field, $value = null, $since = null, $limit = null) {
         $array = array_values ($array);
-        $symbolIsSet = isset ($symbol);
+        $valueIsSet = isset ($value);
         $sinceIsSet = isset ($since);
-        $array = array_filter ($array, function ($element) use ($symbolIsSet, $symbol, $sinceIsSet, $since) {
-            return (($symbolIsSet ? ($element['symbol'] === $symbol)  : true) &&
-                    ($sinceIsSet  ? ($element['timestamp'] >= $since) : true));
+        $array = array_filter ($array, function ($element) use ($valueIsSet, $value, $sinceIsSet, $since, $field) {
+            return (($valueIsSet ? ($element[$field] === $value)     : true) &&
+                    ($sinceIsSet ? ($element['timestamp'] >= $since) : true));
         });
         return array_slice ($array, 0, isset ($limit) ? $limit : count ($array));
     }
 
+    public function filter_by_symbol_since_limit ($array, $symbol = null, $since = null, $limit = null) {
+        return $this->filter_by_value_since_limit ($array, 'symbol', $symbol, $since, $limit);
+    }
+
     public function filterBySymbolSinceLimit ($array, $symbol = null, $since = null, $limit = null) {
         return $this->filter_by_symbol_since_limit ($array, $symbol, $since, $limit);
+    }
+
+    public function filter_by_currency_since_limit ($array, $code = null, $since = null, $limit = null) {
+        return $this->filter_by_currency_since_limit ($array, 'currency', $code, $since, $limit);
+    }
+
+    public function filterByCurrencySinceLimit ($array, $code = null, $since = null, $limit = null) {
+        return $this->filter_by_currency_since_limit ($array, $code, $since, $limit);
     }
 
     public function filter_by_array ($objects, $key, $values = null, $indexed = true) {
@@ -1563,11 +1614,27 @@ class Exchange {
     }
 
     public function fetch_markets () {
+        // markets are returned as a list
+        // currencies are returned as a dict
+        // this is for historical reasons
+        // and may be changed for consistency later
         return $this->markets ? array_values ($this->markets) : array ();
     }
 
     public function fetchMarkets  () {
         return $this->fetch_markets ();
+    }
+
+    public function fetch_currencies ($params = array ()) {
+        // markets are returned as a list
+        // currencies are returned as a dict
+        // this is for historical reasons
+        // and may be changed for consistency later
+        return $this->currencies ? $this->currencies : array ();
+    }
+
+    public function fetchCurrencies ($params = array ()) {
+        return $this->fetch_currencies ();
     }
 
     public function fetchBalance () {
@@ -1820,21 +1887,12 @@ class Exchange {
         return $this->truncate_to_string (floatval ($amount), $this->markets[$symbol]['precision']['amount']);
     }
 
-    public function amount_to_lots ($symbol, $amount) {
-        $lot = $this->markets[$symbol]['lot'];
-        return $this->amount_to_precision ($symbol, floor (floatval ($amount) / $lot) * $lot);
-    }
-
     public function amountToPrecision ($symbol, $amount) {
         return $this->amount_to_precision ($symbol, $amount);
     }
 
     public function amountToString ($symbol, $amount) {
         return $this->amount_to_string ($symbol, $amount);
-    }
-
-    public function amountToLots ($symbol, $amount) {
-        return $this->amount_to_lots ($symbol, $amount);
     }
 
     public function fee_to_precision ($symbol, $fee) {

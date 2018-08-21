@@ -55,7 +55,7 @@ Below is a list of functionality we would like to have implemented in the librar
 - Unified fetchDepositAddress, createDepositAddress
 - Unified withdraw
 - Unified fees
-- Unified deposit and withdrawal transaction history
+- Unified fetchTransactions, fetchDeposits, fetchWithdrawals
 - Improved proxy support
 - WebSocket interfaces:
   - Pub: Methods for trading and private calls where supported
@@ -76,9 +76,9 @@ The following is a set of rules for contributing to the ccxt library codebase.
 
 ### What You Need To Have
 
-- Node.js 8+
-- Python 3.5.3+ and Python 2.7+
-- PHP 5.3+ with the following extensions installed and enabled:
+- [Node.js](https://nodejs.org/en/download/) 8+
+- [Python](https://www.python.org/downloads/) 3.5.3+ and Python 2.7+
+- [PHP](http://php.net/downloads.php) 5.3+ with the following extensions installed and enabled:
   - cURL
   - iconv
   - mbstring
@@ -191,7 +191,7 @@ These PHP base classes and files are not transpiled:
 #### Derived Exchange Classes
 
 Transpiler is regex-based and heavily relies on specific formatting rules. If you break them then the transpiler will either
-fail to generate Python/PHP classes at all or generate malformed Python/PHP syntax.
+fail to generate Python/PHP classes at all or will generate malformed Python/PHP syntax.
 
 Below are key notes on how to keep the JS code transpileable.
 
@@ -228,6 +228,7 @@ And structurally:
 - do not use conditional statements that are too complex (heavy if-bracketing)
 - do not use heavy ternary conditionals
 - avoid operators clutter (**don't do this**: `a && b || c ? d + 80 : e ** f`)
+- do not use `.includes()`, use `.indexOf()` instead!
 - never use `.toString()` on floats: `Number (0.00000001).toString () === '1e-8'`
 - do not use the `in` operator to check if a value is in a non-associative array (list)
 - don't add custom currency or symbol/pair conversions and formatting, copy from existing code instead
@@ -276,9 +277,10 @@ The basic JSON-skeleton for a new exchange integration is as follows:
 
 In the code for each exchange, you'll notice that the functions that make API requests aren't explicitly defined. This is because the `api` definition in the exchange description JSON is used to create *magic functions* (aka *partial functions* or *closures*) inside the exchange subclass. That implicit injection is done by the `defineRestApi/define_rest_api` base exchange method.
 
-Each partial function takes a dictionary of `params` and returns the API response. In the example JSON above, the `'endpoint/example'` results in the injection of a `this.publicGetEndpointExample` function. Similarly, the `'orderbook/{pair}/full'` results in a `this.publicGetOrderbookPairFull` function, that takes a ``pair`` parameter.
+Each partial function takes a dictionary of `params` and returns the API response. In the example JSON above, the `'endpoint/example'` results in the injection of a `this.publicGetEndpointExample` function. Similarly, the `'orderbook/{pair}/full'` results in a `this.publicGetOrderbookPairFull` function, that takes a ``pair`` parameter (again, passed in the `params` argument).
 
-Upon instantiation the base exchange class takes each URL from its list of endpoints, splits it into words, and then makes up a callable function name from those words by using a partial construct. That process is the same in JS and PHP as well. It is also described here:
+Upon instantiation the base exchange class takes each URL from its list of endpoints, splits it into words, and then makes up a callable function name from those words by using a partial construct. That process is the same in JS, Python and PHP as well. It is also described here:
+
 - https://github.com/ccxt/ccxt/wiki/Manual#api-methods--endpoints
 - https://github.com/ccxt/ccxt/wiki/Manual#implicit-api-methods
 - https://github.com/ccxt-dev/ccxt/wiki/Manual#api-method-naming-conventions

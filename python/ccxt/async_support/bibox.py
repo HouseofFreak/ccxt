@@ -67,6 +67,7 @@ class bibox (Exchange):
                     'https://github.com/Biboxcom/api_reference/wiki/api_reference',
                 ],
                 'fees': 'https://bibox.zendesk.com/hc/en-us/articles/115004417013-Fee-Structure-on-Bibox',
+                'referral': 'https://www.bibox.com/signPage?id=11114745&lang=en',
             },
             'api': {
                 'public': {
@@ -115,6 +116,7 @@ class bibox (Exchange):
             },
             'commonCurrencies': {
                 'KEY': 'Bihu',
+                'PAI': 'PCHAIN',
             },
         })
 
@@ -145,7 +147,6 @@ class bibox (Exchange):
                 'quoteId': quote,
                 'active': True,
                 'info': market,
-                'lot': math.pow(10, -precision['amount']),
                 'precision': precision,
                 'limits': {
                     'amount': {
@@ -462,11 +463,10 @@ class bibox (Exchange):
         type = 'market' if (order['order_type'] == 1) else 'limit'
         timestamp = order['createdAt']
         price = self.safe_float(order, 'price')
-        price = self.safe_float(order, 'deal_price', price)
+        average = self.safe_float(order, 'deal_price')
         filled = self.safe_float(order, 'deal_amount')
         amount = self.safe_float(order, 'amount')
-        cost = self.safe_float(order, 'money')
-        cost = self.safe_float(order, 'deal_money', cost)
+        cost = self.safe_float_2(order, 'deal_money', 'money')
         remaining = None
         if filled is not None:
             if amount is not None:
@@ -489,6 +489,7 @@ class bibox (Exchange):
             'price': price,
             'amount': amount,
             'cost': cost if cost else float(price) * filled,
+            'average': average,
             'filled': filled,
             'remaining': remaining,
             'status': status,

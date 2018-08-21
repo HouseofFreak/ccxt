@@ -31,7 +31,7 @@ class bitstamp (Exchange):
             'has': {
                 'CORS': True,
                 'fetchDepositAddress': True,
-                'fetchOrder': True,
+                'fetchOrder': 'emulated',
                 'fetchOpenOrders': True,
                 'fetchMyTrades': True,
                 'withdraw': True,
@@ -179,7 +179,6 @@ class bitstamp (Exchange):
             cost = parts[0]
             # cost, currency = market['minimum_order'].split(' ')
             active = (market['trading'] == 'Enabled')
-            lot = math.pow(10, -precision['amount'])
             result.append({
                 'id': id,
                 'symbol': symbol,
@@ -189,12 +188,11 @@ class bitstamp (Exchange):
                 'quoteId': quoteId,
                 'symbolId': symbolId,
                 'info': market,
-                'lot': lot,
                 'active': active,
                 'precision': precision,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': math.pow(10, -precision['amount']),
                         'max': None,
                     },
                     'price': {

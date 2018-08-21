@@ -97,6 +97,7 @@ module.exports = class Exchange {
                 'fetchClosedOrders': false,
                 'fetchCurrencies': false,
                 'fetchDepositAddress': false,
+                'fetchDeposits': false,
                 'fetchFundingFees': false,
                 'fetchL2OrderBook': true,
                 'fetchMarkets': true,
@@ -112,6 +113,8 @@ module.exports = class Exchange {
                 'fetchTrades': true,
                 'fetchTradingFees': false,
                 'fetchTradingLimits': false,
+                'fetchTransactions': false,
+                'fetchWithdrawals': false,
                 'withdraw': false,
             },
             'urls': {
@@ -260,12 +263,12 @@ module.exports = class Exchange {
         // do not delete this line, it is needed for users to be able to define their own fetchImplementation
         this.fetchImplementation = defaultFetch
 
-        this.timeout          = 10000 // milliseconds
-        this.verbose          = false
-        this.debug            = false
-        this.journal          = 'debug.json'
-        this.userAgent        = undefined
-        this.twofa            = false // two-factor authentication (2FA)
+        this.timeout       = 10000 // milliseconds
+        this.verbose       = false
+        this.debug         = false
+        this.journal       = 'debug.json'
+        this.userAgent     = undefined
+        this.twofa         = false // two-factor authentication (2FA)
 
         this.apiKey        = undefined
         this.secret        = undefined
@@ -275,14 +278,15 @@ module.exports = class Exchange {
         this.privateKey    = undefined // a "0x"-prefixed hexstring private key for a wallet
         this.walletAddress = undefined // a wallet address "0x"-prefixed hexstring
 
-        this.balance    = {}
-        this.orderbooks = {}
-        this.tickers    = {}
-        this.orders     = {}
-        this.trades     = {}
+        this.balance     = {}
+        this.orderbooks  = {}
+        this.tickers     = {}
+        this.orders      = {}
+        this.trades      = {}
+        this.transactions = {}
 
-        this.last_http_response = undefined
-        this.last_json_response = undefined
+        this.last_http_response    = undefined
+        this.last_json_response    = undefined
         this.last_response_headers = undefined
 
         this.arrayConcat = (a, b) => a.concat (b)
@@ -734,11 +738,19 @@ module.exports = class Exchange {
         throw new NotSupported (this.id + ' fetchMyTrades not supported yet');
     }
 
-    fetchCurrencies () {
-        throw new NotSupported (this.id + ' fetchCurrencies not supported yet');
+    fetchCurrencies (params = {}) {
+        // markets are returned as a list
+        // currencies are returned as a dict
+        // this is for historical reasons
+        // and may be changed for consistency later
+        return new Promise ((resolve, reject) => resolve (this.currencies));
     }
 
     fetchMarkets () {
+        // markets are returned as a list
+        // currencies are returned as a dict
+        // this is for historical reasons
+        // and may be changed for consistency later
         return new Promise ((resolve, reject) => resolve (Object.values (this.markets)))
     }
 
@@ -928,11 +940,11 @@ module.exports = class Exchange {
                     const cachedOrdersCount = Object.values (this.orders).filter (order => (order['status'] === 'open')).length;
                     if (cachedOrdersCount === exchangeOrdersCount) {
                         balance[currency].used = this.getCurrencyUsedOnOpenOrders (currency)
-                        balance[currency].total = balance[currency].used + balance[currency].free
+                        balance[currency].total = (balance[currency].used || 0) + (balance[currency].free || 0)
                     }
                 } else {
                     balance[currency].used = this.getCurrencyUsedOnOpenOrders (currency)
-                    balance[currency].total = balance[currency].used + balance[currency].free
+                    balance[currency].total = (balance[currency].used || 0) + (balance[currency].free || 0)
                 }
             }
 
@@ -988,21 +1000,29 @@ module.exports = class Exchange {
         return array
     }
 
-    filterBySymbolSinceLimit (array, symbol = undefined, since = undefined, limit = undefined) {
+    filterByValueSinceLimit (array, field, value = undefined, since = undefined, limit = undefined) {
 
-        const symbolIsDefined = typeof symbol !== 'undefined' && symbol !== null
+        const valueIsDefined = typeof value !== 'undefined' && value !== null
         const sinceIsDefined = typeof since !== 'undefined' && since !== null
 
         // single-pass filter for both symbol and since
-        if (symbolIsDefined || sinceIsDefined)
+        if (valueIsDefined || sinceIsDefined)
             array = Object.values (array).filter (entry =>
-                ((symbolIsDefined ? (entry.symbol === symbol)  : true) &&
-                 (sinceIsDefined  ? (entry.timestamp >= since) : true)))
+                ((valueIsDefined ? (entry[field] === value)   : true) &&
+                 (sinceIsDefined ? (entry.timestamp >= since) : true)))
 
         if (typeof limit !== 'undefined' && limit !== null)
             array = Object.values (array).slice (0, limit)
 
         return array
+    }
+
+    filterBySymbolSinceLimit (array, symbol = undefined, since = undefined, limit = undefined) {
+        return this.filterByValueSinceLimit (array, 'symbol', symbol, since, limit)
+    }
+
+    filterByCurrencySinceLimit (array, code = undefined, since = undefined, limit = undefined) {
+        return this.filterByValueSinceLimit (array, 'currency', code, since, limit)
     }
 
     filterByArray (objects, key, values = undefined, indexed = true) {
@@ -1027,6 +1047,13 @@ module.exports = class Exchange {
         result = sortBy (result, 'timestamp')
         let symbol = (typeof market !== 'undefined') ? market['symbol'] : undefined
         return this.filterBySymbolSinceLimit (result, symbol, since, limit)
+    }
+
+    parseTransactions (transactions, currency = undefined, since = undefined, limit = undefined) {
+        let result = Object.values (transactions || []).map (transaction => this.parseTransaction (transaction, currency));
+        result = this.sortBy (result, 'timestamp');
+        let code = (typeof currency !== 'undefined') ? currency['code'] : undefined;
+        return this.filterByCurrencySinceLimit (result, code, since, limit);
     }
 
     parseOrders (orders, market = undefined, since = undefined, limit = undefined) {
@@ -1055,7 +1082,7 @@ module.exports = class Exchange {
                 continue
             result.push (ohlcv)
         }
-        return result
+        return this.sortBy (result, 0)
     }
 
     editLimitBuyOrder (id, symbol, ...args) {
@@ -1125,11 +1152,6 @@ module.exports = class Exchange {
         return this.truncate_to_string (amount, this.markets[symbol].precision.amount)
     }
 
-    amountToLots (symbol, amount) {
-        const lot = this.markets[symbol].lot
-        return this.amountToPrecision (symbol, Math.floor (amount / lot) * lot)
-    }
-
     feeToPrecision (symbol, fee) {
         return parseFloat (fee).toFixed (this.markets[symbol].precision.price)
     }
@@ -1154,7 +1176,7 @@ module.exports = class Exchange {
         let d = date.getUTCDate ()
         m = m < 10 ? ('0' + m) : m.toString ()
         d = d < 10 ? ('0' + d) : d.toString ()
-        return m + infix + d + infix + y
+        return m + infix + d + infix + Y
     }
 
     ymd (timestamp, infix = '-') {
@@ -1187,7 +1209,7 @@ module.exports = class Exchange {
     // ------------------------------------------------------------------------
     // web3 / 0x methods
 
-    decryptAccountFromJSON (json, password) {
+    decryptAccountFromJson (json, password) {
         return this.decryptAccount ((typeof json === 'string') ? JSON.parse (json) : json, password)
     }
 
@@ -1199,48 +1221,46 @@ module.exports = class Exchange {
         return this.web3.eth.accounts.privateKeyToAccount (privateKey)
     }
 
-    getZeroExOrderHash (order) {
-        let unpacked = [
-            order['exchangeContractAddress'],                       // { value: order.exchangeContractAddress, type: types_1.SolidityTypes.Address },
-            order['maker'],                                         // { value: order.maker, type: types_1.SolidityTypes.Address },
-            order['taker'],                                         // { value: order.taker, type: types_1.SolidityTypes.Address },
-            order['makerTokenAddress'],                             // { value: order.makerTokenAddress, type: types_1.SolidityTypes.Address },
-            order['takerTokenAddress'],                             // { value: order.takerTokenAddress, type: types_1.SolidityTypes.Address },
-            order['feeRecipient'],                                  // { value: order.feeRecipient, type: types_1.SolidityTypes.Address },
-            new BigNumber (order['makerTokenAmount']).toFixed (),   // { value: bigNumberToBN(order.makerTokenAmount), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['takerTokenAmount']).toFixed (),   // { value: bigNumberToBN(order.takerTokenAmount), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['makerFee']).toFixed (),           // { value: bigNumberToBN(order.makerFee), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['takerFee']).toFixed (),           // { value: bigNumberToBN(order.takerFee), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['expirationUnixTimestampSec']).toFixed (), // { value: bigNumberToBN(order.expirationUnixTimestampSec), type: types_1.SolidityTypes.Uint256, },
-            new BigNumber (order['salt']).toFixed (),               // { value: bigNumberToBN(order.salt), type: types_1.SolidityTypes.Uint256 },
-        ]
-        let types = [
-            'address', // { value: order.exchangeContractAddress, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.maker, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.taker, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.makerTokenAddress, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.takerTokenAddress, type: types_1.SolidityTypes.Address },
-            'address', // { value: order.feeRecipient, type: types_1.SolidityTypes.Address },
-            'uint256', // { value: bigNumberToBN(order.makerTokenAmount), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.takerTokenAmount), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.makerFee), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.takerFee), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.expirationUnixTimestampSec), type: types_1.SolidityTypes.Uint256, },
-            'uint256', // { value: bigNumberToBN(order.salt), type: types_1.SolidityTypes.Uint256 },
-        ]
-        return '0x' + ethAbi.soliditySHA3 (types, unpacked).toString ('hex')
+    soliditySha3 (array) {
+        const values = this.solidityValues (array);
+        const types = this.solidityTypes (values);
+        return '0x' +  ethAbi.soliditySHA3 (types, values).toString ('hex')
     }
 
-    signZeroExOrder (order) {
+    soliditySha256 (array) {
+        const values = this.solidityValues (array);
+        const types = this.solidityTypes (values);
+        return '0x' +  ethAbi.soliditySHA256 (types, values).toString ('hex')
+    }
+
+    solidityTypes (array) {
+        return array.map (value => (this.web3.utils.isAddress (value) ? 'address' : 'uint256'))
+    }
+
+    solidityValues (array) {
+        return array.map (value => (this.web3.utils.isAddress (value) ? value : (new BigNumber (value).toFixed ())))
+    }
+
+    getZeroExOrderHash (order) {
+        return this.soliditySha3 ([
+            order['exchangeContractAddress'], // address
+            order['maker'], // address
+            order['taker'], // address
+            order['makerTokenAddress'], // address
+            order['takerTokenAddress'], // address
+            order['feeRecipient'], // address
+            order['makerTokenAmount'], // uint256
+            order['takerTokenAmount'], // uint256
+            order['makerFee'], // uint256
+            order['takerFee'], // uint256
+            order['expirationUnixTimestampSec'], // uint256
+            order['salt'], // uint256
+        ]);
+    }
+
+    signZeroExOrder (order, privateKey) {
         const orderHash = this.getZeroExOrderHash (order);
-        const signature = this.signMessage (orderHash, this.privateKey);
-        // const signature2 = this.signMessage2 (orderHash, this.privateKey);
-        // const log = require ('ololog').unlimited;
-        // log ('----------------------------------------------------------')
-        // log.green ('messageHash:', messageHash)
-        // log.red ('orderHash:', orderHash);
-        // log.red ('signature1:', signature1)
-        // log.yellow ('signature2:', signature2)
+        const signature = this.signMessage (orderHash, privateKey);
         return this.extend (order, {
             'orderHash': orderHash,
             'ecSignature': signature, // todo fix v if needed

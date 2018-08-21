@@ -117,6 +117,9 @@ class coinex (Exchange):
                 'amount': 8,
                 'price': 8,
             },
+            'options': {
+                'createMarketBuyOrderRequiresPrice': True,
+            },
         })
 
     def cost_to_precision(self, symbol, cost):
@@ -245,9 +248,11 @@ class coinex (Exchange):
 
     def parse_trade(self, trade, market=None):
         # self method parses both public and private trades
-        timestamp = self.safe_integer(trade, 'create_time') * 1000
+        timestamp = self.safe_integer(trade, 'create_time')
         if timestamp is None:
             timestamp = self.safe_integer(trade, 'date_ms')
+        else:
+            timestamp = timestamp * 1000
         tradeId = self.safe_string(trade, 'id')
         orderId = self.safe_string(trade, 'order_id')
         price = self.safe_float(trade, 'price')
@@ -388,17 +393,26 @@ class coinex (Exchange):
         }
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
+        amount = float(amount)  # self line is deprecated
+        if type == 'market':
+            # for market buy it requires the amount of quote currency to spend
+            if side == 'buy':
+                if self.options['createMarketBuyOrderRequiresPrice']:
+                    if price is None:
+                        raise InvalidOrder(self.id + " createOrder() requires the price argument with market buy orders to calculate total order cost(amount to spend), where cost = amount * price. Supply a price argument to createOrder() call if you want the cost to be calculated for you from price and amount, or, alternatively, add .options['createMarketBuyOrderRequiresPrice'] = False to supply the cost in the amount argument(the exchange-specific behaviour)")
+                    else:
+                        price = float(price)  # self line is deprecated
+                        amount = amount * price
         self.load_markets()
         method = 'privatePostOrder' + self.capitalize(type)
         market = self.market(symbol)
-        amount = float(amount)
         request = {
             'market': market['id'],
             'amount': self.amount_to_precision(symbol, amount),
             'type': side,
         }
         if type == 'limit':
-            price = float(price)
+            price = float(price)  # self line is deprecated
             request['price'] = self.price_to_precision(symbol, price)
         response = getattr(self, method)(self.extend(request, params))
         order = self.parse_order(response['data'], market)
@@ -416,6 +430,8 @@ class coinex (Exchange):
         return self.parse_order(response['data'], market)
 
     def fetch_order(self, id, symbol=None, params={}):
+        if symbol is None:
+            raise ExchangeError(self.id + ' fetchOrder requires a symbol argument')
         self.load_markets()
         market = self.market(symbol)
         response = self.privateGetOrder(self.extend({
@@ -424,7 +440,9 @@ class coinex (Exchange):
         }, params))
         return self.parse_order(response['data'], market)
 
-    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+    def fetch_orders_by_status(self, status, symbol=None, since=None, limit=None, params={}):
+        if symbol is None:
+            raise ExchangeError(self.id + ' fetchOrders requires a symbol argument')
         self.load_markets()
         market = self.market(symbol)
         request = {
@@ -432,21 +450,19 @@ class coinex (Exchange):
         }
         if limit is not None:
             request['limit'] = limit
-        response = self.privateGetOrderPending(self.extend(request, params))
+        method = 'privateGetOrder' + self.capitalize(status)
+        response = getattr(self, method)(self.extend(request, params))
         return self.parse_orders(response['data']['data'], market)
+
+    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+        return self.fetch_orders_by_status('pending', symbol, since, limit, params)
 
     def fetch_closed_orders(self, symbol=None, since=None, limit=None, params={}):
-        self.load_markets()
-        market = self.market(symbol)
-        request = {
-            'market': market['id'],
-        }
-        if limit is not None:
-            request['limit'] = limit
-        response = self.privateGetOrderFinished(self.extend(request, params))
-        return self.parse_orders(response['data']['data'], market)
+        return self.fetch_orders_by_status('finished', symbol, since, limit, params)
 
     def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
+        if symbol is None:
+            raise ExchangeError(self.id + ' fetchMyTrades requires a symbol argument')
         self.load_markets()
         market = self.market(symbol)
         response = self.privateGetOrderUserDeals(self.extend({

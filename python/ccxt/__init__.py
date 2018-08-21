@@ -22,7 +22,7 @@
 
 # ----------------------------------------------------------------------------
 
-__version__ = '1.17.37'
+__version__ = '1.17.161'
 
 # ----------------------------------------------------------------------------
 
@@ -67,6 +67,7 @@ from ccxt.acx import acx                                    # noqa: F401
 from ccxt.allcoin import allcoin                            # noqa: F401
 from ccxt.anxpro import anxpro                              # noqa: F401
 from ccxt.anybits import anybits                            # noqa: F401
+from ccxt.bcex import bcex                                  # noqa: F401
 from ccxt.bibox import bibox                                # noqa: F401
 from ccxt.bigone import bigone                              # noqa: F401
 from ccxt.binance import binance                            # noqa: F401
@@ -76,6 +77,7 @@ from ccxt.bitbay import bitbay                              # noqa: F401
 from ccxt.bitfinex import bitfinex                          # noqa: F401
 from ccxt.bitfinex2 import bitfinex2                        # noqa: F401
 from ccxt.bitflyer import bitflyer                          # noqa: F401
+from ccxt.bitforex import bitforex                          # noqa: F401
 from ccxt.bithumb import bithumb                            # noqa: F401
 from ccxt.bitkk import bitkk                                # noqa: F401
 from ccxt.bitlish import bitlish                            # noqa: F401
@@ -178,6 +180,7 @@ from ccxt.theocean import theocean                          # noqa: F401
 from ccxt.therock import therock                            # noqa: F401
 from ccxt.tidebit import tidebit                            # noqa: F401
 from ccxt.tidex import tidex                                # noqa: F401
+from ccxt.uex import uex                                    # noqa: F401
 from ccxt.urdubit import urdubit                            # noqa: F401
 from ccxt.vaultoro import vaultoro                          # noqa: F401
 from ccxt.vbtc import vbtc                                  # noqa: F401
@@ -196,6 +199,7 @@ exchanges = [
     'allcoin',
     'anxpro',
     'anybits',
+    'bcex',
     'bibox',
     'bigone',
     'binance',
@@ -205,6 +209,7 @@ exchanges = [
     'bitfinex',
     'bitfinex2',
     'bitflyer',
+    'bitforex',
     'bithumb',
     'bitkk',
     'bitlish',
@@ -307,6 +312,7 @@ exchanges = [
     'therock',
     'tidebit',
     'tidex',
+    'uex',
     'urdubit',
     'vaultoro',
     'vbtc',

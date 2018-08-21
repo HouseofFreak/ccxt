@@ -117,6 +117,7 @@ module.exports = class huobipro extends Exchange {
                 'order-limitorder-amount-min-error': InvalidOrder, // limit order amount error, min: `0.001`
                 'order-marketorder-amount-min-error': InvalidOrder, // market order amount error, min: `0.01`
                 'order-limitorder-price-min-error': InvalidOrder, // limit order price error
+                'order-limitorder-price-max-error': InvalidOrder, // limit order price error
                 'order-orderstate-error': OrderNotFound, // canceling an already canceled order
                 'order-queryorder-invalid': OrderNotFound, // querying a non-existent order
                 'order-update-error': ExchangeNotAvailable, // undocumented error
@@ -191,7 +192,6 @@ module.exports = class huobipro extends Exchange {
                 'amount': market['amount-precision'],
                 'price': market['price-precision'],
             };
-            let lot = Math.pow (10, -precision['amount']);
             let maker = (base === 'OMG') ? 0 : 0.2 / 100;
             let taker = (base === 'OMG') ? 0 : 0.2 / 100;
             result.push ({
@@ -201,14 +201,13 @@ module.exports = class huobipro extends Exchange {
                 'quote': quote,
                 'baseId': baseId,
                 'quoteId': quoteId,
-                'lot': lot,
                 'active': true,
                 'precision': precision,
                 'taker': taker,
                 'maker': maker,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': Math.pow (10, -precision['amount']),
                         'max': Math.pow (10, precision['amount']),
                     },
                     'price': {
@@ -336,16 +335,25 @@ module.exports = class huobipro extends Exchange {
             side = typeParts[0];
             type = typeParts[1];
         }
+        let price = this.safeFloat (trade, 'price');
         let amount = this.safeFloat2 (trade, 'filled-amount', 'amount');
+        let cost = undefined;
+        if (typeof price !== 'undefined') {
+            if (typeof amount !== 'undefined') {
+                cost = amount * price;
+            }
+        }
         let fee = undefined;
         let feeCost = this.safeFloat (trade, 'filled-fees');
         let feeCurrency = undefined;
-        if (typeof feeCost !== 'undefined') {
+        if (typeof market !== 'undefined') {
             feeCurrency = (side === 'buy') ? market['base'] : market['quote'];
-        } else {
-            feeCost = this.safeFloat (trade, 'filled-points');
-            if (typeof feeCost !== 'undefined') {
-                feeCurrency = 'HBPOINT';
+        }
+        let filledPoints = this.safeFloat (trade, 'filled-points');
+        if (typeof filledPoints !== 'undefined') {
+            if ((typeof feeCost === 'undefined') || (feeCost === 0.0)) {
+                feeCost = filledPoints;
+                feeCurrency = this.commonCurrencyCode ('HBPOINT');
             }
         }
         if (typeof feeCost !== 'undefined') {
@@ -363,8 +371,9 @@ module.exports = class huobipro extends Exchange {
             'symbol': symbol,
             'type': type,
             'side': side,
-            'price': this.safeFloat (trade, 'price'),
+            'price': price,
             'amount': amount,
+            'cost': cost,
             'fee': fee,
         };
     }
@@ -597,6 +606,7 @@ module.exports = class huobipro extends Exchange {
     }
 
     parseOrder (order, market = undefined) {
+        let id = this.safeString (order, 'id');
         let side = undefined;
         let type = undefined;
         let status = undefined;
@@ -604,7 +614,7 @@ module.exports = class huobipro extends Exchange {
             let orderType = order['type'].split ('-');
             side = orderType[0];
             type = orderType[1];
-            status = this.parseOrderStatus (order['state']);
+            status = this.parseOrderStatus (this.safeString (order, 'state'));
         }
         let symbol = undefined;
         if (typeof market === 'undefined') {
@@ -615,20 +625,29 @@ module.exports = class huobipro extends Exchange {
                 }
             }
         }
-        if (market)
+        if (typeof market !== 'undefined') {
             symbol = market['symbol'];
-        let timestamp = order['created-at'];
+        }
+        let timestamp = this.safeInteger (order, 'created-at');
         let amount = this.safeFloat (order, 'amount');
-        let filled = parseFloat (order['field-amount']);
-        let remaining = amount - filled;
+        let filled = this.safeFloat (order, 'field-amount'); // typo in their API, filled amount
         let price = this.safeFloat (order, 'price');
-        let cost = parseFloat (order['field-cash-amount']);
-        let average = 0;
-        if (filled)
-            average = parseFloat (cost / filled);
+        let cost = this.safeFloat (order, 'field-cash-amount'); // same typo
+        let remaining = undefined;
+        let average = undefined;
+        if (typeof filled !== 'undefined') {
+            average = 0;
+            if (typeof amount !== 'undefined') {
+                remaining = amount - filled;
+            }
+            // if cost is defined and filled is not zero
+            if ((typeof cost !== 'undefined') && (filled > 0)) {
+                average = cost / filled;
+            }
+        }
         let result = {
             'info': order,
-            'id': order['id'].toString (),
+            'id': id,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
             'lastTradeTimestamp': undefined,
@@ -651,7 +670,7 @@ module.exports = class huobipro extends Exchange {
         await this.loadMarkets ();
         await this.loadAccounts ();
         let market = this.market (symbol);
-        let order = {
+        let request = {
             'account-id': this.accounts[0]['id'],
             'amount': this.amountToPrecision (symbol, amount),
             'symbol': market['id'],
@@ -662,14 +681,15 @@ module.exports = class huobipro extends Exchange {
                 if (typeof price === 'undefined') {
                     throw new InvalidOrder (this.id + " market buy order requires price argument to calculate cost (total amount of quote currency to spend for buying, amount * price). To switch off this warning exception and specify cost in the amount argument, set .options['createMarketBuyOrderRequiresPrice'] = false. Make sure you know what you're doing.");
                 } else {
-                    order['amount'] = this.priceToPrecision (symbol, parseFloat (amount) * parseFloat (price));
+                    request['amount'] = this.priceToPrecision (symbol, parseFloat (amount) * parseFloat (price));
                 }
             }
         }
-        if (type === 'limit')
-            order['price'] = this.priceToPrecision (symbol, price);
+        if (type === 'limit') {
+            request['price'] = this.priceToPrecision (symbol, price);
+        }
         let method = this.options['createOrderMethod'];
-        let response = await this[method] (this.extend (order, params));
+        let response = await this[method] (this.extend (request, params));
         let timestamp = this.milliseconds ();
         return {
             'info': response,
@@ -692,7 +712,17 @@ module.exports = class huobipro extends Exchange {
     }
 
     async cancelOrder (id, symbol = undefined, params = {}) {
-        return await this.privatePostOrderOrdersIdSubmitcancel ({ 'id': id });
+        let response = await this.privatePostOrderOrdersIdSubmitcancel ({ 'id': id });
+        //
+        //     let response = {
+        //         'status': 'ok',
+        //         'data': '10138899000',
+        //     };
+        //
+        return this.extend (this.parseOrder (response), {
+            'id': id,
+            'status': 'canceled',
+        });
     }
 
     async fetchDepositAddress (code, params = {}) {

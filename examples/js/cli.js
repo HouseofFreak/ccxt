@@ -12,23 +12,33 @@ let [processPath, , exchangeId, methodName, ... params] = process.argv.filter (x
     , details = process.argv.includes ('--details')
     , no_table = process.argv.includes ('--no-table')
     , iso8601 = process.argv.includes ('--iso8601')
-    , no_info = process.argv.includes ('--no-info')
 
 //-----------------------------------------------------------------------------
 
 const ccxt         = require ('../../ccxt.js')
     , fs           = require ('fs')
     , path         = require ('path')
-    , asTable      = require ('as-table')
+    , ansi         = require ('ansicolor').nice
+    , asTable      = require ('as-table').configure ({
+
+        delimiter: ' | '.lightGray.dim,
+        right: true,
+        title: x => String (x).lightGray,
+        dash: '-'.lightGray.dim,
+        print: x => {
+            if ((typeof x === 'string') && x.startsWith ('2018-')) {
+                return new Date (x).toLocaleString ()
+            } else if (typeof x === 'object') {
+                const j = JSON.stringify (x).trim ()
+                if (j.length < 100) return j
+            }
+            return String (x)
+        }
+    })
     , util         = require ('util')
     , { execSync } = require ('child_process')
     , log          = require ('ololog').configure ({ locate: false }).unlimited
     , { ExchangeError, NetworkError } = ccxt
-
-
-//-----------------------------------------------------------------------------
-
-require ('ansicolor').nice
 
 //-----------------------------------------------------------------------------
 
@@ -82,7 +92,7 @@ const enableRateLimit = true
 
 try {
 
-    exchange = new (ccxt)[exchangeId] ({ verbose, timeout, enableRateLimit })
+    exchange = new (ccxt)[exchangeId] ({ timeout, enableRateLimit })
 
 } catch (e) {
 
@@ -150,9 +160,7 @@ const printHumanReadable = (exchange, result) => {
             if (arrayOfObjects) {
                 log (result.length > 0 ? asTable (result.map (element => {
                     let keys = Object.keys (element)
-                    if (no_info) {
-                        delete element['info']
-                    }
+                    delete element['info']
                     keys.forEach (key => {
                         if (typeof element[key] === 'number') {
                             if (!iso8601)
@@ -221,6 +229,8 @@ async function main () {
         if (!no_load_markets) {
             await exchange.loadMarkets ()
         }
+
+        exchange.verbose = true
 
         if (no_send) {
 

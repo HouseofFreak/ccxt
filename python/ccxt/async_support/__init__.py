@@ -4,7 +4,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.17.37'
+__version__ = '1.17.161'
 
 # -----------------------------------------------------------------------------
 
@@ -49,6 +49,7 @@ from ccxt.async_support.acx import acx                                    # noqa
 from ccxt.async_support.allcoin import allcoin                            # noqa: F401
 from ccxt.async_support.anxpro import anxpro                              # noqa: F401
 from ccxt.async_support.anybits import anybits                            # noqa: F401
+from ccxt.async_support.bcex import bcex                                  # noqa: F401
 from ccxt.async_support.bibox import bibox                                # noqa: F401
 from ccxt.async_support.bigone import bigone                              # noqa: F401
 from ccxt.async_support.binance import binance                            # noqa: F401
@@ -58,6 +59,7 @@ from ccxt.async_support.bitbay import bitbay                              # noqa
 from ccxt.async_support.bitfinex import bitfinex                          # noqa: F401
 from ccxt.async_support.bitfinex2 import bitfinex2                        # noqa: F401
 from ccxt.async_support.bitflyer import bitflyer                          # noqa: F401
+from ccxt.async_support.bitforex import bitforex                          # noqa: F401
 from ccxt.async_support.bithumb import bithumb                            # noqa: F401
 from ccxt.async_support.bitkk import bitkk                                # noqa: F401
 from ccxt.async_support.bitlish import bitlish                            # noqa: F401
@@ -160,6 +162,7 @@ from ccxt.async_support.theocean import theocean                          # noqa
 from ccxt.async_support.therock import therock                            # noqa: F401
 from ccxt.async_support.tidebit import tidebit                            # noqa: F401
 from ccxt.async_support.tidex import tidex                                # noqa: F401
+from ccxt.async_support.uex import uex                                    # noqa: F401
 from ccxt.async_support.urdubit import urdubit                            # noqa: F401
 from ccxt.async_support.vaultoro import vaultoro                          # noqa: F401
 from ccxt.async_support.vbtc import vbtc                                  # noqa: F401
@@ -178,6 +181,7 @@ exchanges = [
     'allcoin',
     'anxpro',
     'anybits',
+    'bcex',
     'bibox',
     'bigone',
     'binance',
@@ -187,6 +191,7 @@ exchanges = [
     'bitfinex',
     'bitfinex2',
     'bitflyer',
+    'bitforex',
     'bithumb',
     'bitkk',
     'bitlish',
@@ -289,6 +294,7 @@ exchanges = [
     'therock',
     'tidebit',
     'tidex',
+    'uex',
     'urdubit',
     'vaultoro',
     'vbtc',

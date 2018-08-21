@@ -18,7 +18,7 @@ module.exports = class bitstamp extends Exchange {
             'has': {
                 'CORS': true,
                 'fetchDepositAddress': true,
-                'fetchOrder': true,
+                'fetchOrder': 'emulated',
                 'fetchOpenOrders': true,
                 'fetchMyTrades': true,
                 'withdraw': true,
@@ -167,7 +167,6 @@ module.exports = class bitstamp extends Exchange {
             let cost = parts[0];
             // let [ cost, currency ] = market['minimum_order'].split (' ');
             let active = (market['trading'] === 'Enabled');
-            let lot = Math.pow (10, -precision['amount']);
             result.push ({
                 'id': id,
                 'symbol': symbol,
@@ -177,12 +176,11 @@ module.exports = class bitstamp extends Exchange {
                 'quoteId': quoteId,
                 'symbolId': symbolId,
                 'info': market,
-                'lot': lot,
                 'active': active,
                 'precision': precision,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': Math.pow (10, -precision['amount']),
                         'max': undefined,
                     },
                     'price': {

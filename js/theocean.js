@@ -1,7 +1,7 @@
 'use strict';
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, AuthenticationError, InvalidOrder, OrderNotFound, NotSupported, OrderImmediatelyFillable, OrderNotFillable } = require ('./base/errors');
+const { ExchangeError, AuthenticationError, InvalidOrder, OrderNotFound, NotSupported, OrderImmediatelyFillable, OrderNotFillable, InvalidAddress } = require ('./base/errors');
 const { ROUND } = require ('./base/functions/number');
 
 module.exports = class theocean extends Exchange {
@@ -27,10 +27,13 @@ module.exports = class theocean extends Exchange {
                 'fetchTickers': true,
                 'fetchOHLCV': false,
                 'fetchOrder': true,
+                'fetchOrders': true,
+                'fetchOpenOrders': true,
+                'fetchClosedOrders': true,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/43103756-d56613ce-8ed7-11e8-924e-68f9d4bcacab.jpg',
-                'api': 'https://api.staging.theocean.trade/api',
+                'api': 'https://api.theocean.trade/api',
                 'www': 'https://theocean.trade',
                 'doc': 'https://docs.theocean.trade',
                 'fees': 'https://theocean.trade/fees',
@@ -38,6 +41,7 @@ module.exports = class theocean extends Exchange {
             'api': {
                 'public': {
                     'get': [
+                        'fee_components',
                         'token_pairs',
                         'ticker',
                         'tickers',
@@ -74,7 +78,6 @@ module.exports = class theocean extends Exchange {
             },
             'options': {
                 'fetchOrderMethod': 'fetch_order_from_history',
-                'filledField': 'confirmed',
             },
         });
     }
@@ -225,6 +228,9 @@ module.exports = class theocean extends Exchange {
     }
 
     async fetchBalanceByCode (code, params = {}) {
+        if (!this.walletAddress || (this.walletAddress.indexOf ('0x') !== 0)) {
+            throw new InvalidAddress (this.id + ' checkWalletAddress() requires the .walletAddress to be a "0x"-prefixed hexstring like "0xbF2d65B3b2907214EEA3562f21B80f6Ed7220377"');
+        }
         await this.loadMarkets ();
         let currency = this.currency (code);
         let request = {
@@ -241,16 +247,19 @@ module.exports = class theocean extends Exchange {
         return {
             'free': balance,
             'used': 0,
-            'total': balance,
+            'total': undefined,
         };
     }
 
     async fetchBalance (params = {}) {
-        await this.loadMarkets ();
+        if (!this.walletAddress || (this.walletAddress.indexOf ('0x') !== 0)) {
+            throw new InvalidAddress (this.id + ' checkWalletAddress() requires the .walletAddress to be a "0x"-prefixed hexstring like "0xbF2d65B3b2907214EEA3562f21B80f6Ed7220377"');
+        }
         const codes = this.safeValue (params, 'codes');
         if ((typeof codes === 'undefined') || (!Array.isArray (codes))) {
             throw new ExchangeError (this.id + ' fetchBalance requires a `codes` parameter (an array of currency codes)');
         }
+        await this.loadMarkets ();
         let result = {};
         for (let i = 0; i < codes.length; i++) {
             const code = codes[i];
@@ -479,10 +488,16 @@ module.exports = class theocean extends Exchange {
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
-        await this.loadMarkets ();
-        if (!(this.walletAddress && this.privateKey)) {
-            throw new ExchangeError (this.id + ' createOrder() requires `exchange.walletAddress` and `exchange.privateKey`. The .walletAddress should be a hex-string like "0xbF2d65B3b2907214EEA3562f21B80f6Ed7220377". The .privateKey for that wallet should be a hex string like "0xe4f40d465efa94c98aec1a51f574329344c772c1bce33be07fa20a56795fdd09".');
+        const errorMessage = this.id + ' createOrder() requires `exchange.walletAddress` and `exchange.privateKey`. The .walletAddress should be a "0x"-prefixed hexstring like "0xbF2d65B3b2907214EEA3562f21B80f6Ed7220377". The .privateKey for that wallet should be a "0x"-prefixed hexstring like "0xe4f40d465efa94c98aec1a51f574329344c772c1bce33be07fa20a56795fdd09".';
+        if (!this.walletAddress || (this.walletAddress.indexOf ('0x') !== 0)) {
+            throw new InvalidAddress (errorMessage);
         }
+        if (!this.privateKey || (this.privateKey.indexOf ('0x') !== 0)) {
+            throw new InvalidAddress (errorMessage);
+        }
+        this.checkWalletAddress ();
+        this.checkPrivateKey ();
+        await this.loadMarkets ();
         const makerOrTaker = this.safeString (params, 'makerOrTaker');
         const isMarket = (type === 'market');
         const isLimit = (type === 'limit');
@@ -614,7 +629,7 @@ module.exports = class theocean extends Exchange {
         let signedTargetOrder = undefined;
         if ((isMarket && isMakerOrTakerUndefined) || isTaker) {
             if (isUnsignedMatchingOrderDefined) {
-                signedMatchingOrder = this.signZeroExOrder (this.extend (unsignedMatchingOrder, makerAddress));
+                signedMatchingOrder = this.signZeroExOrder (this.extend (unsignedMatchingOrder, makerAddress), this.privateKey);
                 placeRequest = this.extend (placeRequest, {
                     'signedMatchingOrder': signedMatchingOrder,
                     'matchingOrderID': reserveResponse['matchingOrderID'],
@@ -625,7 +640,7 @@ module.exports = class theocean extends Exchange {
         }
         if ((isLimit && isMakerOrTakerUndefined) || isMaker) {
             if (isUnsignedTargetOrderDefined) {
-                signedTargetOrder = this.signZeroExOrder (this.extend (unsignedTargetOrder, makerAddress));
+                signedTargetOrder = this.signZeroExOrder (this.extend (unsignedTargetOrder, makerAddress), this.privateKey);
                 placeRequest['signedTargetOrder'] = signedTargetOrder;
             } else if (isMaker) {
                 throw new OrderImmediatelyFillable (this.id + ' createOrder() ' + type + ' order to ' + side + ' ' + symbol + ' is not fillable as a maker order');
@@ -718,7 +733,13 @@ module.exports = class theocean extends Exchange {
         //       }
         //     }
         //
-        return response;
+        let market = undefined;
+        if (typeof symbol !== 'undefined') {
+            market = this.market (symbol);
+        }
+        return this.extend (this.parseOrder (response['canceledOrder'], market), {
+            'status': 'canceled',
+        });
     }
 
     async cancelAllOrders (params = {}) {
@@ -822,6 +843,8 @@ module.exports = class theocean extends Exchange {
         //                                        txHash: "0x043488fdc3f995bf9e632a32424441ed126de90f8cb340a1ff006c2a74ca8336",
         //                                   blockNumber: "8094822",
         //                                     timestamp: "1532261686"                                                          }  ] }
+        //
+        //
         //
         let zeroExOrder = this.safeValue (order, 'zeroExOrder');
         let id = this.safeString (order, 'orderHash');
@@ -1057,6 +1080,17 @@ module.exports = class theocean extends Exchange {
         //     ]
         //
         return this.parseOrders (response, undefined, since, limit);
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return await this.fetchOrders (symbol, since, limit, this.extend ({
+            'openAmount': this.fromWei ('1'),
+        }, params));
+    }
+
+    async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        const orders = await this.fetchOrders (symbol, since, limit, params);
+        return this.filterBy (orders, 'status', 'closed');
     }
 
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
