@@ -103,26 +103,31 @@ class bitflyer extends Exchange {
                 $spot = false;
             }
             $currencies = explode ('_', $id);
+            $baseId = null;
+            $quoteId = null;
             $base = null;
             $quote = null;
-            $symbol = $id;
             $numCurrencies = is_array ($currencies) ? count ($currencies) : 0;
             if ($numCurrencies === 1) {
-                $base = mb_substr ($symbol, 0, 3);
-                $quote = mb_substr ($symbol, 3, 6);
+                $baseId = mb_substr ($id, 0, 3);
+                $quoteId = mb_substr ($id, 3, 6);
             } else if ($numCurrencies === 2) {
-                $base = $currencies[0];
-                $quote = $currencies[1];
-                $symbol = $base . '/' . $quote;
+                $baseId = $currencies[0];
+                $quoteId = $currencies[1];
             } else {
-                $base = $currencies[1];
-                $quote = $currencies[2];
+                $baseId = $currencies[1];
+                $quoteId = $currencies[2];
             }
+            $base = $this->common_currency_code($baseId);
+            $quote = $this->common_currency_code($quoteId);
+            $symbol = ($numCurrencies === 2) ? ($base . '/' . $quote) : $id;
             $result[] = array (
                 'id' => $id,
                 'symbol' => $symbol,
                 'base' => $base,
                 'quote' => $quote,
+                'baseId' => $baseId,
+                'quoteId' => $quoteId,
                 'type' => $type,
                 'spot' => $spot,
                 'future' => $future,
@@ -268,7 +273,7 @@ class bitflyer extends Exchange {
         );
         if (is_array ($statuses) && array_key_exists ($status, $statuses))
             return $statuses[$status];
-        return strtolower ($status);
+        return $status;
     }
 
     public function parse_order ($order, $market = null) {
@@ -278,7 +283,7 @@ class bitflyer extends Exchange {
         $filled = $this->safe_float($order, 'executed_size');
         $price = $this->safe_float($order, 'price');
         $cost = $price * $filled;
-        $status = $this->parse_order_status($order['child_order_state']);
+        $status = $this->parse_order_status($this->safe_string($order, 'child_order_state'));
         $type = strtolower ($order['child_order_type']);
         $side = strtolower ($order['side']);
         $symbol = null;

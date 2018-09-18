@@ -139,6 +139,24 @@ declare module 'ccxt' {
         vwap?: number;
     }
 
+    export interface Transaction {
+        info: {};
+        id: string;
+        txid: string;
+        timestamp: number;
+        datetime: string;
+        address: string;
+        type: "deposit" | "withdrawal";
+        amount: number;
+        currency: string;
+        status: "pending" | "ok";
+        updated: number;
+        fee: {
+          cost: number;
+          rate: number;
+        };
+    }
+
     export interface Tickers {
         info: any;
         [symbol: string]: Ticker;
@@ -278,6 +296,9 @@ declare module 'ccxt' {
         fetchOrders (symbol?: string, since?: number, limit?: number, params?: {}): Promise<Order[]>;
         fetchOpenOrders (symbol?: string, since?: number, limit?: number, params?: {}): Promise<Order[]>;
         fetchCurrencies (params?: any): Promise<any>;
+        fetchTransactions (currency?: string, since?: number, limit?: number, params?: {}): Promise<Transaction[]>;
+        fetchDeposits (currency?: string, since?: number, limit?: number, params?: {}): Promise<Transaction[]>;
+        fetchWithdrawals (currency?: string, since?: number, limit?: number, params?: {}): Promise<Transaction[]>;
         cancelOrder (id: string, symbol?: string, params?: {}): Promise<any>;
         createDepositAddress (currency: string, params?: {}): Promise<any>;
         fetchDepositAddress (currency: string, params?: {}): Promise<any>;
@@ -338,6 +359,7 @@ declare module 'ccxt' {
     export class chilebit extends foxbit {}
     export class cobinhood extends Exchange {}
     export class coinbase extends Exchange {}
+    export class coinbaseprime extends gdax {}
     export class coinbasepro extends gdax {}
     export class coincheck extends Exchange {}
     export class coinegg extends Exchange {}

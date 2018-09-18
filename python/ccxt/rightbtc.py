@@ -51,8 +51,8 @@ class rightbtc (Exchange):
                 'api': 'https://www.rightbtc.com/api',
                 'www': 'https://www.rightbtc.com',
                 'doc': [
-                    'https://www.rightbtc.com/api/trader',
-                    'https://www.rightbtc.com/api/public',
+                    'https://52.53.159.206/api/trader/',
+                    'https://support.rightbtc.com/hc/en-us/articles/360012809412',
                 ],
                 # eslint-disable-next-line no-useless-escape
                 # 'fees': 'https://www.rightbtc.com/\#\not /support/fee',
@@ -60,7 +60,7 @@ class rightbtc (Exchange):
             'api': {
                 'public': {
                     'get': [
-                        'getAssetsTradingPairs/zh',
+                        # 'getAssetsTradingPairs/zh',  # 404
                         'trading_pairs',
                         'ticker/{trading_pair}',
                         'tickers',
@@ -151,8 +151,8 @@ class rightbtc (Exchange):
 
     def fetch_markets(self):
         response = self.publicGetTradingPairs()
-        zh = self.publicGetGetAssetsTradingPairsZh()
-        markets = self.extend(zh['result'], response['status']['message'])
+        # zh = self.publicGetGetAssetsTradingPairsZh()
+        markets = self.extend(response['status']['message'])
         marketIds = list(markets.keys())
         result = []
         for i in range(0, len(marketIds)):
@@ -255,11 +255,16 @@ class rightbtc (Exchange):
             result[symbol] = self.parse_ticker(ticker, market)
         return result
 
-    def fetch_order_book(self, symbol, params={}):
+    def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
-        response = self.publicGetDepthTradingPair(self.extend({
+        request = {
             'trading_pair': self.market_id(symbol),
-        }, params))
+        }
+        method = 'publicGetDepthTradingPair'
+        if limit is not None:
+            method += 'Count'
+            request['count'] = limit
+        response = getattr(self, method)(self.extend(request, params))
         bidsasks = {}
         types = ['bid', 'ask']
         for ti in range(0, len(types)):
@@ -288,8 +293,7 @@ class rightbtc (Exchange):
         #
         timestamp = self.safe_integer(trade, 'date')
         if timestamp is None:
-            if 'created_at' in trade:
-                timestamp = self.parse8601(trade['created_at'])
+            timestamp = self.parse8601(self.safe_string(trade, 'created_at'))
         id = self.safe_string(trade, 'tid')
         id = self.safe_string(trade, 'trade_id', id)
         orderId = self.safe_string(trade, 'order_id')
@@ -466,9 +470,7 @@ class rightbtc (Exchange):
         #     }
         #
         id = self.safe_string(order, 'id')
-        status = self.safe_value(order, 'status')
-        if status is not None:
-            status = self.parse_order_status(status)
+        status = self.parse_order_status(self.safe_string(order, 'status'))
         marketId = self.safe_string(order, 'trading_pair')
         if market is None:
             if marketId in self.markets_by_id:

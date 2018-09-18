@@ -55,7 +55,7 @@ Full public and private HTTP REST APIs for all exchanges are implemented. WebSoc
 Exchanges
 =========
 
-The ccxt library currently supports the following 130 cryptocurrency exchange markets and trading APIs:
+The ccxt library currently supports the following 131 cryptocurrency exchange markets and trading APIs:
 
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 |                      | id                 | name                                                                                    | certified                                                            | ver   | doc                                                                                                 | countries                                |
@@ -114,7 +114,7 @@ The ccxt library currently supports the following 130 cryptocurrency exchange ma
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |bittrex|            | bittrex            | `Bittrex <https://bittrex.com>`__                                                       | `CCXT Certified <https://github.com/ccxt/ccxt/wiki/Certification>`__ | 1.1   | `API <https://bittrex.com/Home/Api>`__                                                              | US                                       |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
-| |bitz|               | bitz               | `Bit-Z <https://www.bit-z.com>`__                                                       |                                                                      | 1     | `API <https://www.bit-z.com/api.html>`__                                                            | Hong Kong                                |
+| |bitz|               | bitz               | `Bit-Z <https://u.bit-z.com/register?invite_code=1429193>`__                            |                                                                      | 2     | `API <https://apidoc.bit-z.com/en>`__                                                               | Hong Kong                                |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |bl3p|               | bl3p               | `BL3P <https://bl3p.eu>`__                                                              |                                                                      | 1     | `API <https://github.com/BitonicNL/bl3p-api/tree/master/docs>`__                                    | Netherlands, EU                          |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
@@ -144,7 +144,7 @@ The ccxt library currently supports the following 130 cryptocurrency exchange ma
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |ccex|               | ccex               | `C-CEX <https://c-cex.com>`__                                                           |                                                                      | \*    | `API <https://c-cex.com/?id=api>`__                                                                 | Germany, EU                              |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
-| |cex|                | cex                | `CEX.IO <https://cex.io>`__                                                             |                                                                      | \*    | `API <https://cex.io/cex-api>`__                                                                    | UK, EU, Cyprus, Russia                   |
+| |cex|                | cex                | `CEX.IO <https://cex.io/r/0/up105393824/0/>`__                                          |                                                                      | \*    | `API <https://cex.io/cex-api>`__                                                                    | UK, EU, Cyprus, Russia                   |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |chbtc|              | chbtc              | `CHBTC <https://vip.zb.com/user/register?recommendCode=bn070u>`__                       |                                                                      | 1     | `API <https://www.chbtc.com/i/developer>`__                                                         | China                                    |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
@@ -154,7 +154,9 @@ The ccxt library currently supports the following 130 cryptocurrency exchange ma
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |coinbase|           | coinbase           | `coinbase <https://www.coinbase.com/join/58cbe25a355148797479dbd2>`__                   |                                                                      | 2     | `API <https://developers.coinbase.com/api/v2>`__                                                    | US                                       |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
-| |coinbasepro|        | coinbasepro        | `Coinbase Pro <https://pro.coinbase.com/>`__                                            |                                                                      | \*    | `API <https://docs.gdax.com>`__                                                                     | US                                       |
+| |coinbaseprime|      | coinbaseprime      | `Coinbase Prime <https://prime.coinbase.com>`__                                         |                                                                      | \*    | `API <https://docs.prime.coinbase.com>`__                                                           | US                                       |
++----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
+| |coinbasepro|        | coinbasepro        | `Coinbase Pro <https://pro.coinbase.com/>`__                                            |                                                                      | \*    | `API <https://docs.pro.coinbase.com/>`__                                                            | US                                       |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |coincheck|          | coincheck          | `coincheck <https://coincheck.com>`__                                                   |                                                                      | \*    | `API <https://coincheck.com/documents/exchange/api>`__                                              | Japan, Indonesia                         |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
@@ -232,7 +234,7 @@ The ccxt library currently supports the following 130 cryptocurrency exchange ma
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |huobipro|           | huobipro           | `Huobi Pro <https://www.huobi.br.com/en-us/topic/invited/?invite_code=rwrd3>`__         |                                                                      | 1     | `API <https://github.com/huobiapi/API_Docs/wiki/REST_api_reference>`__                              | China                                    |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
-| |ice3x|              | ice3x              | `ICE3X <https://ice3x.com>`__                                                           |                                                                      | \*    | `API <https://ice3x.co.za/ice-cubed-bitcoin-exchange-api-documentation-1-june-2017>`__              | South Africa                             |
+| |ice3x|              | ice3x              | `ICE3X <https://ice3x.com>`__                                                           |                                                                      | 1     | `API <https://ice3x.co.za/ice-cubed-bitcoin-exchange-api-documentation-1-june-2017>`__              | South Africa                             |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |independentreserve| | independentreserve | `Independent Reserve <https://www.independentreserve.com>`__                            |                                                                      | \*    | `API <https://www.independentreserve.com/API>`__                                                    | Australia, New Zealand                   |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
@@ -284,7 +286,7 @@ The ccxt library currently supports the following 130 cryptocurrency exchange ma
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |quoinex|            | quoinex            | `QUOINEX <https://quoinex.com/>`__                                                      |                                                                      | 2     | `API <https://developers.quoine.com>`__                                                             | Japan, Singapore, Vietnam                |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
-| |rightbtc|           | rightbtc           | `RightBTC <https://www.rightbtc.com>`__                                                 |                                                                      | \*    | `API <https://www.rightbtc.com/api/trader>`__                                                       | United Arab Emirates                     |
+| |rightbtc|           | rightbtc           | `RightBTC <https://www.rightbtc.com>`__                                                 |                                                                      | \*    | `API <https://52.53.159.206/api/trader/>`__                                                         | United Arab Emirates                     |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
 | |southxchange|       | southxchange       | `SouthXchange <https://www.southxchange.com>`__                                         |                                                                      | \*    | `API <https://www.southxchange.com/Home/Api>`__                                                     | Argentina                                |
 +----------------------+--------------------+-----------------------------------------------------------------------------------------+----------------------------------------------------------------------+-------+-----------------------------------------------------------------------------------------------------+------------------------------------------+
@@ -511,7 +513,7 @@ Below is a detailed description of each of the base exchange properties:
 
 -  ``rateLimit``: A request rate limit in milliseconds. Specifies the required minimal delay between two consequent HTTP requests to the same exchange. The built-in rate-limiter is disabled by default and is turned on by setting the ``enableRateLimit`` property to true.
 
--  ``enableRateLimit``: A boolean (true/false) value that enables the built-in rate limiter and throttles consecutive requests. This settings is false (disabled) by default. **The user is required to implement own**\ `rate limiting <https://github.com/ccxt/ccxt/wiki/Manual#rate-limit>`__\ **or enable the built-in rate limiter to avoid being banned from the exchange**.
+-  ``enableRateLimit``: A boolean (true/false) value that enables the built-in rate limiter and throttles consecutive requests. This setting is false (disabled) by default. **The user is required to implement own**\ `rate limiting <https://github.com/ccxt/ccxt/wiki/Manual#rate-limit>`__\ **or enable the built-in rate limiter to avoid being banned from the exchange**.
 
 -  ``userAgent``: An object to set HTTP User-Agent header to. The ccxt library will set its User-Agent by default. Some exchanges may not like it. If you are having difficulties getting a reply from an exchange and want to turn User-Agent off or use the default one, set this value to false, undefined, or an empty string.
 
@@ -539,6 +541,9 @@ Below is a detailed description of each of the base exchange properties:
 -  ``password``: A string literal with your password/phrase. Some exchanges require this parameter for trading, but most of them don’t.
 
 -  ``uid``: A unique id of your account. This can be a string literal or a number. Some exchanges also require this for trading, but most of them don’t.
+
+Exchange Metadata
+^^^^^^^^^^^^^^^^^
 
 -  ``has``: An assoc-array containing flags for exchange capabilities, including the following:
 
@@ -573,6 +578,7 @@ Below is a detailed description of each of the base exchange properties:
           'fetchBidsAsks': false,
           'fetchTrades': true,
           'withdraw': false,
+          ...
       }
 
    The meaning of each flag showing availability of this or that method is:
@@ -1873,7 +1879,7 @@ OHLCV Emulation
 
 Some exchanges don’t offer any OHLCV method, and for those, the ccxt library will emulate OHLCV candles from `Public Trades <https://github.com/ccxt/ccxt/wiki/Manual#trades-executions-transactions>`__. In that case you will see ``exchange.has['fetchOHLCV'] = 'emulated'``. However, because the trade history is usually very limited, the emulated fetchOHLCV methods cover most recent info only and should only be used as a fallback, when no other option is available.
 
-**WARNING: the fetchOHLCV emulations is experimental!**
+**WARNING: the fetchOHLCV emulation is experimental!**
 
 Trades, Executions, Transactions
 --------------------------------
@@ -2179,7 +2185,7 @@ To check if any of the above methods are available, look into the ``.has`` prope
    # Python
    import ccxt
    id = 'cryptopia'
-   exchange = getattr(ccxt, 'id') ()
+   exchange = getattr(ccxt, id) ()
    print(exchange.has)
 
 .. code:: php
@@ -2379,7 +2385,7 @@ Most of methods returning orders within ccxt unified API will usually yield an o
        'amount':      1.5,           // ordered amount of base currency
        'filled':      1.1,           // filled amount of base currency
        'remaining':   0.4,           // remaining amount to fill
-       'cost':        0.076094524,   // 'filled' * 'price'
+       'cost':        0.076094524,   // 'filled' * 'price' (filling price used where available)
        'trades':    [ ... ],         // a list of order trades/executions
        'fee': {                      // fee info, if available
            'currency': 'BTC',        // which currency the fee is (usually quote)
@@ -2714,7 +2720,7 @@ Deposit
 
 With certain currencies, like AEON, BTS, GXS, NXT, SBD, STEEM, STR, XEM, XLM, XMR, XRP, an additional argument ``tag`` is usually required by exchanges. Other currencies will have the ``tag`` set to ``undefined / None / null``. The tag is a memo or a message or a payment id that is attached to a withdrawal transaction. The tag is mandatory for those currencies and it identifies the recipient user account.
 
-Be careful when specifying the ``tag`` and the ``address``. The ``tag`` is **NOT an arbitrary user-defined string** of your choice! You cannot send user messages and comments in the ``tag``. The purpose of the ``tag`` field is to address your wallet properly, so it must be correct. You should only use the ``tag`` received from the exchange you’re working with, otherwise your withdrawal transaction might not arrive to its destination ever.
+Be careful when specifying the ``tag`` and the ``address``. The ``tag`` is **NOT an arbitrary user-defined string** of your choice! You cannot send user messages and comments in the ``tag``. The purpose of the ``tag`` field is to address your wallet properly, so it must be correct. You should only use the ``tag`` received from the exchange you’re working with, otherwise your transaction might never arrive to its destination.
 
 Withdraw
 ~~~~~~~~
@@ -2764,16 +2770,25 @@ Transaction Structure
        'timestamp': 1534081184515,             // timestamp in milliseconds
        'datetime': '2018-08-12T13:39:44.515Z', // ISO8601 string of the timestamp
        'address':  '0x02b0a9b7b4cDe774af0f8e47cb4f1c2ccdEa0806', // "from" or "to"
+       'tag':      '0x0123456789' // "tag" or "memo" or "payment_id" associated with the address
        'type':     'deposit',   // or 'withdrawal', string
        'amount':    1.2345,     // float
        'currency': 'ETH',       // a common unified currency code, string
        'status':   'pending',   // 'ok', 'failed', 'canceled', string
-       'updated':   undefined,  // timestamp in milliseconds
+       'updated':   undefined,  // UTC timestamp in ms of most recent status change
        'fee': {                 // the entire fee structure may be undefined
            'cost': 0.1234,      // float
            'rate': undefined,   // approximately, fee['cost'] / amount, float
        },
    }
+
+Notes On Transaction Structure
+''''''''''''''''''''''''''''''
+
+-  The ``updated`` field is the UTC timestamp in milliseconds of the most recent change of status of that funding operation, be it ``withdrawal`` or ``deposit``. It is necessary if you want to track your changes in time, beyond a static snapshot. For example, if the exchange in question reports ``created_at`` and ``confirmed_at`` for a transaction, then the ``updated`` field will take the value of ``Math.max (created_at, confirmed_at)``, that is, the timestamp of the most recent change of the status.
+-  The ``updated`` field may be undefined in certain exchange-specific cases.
+-  The ``fee`` substructure may be missing, if not supplied within the reply coming from the exchange.
+-  Be careful when handling the ``tag`` and the ``address``. The ``tag`` is **NOT an arbitrary user-defined string** of your choice! You cannot send user messages and comments in the ``tag``. The purpose of the ``tag`` field is to address your wallet properly, so it must be correct. You should only use the ``tag`` received from the exchange you’re working with, otherwise your transaction might never arrive to its destination.
 
 Deposits
 ^^^^^^^^
@@ -3263,6 +3278,7 @@ Notes
 .. |chilebit| image:: https://user-images.githubusercontent.com/1294454/27991414-1298f0d8-647f-11e7-9c40-d56409266336.jpg
 .. |cobinhood| image:: https://user-images.githubusercontent.com/1294454/35755576-dee02e5c-0878-11e8-989f-1595d80ba47f.jpg
 .. |coinbase| image:: https://user-images.githubusercontent.com/1294454/40811661-b6eceae2-653a-11e8-829e-10bfadb078cf.jpg
+.. |coinbaseprime| image:: https://user-images.githubusercontent.com/1294454/44539184-29f26e00-a70c-11e8-868f-e907fc236a7c.jpg
 .. |coinbasepro| image:: https://user-images.githubusercontent.com/1294454/41764625-63b7ffde-760a-11e8-996d-a6328fa9347a.jpg
 .. |coincheck| image:: https://user-images.githubusercontent.com/1294454/27766464-3b5c3c74-5ed9-11e7-840e-31b32968e1da.jpg
 .. |coinegg| image:: https://user-images.githubusercontent.com/1294454/36770310-adfa764e-1c5a-11e8-8e09-449daac3d2fb.jpg

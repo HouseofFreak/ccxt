@@ -588,7 +588,7 @@ class okcoinusd extends Exchange {
 
     public function fetch_balance ($params = array ()) {
         $this->load_markets();
-        $response = $this->privatePostUserinfo ();
+        $response = $this->privatePostUserinfo ($params);
         $balances = $response['info']['funds'];
         $result = array ( 'info' => $response );
         $ids = is_array ($balances['free']) ? array_keys ($balances['free']) : array ();
@@ -703,19 +703,15 @@ class okcoinusd extends Exchange {
     }
 
     public function parse_order_status ($status) {
-        if ($status === -1)
-            return 'canceled';
-        if ($status === 0)
-            return 'open';
-        if ($status === 1)
-            return 'open';
-        if ($status === 2)
-            return 'closed';
-        if ($status === 3)
-            return 'open';
-        if ($status === 4)
-            return 'canceled';
-        return $status;
+        $statuses = array (
+            '-1' => 'canceled',
+            '0' => 'open',
+            '1' => 'open',
+            '2' => 'closed',
+            '3' => 'open',
+            '4' => 'canceled',
+        );
+        return $this->safe_value($statuses, $status, $status);
     }
 
     public function parse_order_side ($side) {
@@ -749,7 +745,7 @@ class okcoinusd extends Exchange {
                     $type = 'margin';
             }
         }
-        $status = $this->parse_order_status($order['status']);
+        $status = $this->parse_order_status($this->safe_string($order, 'status'));
         $symbol = null;
         if ($market === null) {
             $marketId = $this->safe_string($order, 'symbol');
@@ -902,6 +898,9 @@ class okcoinusd extends Exchange {
         //     throw new ExchangeError ($this->id . ' withdraw() requires $amount > 0.01');
         // for some reason they require to supply a pair of currencies for withdrawing one $currency
         $currencyId = $currency['id'] . '_usd';
+        if ($tag) {
+            $address = $address . ':' . $tag;
+        }
         $request = array (
             'symbol' => $currencyId,
             'withdraw_address' => $address,

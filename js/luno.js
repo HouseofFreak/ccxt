@@ -129,7 +129,7 @@ module.exports = class luno extends Exchange {
     async fetchOrderBook (symbol, limit = undefined, params = {}) {
         await this.loadMarkets ();
         let method = 'publicGetOrderbook';
-        if (typeof limit !== 'undefined') {
+        if (limit !== undefined) {
             if (limit <= 100) {
                 method += 'Top'; // get just the top of the orderbook when limit is low
             }
@@ -145,7 +145,7 @@ module.exports = class luno extends Exchange {
         let timestamp = order['creation_timestamp'];
         let status = (order['state'] === 'PENDING') ? 'open' : 'closed';
         let side = (order['type'] === 'ASK') ? 'sell' : 'buy';
-        if (typeof market === 'undefined')
+        if (market === undefined)
             market = this.findMarket (order['pair']);
         let symbol = market['symbol'];
         let price = this.safeFloat (order, 'limit_price');
@@ -155,8 +155,8 @@ module.exports = class luno extends Exchange {
         let filled = this.safeFloat (order, 'base');
         let cost = this.safeFloat (order, 'counter');
         let remaining = undefined;
-        if (typeof amount !== 'undefined') {
-            if (typeof filled !== 'undefined') {
+        if (amount !== undefined) {
+            if (filled !== undefined) {
                 remaining = Math.max (0, amount - filled);
             }
         }
@@ -200,10 +200,10 @@ module.exports = class luno extends Exchange {
         await this.loadMarkets ();
         let request = {};
         let market = undefined;
-        if (typeof state !== 'undefined') {
+        if (state !== undefined) {
             request['state'] = state;
         }
-        if (typeof symbol !== 'undefined') {
+        if (symbol !== undefined) {
             market = this.market (symbol);
             request['pair'] = market['id'];
         }
@@ -280,17 +280,34 @@ module.exports = class luno extends Exchange {
     }
 
     parseTrade (trade, market) {
-        let side = (trade['is_buy']) ? 'buy' : 'sell';
+        // For public trade data (is_buy === True) indicates 'buy' side but for private trade data
+        // is_buy indicates maker or taker. The value of "type" (ASK/BID) indicate sell/buy side.
+        // Private trade data includes ID field which public trade data does not.
+        let order = this.safeString (trade, 'order_id');
+        let takerOrMaker = undefined;
+        let side = undefined;
+        if (order !== undefined) {
+            side = (trade['type'] === 'ASK') ? 'sell' : 'buy';
+            if (side === 'sell' && trade['is_buy']) {
+                takerOrMaker = 'maker';
+            } else if (side === 'buy' && !trade['is_buy']) {
+                takerOrMaker = 'maker';
+            } else {
+                takerOrMaker = 'taker';
+            }
+        } else {
+            side = (trade['is_buy']) ? 'buy' : 'sell';
+        }
         let feeBase = this.safeFloat (trade, 'fee_base');
         let feeCounter = this.safeFloat (trade, 'fee_counter');
         let feeCurrency = undefined;
         let feeCost = undefined;
-        if (typeof feeBase !== 'undefined') {
+        if (feeBase !== undefined) {
             if (feeBase !== 0.0) {
                 feeCurrency = market['base'];
                 feeCost = feeBase;
             }
-        } else if (typeof feeCounter !== 'undefined') {
+        } else if (feeCounter !== undefined) {
             if (feeCounter !== 0.0) {
                 feeCurrency = market['quote'];
                 feeCost = feeCounter;
@@ -298,13 +315,14 @@ module.exports = class luno extends Exchange {
         }
         return {
             'info': trade,
-            'id': this.safeString (trade, 'order_id'),
+            'id': undefined,
             'timestamp': trade['timestamp'],
             'datetime': this.iso8601 (trade['timestamp']),
             'symbol': market['symbol'],
-            'order': undefined,
+            'order': order,
             'type': undefined,
             'side': side,
+            'takerOrMaker': takerOrMaker,
             'price': this.safeFloat (trade, 'price'),
             'amount': this.safeFloat (trade, 'volume'),
             // Does not include potential fee costs
@@ -322,7 +340,7 @@ module.exports = class luno extends Exchange {
         let request = {
             'pair': market['id'],
         };
-        if (typeof since !== 'undefined')
+        if (since !== undefined)
             request['since'] = since;
         let response = await this.publicGetTrades (this.extend (request, params));
         let trades = this.safeValue (response, 'trades', []);
@@ -330,16 +348,16 @@ module.exports = class luno extends Exchange {
     }
 
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        if (typeof symbol === 'undefined')
+        if (symbol === undefined)
             throw new ExchangeError (this.id + ' fetchMyTrades requires a symbol argument');
         await this.loadMarkets ();
         let market = this.market (symbol);
         let request = {
             'pair': market['id'],
         };
-        if (typeof since !== 'undefined')
+        if (since !== undefined)
             request['since'] = since;
-        if (typeof limit !== 'undefined')
+        if (limit !== undefined)
             request['limit'] = limit;
         let response = await this.privateGetListtrades (this.extend (request, params));
         let trades = this.safeValue (response, 'trades', []);

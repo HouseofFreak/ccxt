@@ -87,6 +87,7 @@ module.exports = class kuna extends acx {
                 let baseId = id.replace ('btc', '');
                 baseId = baseId.replace ('uah', '');
                 baseId = baseId.replace ('gbg', '');
+                baseId = baseId.replace ('eth', '');
                 if (baseId.length > 0) {
                     let baseIdLength = baseId.length - 0; // a transpiler workaround
                     let quoteId = id.slice (baseIdLength);
@@ -123,7 +124,7 @@ module.exports = class kuna extends acx {
     }
 
     async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        if (typeof symbol === 'undefined')
+        if (symbol === undefined)
             throw new ExchangeError (this.id + ' fetchOpenOrders requires a symbol argument');
         await this.loadMarkets ();
         let market = this.market (symbol);
@@ -142,11 +143,13 @@ module.exports = class kuna extends acx {
         if (market)
             symbol = market['symbol'];
         let side = this.safeString (trade, 'side');
-        let sideMap = {
-            'ask': 'sell',
-            'bid': 'buy',
-        };
-        side = sideMap[side];
+        if (side !== undefined) {
+            let sideMap = {
+                'ask': 'sell',
+                'bid': 'buy',
+            };
+            side = this.safeString (sideMap, side);
+        }
         let cost = this.safeFloat (trade, 'funds');
         let order = this.safeString (trade, 'order_id');
         return {
@@ -174,7 +177,7 @@ module.exports = class kuna extends acx {
     }
 
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        if (typeof symbol === 'undefined')
+        if (symbol === undefined)
             throw new ExchangeError (this.id + ' fetchOpenOrders requires a symbol argument');
         await this.loadMarkets ();
         let market = this.market (symbol);

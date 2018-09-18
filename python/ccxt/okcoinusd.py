@@ -573,7 +573,7 @@ class okcoinusd (Exchange):
 
     def fetch_balance(self, params={}):
         self.load_markets()
-        response = self.privatePostUserinfo()
+        response = self.privatePostUserinfo(params)
         balances = response['info']['funds']
         result = {'info': response}
         ids = list(balances['free'].keys())
@@ -676,19 +676,15 @@ class okcoinusd (Exchange):
         return response
 
     def parse_order_status(self, status):
-        if status == -1:
-            return 'canceled'
-        if status == 0:
-            return 'open'
-        if status == 1:
-            return 'open'
-        if status == 2:
-            return 'closed'
-        if status == 3:
-            return 'open'
-        if status == 4:
-            return 'canceled'
-        return status
+        statuses = {
+            '-1': 'canceled',
+            '0': 'open',
+            '1': 'open',
+            '2': 'closed',
+            '3': 'open',
+            '4': 'canceled',
+        }
+        return self.safe_value(statuses, status, status)
 
     def parse_order_side(self, side):
         if side == 1:
@@ -718,7 +714,7 @@ class okcoinusd (Exchange):
                 side = self.parse_order_side(order['type'])
                 if ('contract_name' in list(order.keys())) or ('lever_rate' in list(order.keys())):
                     type = 'margin'
-        status = self.parse_order_status(order['status'])
+        status = self.parse_order_status(self.safe_string(order, 'status'))
         symbol = None
         if market is None:
             marketId = self.safe_string(order, 'symbol')
@@ -857,6 +853,8 @@ class okcoinusd (Exchange):
         #     raise ExchangeError(self.id + ' withdraw() requires amount > 0.01')
         # for some reason they require to supply a pair of currencies for withdrawing one currency
         currencyId = currency['id'] + '_usd'
+        if tag:
+            address = address + ':' + tag
         request = {
             'symbol': currencyId,
             'withdraw_address': address,
