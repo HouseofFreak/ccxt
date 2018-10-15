@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { InsufficientFunds, ExchangeError, InvalidOrder, InvalidAddress, AuthenticationError, NotSupported, OrderNotFound } = require ('./base/errors');
+const { InsufficientFunds, ArgumentsRequired, ExchangeError, InvalidOrder, InvalidAddress, AuthenticationError, NotSupported, OrderNotFound } = require ('./base/errors');
 
 // ----------------------------------------------------------------------------
 
@@ -127,6 +127,18 @@ module.exports = class gdax extends Exchange {
                         'EUR': 0.15,
                         'USD': 10,
                     },
+                },
+            },
+            'exceptions': {
+                'exact': {
+                    'Insufficient funds': InsufficientFunds,
+                    'NotFound': OrderNotFound,
+                    'Invalid API Key': AuthenticationError,
+                },
+                'broad': {
+                    'order not found': OrderNotFound,
+                    'price too small': InvalidOrder,
+                    'price too precise': InvalidOrder,
                 },
             },
         });
@@ -298,7 +310,7 @@ module.exports = class gdax extends Exchange {
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
         // as of 2018-08-23
         if (symbol === undefined) {
-            throw new ExchangeError (this.id + ' fetchMyTrades requires a symbol argument');
+            throw new ArgumentsRequired (this.id + ' fetchMyTrades requires a symbol argument');
         }
         await this.loadMarkets ();
         let market = this.market (symbol);
@@ -557,7 +569,7 @@ module.exports = class gdax extends Exchange {
     async fetchTransactions (code = undefined, since = undefined, limit = undefined, params = {}) {
         await this.loadMarkets ();
         if (code === undefined) {
-            throw new ExchangeError (this.id + ' fetchTransactions() requires a currency code argument');
+            throw new ArgumentsRequired (this.id + ' fetchTransactions() requires a currency code argument');
         }
         let currency = this.currency (code);
         let accountId = undefined;
@@ -591,6 +603,8 @@ module.exports = class gdax extends Exchange {
             return 'canceled';
         } else if ('completed_at' in transaction && transaction['completed_at']) {
             return 'ok';
+        } else if (('canceled_at' in transaction && !transaction['canceled_at']) && ('completed_at' in transaction && !transaction['completed_at']) && ('processed_at' in transaction && !transaction['processed_at'])) {
+            return 'pending';
         } else if ('procesed_at' in transaction && transaction['procesed_at']) {
             return 'pending';
         } else {
@@ -707,19 +721,17 @@ module.exports = class gdax extends Exchange {
             if (body[0] === '{') {
                 let response = JSON.parse (body);
                 let message = response['message'];
-                let error = this.id + ' ' + message;
-                if (message.indexOf ('price too small') >= 0) {
-                    throw new InvalidOrder (error);
-                } else if (message.indexOf ('price too precise') >= 0) {
-                    throw new InvalidOrder (error);
-                } else if (message === 'Insufficient funds') {
-                    throw new InsufficientFunds (error);
-                } else if (message === 'NotFound') {
-                    throw new OrderNotFound (error);
-                } else if (message === 'Invalid API Key') {
-                    throw new AuthenticationError (error);
+                let feedback = this.id + ' ' + message;
+                const exact = this.exceptions['exact'];
+                if (message in exact) {
+                    throw new exact[code] (feedback);
                 }
-                throw new ExchangeError (this.id + ' ' + message);
+                const broad = this.exceptions['broad'];
+                const broadKey = this.findBroadlyMatchedKey (broad, message);
+                if (broadKey !== undefined) {
+                    throw new broad[broadKey] (feedback);
+                }
+                throw new ExchangeError (feedback); // unknown message
             }
             throw new ExchangeError (this.id + ' ' + body);
         }
