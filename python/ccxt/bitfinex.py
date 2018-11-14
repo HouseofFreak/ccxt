@@ -10,6 +10,7 @@ import math
 import json
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
+from ccxt.base.errors import PermissionDenied
 from ccxt.base.errors import ArgumentsRequired
 from ccxt.base.errors import InsufficientFunds
 from ccxt.base.errors import InvalidOrder
@@ -272,6 +273,7 @@ class bitfinex (Exchange):
                 'DAD': 'DADI',
                 'DAT': 'DATA',
                 'DSH': 'DASH',
+                'EUR': 'EURT',
                 'HOT': 'Hydro Protocol',
                 'IOS': 'IOST',
                 'IOT': 'IOTA',
@@ -298,7 +300,6 @@ class bitfinex (Exchange):
                     'No such order found.': OrderNotFound,  # ?
                     'Order price must be positive.': InvalidOrder,  # on price <= 0
                     'Could not find a key matching the given X-BFX-APIKEY.': AuthenticationError,
-                    'This API key does not have permission for self action': AuthenticationError,  # authenticated but not authorized
                     'Key price should be a decimal number, e.g. "123.456"': InvalidOrder,  # on isNaN(price)
                     'Key amount should be a decimal number, e.g. "123.456"': InvalidOrder,  # on isNaN(amount)
                     'ERR_RATE_LIMIT': DDoSProtection,
@@ -308,6 +309,7 @@ class bitfinex (Exchange):
                     'Cannot evaluate your available balance, please try again': ExchangeNotAvailable,
                 },
                 'broad': {
+                    'This API key does not have permission': PermissionDenied,  # authenticated but not authorized
                     'Invalid order: not enough exchange balance for ': InsufficientFunds,  # when buying cost is greater than the available quote currency
                     'Invalid order: minimum size for ': InvalidOrder,  # when amount below limits.amount.min
                     'Invalid order': InvalidOrder,  # ?
@@ -745,25 +747,26 @@ class bitfinex (Exchange):
         response = self.v2GetCandlesTradeTimeframeSymbolHist(self.extend(request, params))
         return self.parse_ohlcvs(response, market, timeframe, since, limit)
 
-    def get_currency_name(self, currency):
-        if currency in self.options['currencyNames']:
-            return self.options['currencyNames'][currency]
-        raise NotSupported(self.id + ' ' + currency + ' not supported for withdrawal')
+    def get_currency_name(self, code):
+        if code in self.options['currencyNames']:
+            return self.options['currencyNames'][code]
+        raise NotSupported(self.id + ' ' + code + ' not supported for withdrawal')
 
-    def create_deposit_address(self, currency, params={}):
-        response = self.fetch_deposit_address(currency, self.extend({
+    def create_deposit_address(self, code, params={}):
+        response = self.fetch_deposit_address(code, self.extend({
             'renew': 1,
         }, params))
         address = self.safe_string(response, 'address')
         self.check_address(address)
         return {
-            'currency': currency,
-            'address': address,
             'info': response['info'],
+            'currency': code,
+            'address': address,
+            'tag': None,
         }
 
-    def fetch_deposit_address(self, currency, params={}):
-        name = self.get_currency_name(currency)
+    def fetch_deposit_address(self, code, params={}):
+        name = self.get_currency_name(code)
         request = {
             'method': name,
             'wallet_name': 'exchange',
@@ -777,7 +780,7 @@ class bitfinex (Exchange):
             address = response['address_pool']
         self.check_address(address)
         return {
-            'currency': currency,
+            'currency': code,
             'address': address,
             'tag': tag,
             'info': response,
@@ -865,9 +868,9 @@ class bitfinex (Exchange):
         }
         return statuses[status] if (status in list(statuses.keys())) else status
 
-    def withdraw(self, currency, amount, address, tag=None, params={}):
+    def withdraw(self, code, amount, address, tag=None, params={}):
         self.check_address(address)
-        name = self.get_currency_name(currency)
+        name = self.get_currency_name(code)
         request = {
             'withdraw_type': name,
             'walletselected': 'exchange',

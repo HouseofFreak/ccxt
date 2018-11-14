@@ -51,12 +51,13 @@ let Web3 = undefined
     , BigNumber = undefined
 
 try {
-    Web3      = require ('web3') // eslint-disable-line global-require
-    ethAbi    = require ('ethereumjs-abi') // eslint-disable-line global-require
-    ethUtil   = require ('ethereumjs-util') // eslint-disable-line global-require
-    BigNumber = require ('bignumber.js') // eslint-disable-line global-require
+    const requireFunction = require;
+    Web3      = requireFunction ('web3') // eslint-disable-line global-require
+    ethAbi    = requireFunction ('ethereumjs-abi') // eslint-disable-line global-require
+    ethUtil   = requireFunction ('ethereumjs-util') // eslint-disable-line global-require
+    BigNumber = requireFunction ('bignumber.js') // eslint-disable-line global-require
     // we prefer bignumber.js over BN.js
-    // BN        = require ('bn.js') // eslint-disable-line global-require
+    // BN        = requireFunction ('bn.js') // eslint-disable-line global-require
 } catch (e) {
 }
 
@@ -317,6 +318,8 @@ module.exports = class Exchange {
         this.trades      = {}
         this.transactions = {}
 
+        this.requiresWeb3 = false
+
         this.enableLastJsonResponse = true
         this.enableLastHttpResponse = true
         this.enableLastResponseHeaders = true
@@ -360,7 +363,7 @@ module.exports = class Exchange {
             journal (() => this.journal, this, Object.keys (this.has))
         }
 
-        if (!this.web3 && Web3) {
+        if (this.requiresWeb3 && !this.web3 && Web3) {
             this.web3 = new Web3 (new Web3.providers.HttpProvider ())
         }
     }
@@ -729,6 +732,11 @@ module.exports = class Exchange {
         return ohlcvc.map (c => c.slice (0, -1))
     }
 
+    parseTradingViewOHLCV (ohlcvs, market = undefined, timeframe = '1m', since = undefined, limit = undefined) {
+        let result = this.convertTradingViewToOHLCV (ohlcvs);
+        return this.parseOHLCVs (result, market, timeframe, since, limit);
+    }
+
     convertTradingViewToOHLCV (ohlcvs) {
         let result = [];
         for (let i = 0; i < ohlcvs['t'].length; i++) {
@@ -826,8 +834,8 @@ module.exports = class Exchange {
         return new Promise ((resolve, reject) => resolve (Object.values (this.markets)))
     }
 
-    async fetchOrderStatus (id, market = undefined) {
-        let order = await this.fetchOrder (id, market);
+    async fetchOrderStatus (id, symbol = undefined, params = {}) {
+        let order = await this.fetchOrder (id, symbol, params);
         return order['status'];
     }
 
@@ -1002,7 +1010,7 @@ module.exports = class Exchange {
 
         currencies.forEach ((currency) => {
 
-            if (balance[currency].used === undefined) {
+            if (balance[currency].free !== undefined && balance[currency].used === undefined) {
                 // exchange reports only 'free' balance -> try to derive 'used' funds from open orders cache
 
                 if (this.dontGetUsedBalanceFromStaleCache && ('open_orders' in balance['info'])) {
@@ -1271,12 +1279,7 @@ module.exports = class Exchange {
 
     checkRequiredDependencies () {
         if (!Web3 || !ethUtil || !ethAbi || !BigNumber) {
-            throw new ExchangeError ('The following npm modules are required: ' + [
-                'https://github.com/ethereum/web3.js/',
-                'https://github.com/ethereumjs/ethereumjs-util/',
-                'https://github.com/ethereumjs/ethereumjs-abi',
-                'https://github.com/MikeMcl/bignumber.js/',
-            ].join (', '));
+            throw new ExchangeError ('The following npm modules are required:\nnpm install web3 ethereumjs-util ethereumjs-abi bignumber.js --no-save');
         }
     }
 

@@ -145,8 +145,11 @@ class gdax (Exchange):
                     'Insufficient funds': InsufficientFunds,
                     'NotFound': OrderNotFound,
                     'Invalid API Key': AuthenticationError,
+                    'invalid signature': AuthenticationError,
+                    'Invalid Passphrase': AuthenticationError,
                 },
                 'broad': {
+                    'Order already done': OrderNotFound,
                     'order not found': OrderNotFound,
                     'price too small': InvalidOrder,
                     'price too precise': InvalidOrder,
@@ -366,6 +369,7 @@ class gdax (Exchange):
             'open': 'open',
             'done': 'closed',
             'canceled': 'canceled',
+            'canceling': 'open',
         }
         return self.safe_string(statuses, status, status)
 
@@ -677,7 +681,7 @@ class gdax (Exchange):
                 feedback = self.id + ' ' + message
                 exact = self.exceptions['exact']
                 if message in exact:
-                    raise exact[code](feedback)
+                    raise exact[message](feedback)
                 broad = self.exceptions['broad']
                 broadKey = self.findBroadlyMatchedKey(broad, message)
                 if broadKey is not None:

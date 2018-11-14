@@ -14,6 +14,7 @@ module.exports = class theocean extends Exchange {
             'version': 'v0',
             'certified': true,
             'parseJsonResponse': false,
+            'requiresWeb3': true,
             // add GET https://api.staging.theocean.trade/api/v0/candlesticks/intervals to fetchMarkets
             'timeframes': {
                 '5m': '300',
@@ -26,6 +27,7 @@ module.exports = class theocean extends Exchange {
                 'CORS': false, // ?
                 'fetchTickers': true,
                 'fetchOHLCV': false,
+                'fetchOrder': true,
                 'fetchOrders': true,
                 'fetchOpenOrders': true,
                 'fetchClosedOrders': true,
@@ -474,7 +476,10 @@ module.exports = class theocean extends Exchange {
         }
         let price = this.safeFloat (trade, 'price');
         let orderId = this.safeString (trade, 'order');
-        let id = this.safeString2 (trade, 'transactionHash', 'txHash');
+        let id = this.safeString (trade, 'id');
+        if (id === undefined) {
+            id = this.safeString2 (trade, 'transactionHash', 'txHash');
+        }
         let symbol = undefined;
         let base = undefined;
         if (market !== undefined) {
@@ -796,7 +801,7 @@ module.exports = class theocean extends Exchange {
         });
     }
 
-    async cancelAllOrders (params = {}) {
+    async cancelAllOrders (symbols = undefined, params = {}) {
         const response = await this.privateDeleteOrders (params);
         //
         //     [{
@@ -906,7 +911,7 @@ module.exports = class theocean extends Exchange {
             id = this.safeString (zeroExOrder, 'orderHash');
         }
         let side = this.safeString (order, 'side');
-        let type = 'limit';
+        let type = this.safeString (order, 'type'); // injected from outside
         let timestamp = this.safeInteger (order, 'created');
         timestamp = (timestamp !== undefined) ? timestamp * 1000 : timestamp;
         let symbol = undefined;
@@ -941,11 +946,15 @@ module.exports = class theocean extends Exchange {
         let lastTradeTimestamp = undefined;
         let timeline = this.safeValue (order, 'timeline');
         let trades = undefined;
+        let status = undefined;
         if (timeline !== undefined) {
             let numEvents = timeline.length;
             if (numEvents > 0) {
                 // status = this.parseOrderStatus (this.safeString (timeline[numEvents - 1], 'action'));
                 let timelineEventsGroupedByAction = this.groupBy (timeline, 'action');
+                if ('error' in timelineEventsGroupedByAction) {
+                    status = 'failed';
+                }
                 if ('placed' in timelineEventsGroupedByAction) {
                     let placeEvents = this.safeValue (timelineEventsGroupedByAction, 'placed');
                     if (amount === undefined) {
@@ -958,7 +967,6 @@ module.exports = class theocean extends Exchange {
                         timestamp = this.safeInteger (timelineEventsGroupedByAction['filled'][0], 'timestamp');
                         timestamp = (timestamp !== undefined) ? timestamp * 1000 : timestamp;
                     }
-                    type = 'market';
                 }
                 if ('filled' in timelineEventsGroupedByAction) {
                     let fillEvents = this.safeValue (timelineEventsGroupedByAction, 'filled');
@@ -1014,13 +1022,14 @@ module.exports = class theocean extends Exchange {
                 'сurrency': feeCurrency,
             };
         }
-        let status = undefined;
         let amountPrecision = market ? market['precision']['amount'] : 8;
         if (remaining !== undefined) {
-            status = 'open';
-            const rest = remaining - failedAmount - deadAmount - prunedAmount;
-            if (rest < Math.pow (10, -amountPrecision)) {
-                status = (filled < amount) ? 'canceled' : 'closed';
+            if (status === undefined) {
+                status = 'open';
+                const rest = remaining - failedAmount - deadAmount - prunedAmount;
+                if (rest < Math.pow (10, -amountPrecision)) {
+                    status = (filled < amount) ? 'canceled' : 'closed';
+                }
             }
         }
         let result = {
@@ -1104,6 +1113,18 @@ module.exports = class theocean extends Exchange {
         //     }
         //
         return this.parseOrder (response);
+    }
+
+    async fetchOrder (id, symbol = undefined, params = {}) {
+        let request = {
+            'orderHash': id,
+        };
+        let orders = await this.fetchOrders (symbol, undefined, undefined, this.extend (request, params));
+        let numOrders = orders.length;
+        if (numOrders !== 1) {
+            throw new OrderNotFound (this.id + ' order ' + id + ' not found');
+        }
+        return orders[0];
     }
 
     async fetchOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {

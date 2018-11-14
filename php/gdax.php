@@ -135,8 +135,11 @@ class gdax extends Exchange {
                     'Insufficient funds' => '\\ccxt\\InsufficientFunds',
                     'NotFound' => '\\ccxt\\OrderNotFound',
                     'Invalid API Key' => '\\ccxt\\AuthenticationError',
+                    'invalid signature' => '\\ccxt\\AuthenticationError',
+                    'Invalid Passphrase' => '\\ccxt\\AuthenticationError',
                 ),
                 'broad' => array (
+                    'Order already done' => '\\ccxt\\OrderNotFound',
                     'order not found' => '\\ccxt\\OrderNotFound',
                     'price too small' => '\\ccxt\\InvalidOrder',
                     'price too precise' => '\\ccxt\\InvalidOrder',
@@ -376,6 +379,7 @@ class gdax extends Exchange {
             'open' => 'open',
             'done' => 'closed',
             'canceled' => 'canceled',
+            'canceling' => 'open',
         );
         return $this->safe_string($statuses, $status, $status);
     }
@@ -725,7 +729,7 @@ class gdax extends Exchange {
                 $feedback = $this->id . ' ' . $message;
                 $exact = $this->exceptions['exact'];
                 if (is_array ($exact) && array_key_exists ($message, $exact)) {
-                    throw new $exact[$code] ($feedback);
+                    throw new $exact[$message] ($feedback);
                 }
                 $broad = $this->exceptions['broad'];
                 $broadKey = $this->findBroadlyMatchedKey ($broad, $message);

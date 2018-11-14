@@ -490,6 +490,7 @@ module.exports = class hitbtc extends Exchange {
                 'DRK': 'DASH',
                 'EMGO': 'MGO',
                 'GET': 'Themis',
+                'HSR': 'HC',
                 'LNC': 'LinkerCoin',
                 'UNC': 'Unigame',
                 'USD': 'USDT',
@@ -649,6 +650,11 @@ module.exports = class hitbtc extends Exchange {
         let symbol = undefined;
         if (market)
             symbol = market['symbol'];
+        let side = undefined;
+        let tradeLength = trade.length;
+        if (tradeLength > 3) {
+            side = trade[4];
+        }
         return {
             'info': trade,
             'id': trade[0].toString (),
@@ -656,7 +662,7 @@ module.exports = class hitbtc extends Exchange {
             'datetime': this.iso8601 (trade[3]),
             'symbol': symbol,
             'type': undefined,
-            'side': trade[4],
+            'side': side,
             'price': parseFloat (trade[1]),
             'amount': parseFloat (trade[2]),
         };
@@ -805,7 +811,9 @@ module.exports = class hitbtc extends Exchange {
         if (amountDefined) {
             if (remainingDefined) {
                 filled = amount - remaining;
-                cost = price * filled;
+                if (price !== undefined) {
+                    cost = price * filled;
+                }
             }
         }
         let feeCost = this.safeFloat (order, 'fee');

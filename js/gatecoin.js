@@ -301,7 +301,9 @@ module.exports = class gatecoin extends Exchange {
             symbol = market['symbol'];
         let baseVolume = this.safeFloat (ticker, 'volume');
         let vwap = this.safeFloat (ticker, 'vwap');
-        let quoteVolume = baseVolume * vwap;
+        let quoteVolume = undefined;
+        if (baseVolume !== undefined && vwap !== undefined)
+            quoteVolume = baseVolume * vwap;
         let last = this.safeFloat (ticker, 'last');
         return {
             'symbol': symbol,
@@ -638,6 +640,7 @@ module.exports = class gatecoin extends Exchange {
         return {
             'currency': code,
             'address': address,
+            'tag': undefined,
             'info': response,
         };
     }
@@ -654,6 +657,7 @@ module.exports = class gatecoin extends Exchange {
         return {
             'currency': code,
             'address': address,
+            'tag': undefined,
             'info': response,
         };
     }

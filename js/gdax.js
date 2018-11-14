@@ -134,8 +134,11 @@ module.exports = class gdax extends Exchange {
                     'Insufficient funds': InsufficientFunds,
                     'NotFound': OrderNotFound,
                     'Invalid API Key': AuthenticationError,
+                    'invalid signature': AuthenticationError,
+                    'Invalid Passphrase': AuthenticationError,
                 },
                 'broad': {
+                    'Order already done': OrderNotFound,
                     'order not found': OrderNotFound,
                     'price too small': InvalidOrder,
                     'price too precise': InvalidOrder,
@@ -375,6 +378,7 @@ module.exports = class gdax extends Exchange {
             'open': 'open',
             'done': 'closed',
             'canceled': 'canceled',
+            'canceling': 'open',
         };
         return this.safeString (statuses, status, status);
     }
@@ -724,7 +728,7 @@ module.exports = class gdax extends Exchange {
                 let feedback = this.id + ' ' + message;
                 const exact = this.exceptions['exact'];
                 if (message in exact) {
-                    throw new exact[code] (feedback);
+                    throw new exact[message] (feedback);
                 }
                 const broad = this.exceptions['broad'];
                 const broadKey = this.findBroadlyMatchedKey (broad, message);

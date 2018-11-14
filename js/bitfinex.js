@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { NotSupported, DDoSProtection, AuthenticationError, ArgumentsRequired, ExchangeError, ExchangeNotAvailable, InsufficientFunds, InvalidOrder, OrderNotFound, InvalidNonce } = require ('./base/errors');
+const { NotSupported, DDoSProtection, AuthenticationError, PermissionDenied, ArgumentsRequired, ExchangeError, ExchangeNotAvailable, InsufficientFunds, InvalidOrder, OrderNotFound, InvalidNonce } = require ('./base/errors');
 const { SIGNIFICANT_DIGITS } = require ('./base/functions/number');
 
 //  ---------------------------------------------------------------------------
@@ -258,6 +258,7 @@ module.exports = class bitfinex extends Exchange {
                 'DAD': 'DADI',
                 'DAT': 'DATA',
                 'DSH': 'DASH',
+                'EUR': 'EURT',
                 'HOT': 'Hydro Protocol',
                 'IOS': 'IOST',
                 'IOT': 'IOTA',
@@ -284,7 +285,6 @@ module.exports = class bitfinex extends Exchange {
                     'No such order found.': OrderNotFound, // ?
                     'Order price must be positive.': InvalidOrder, // on price <= 0
                     'Could not find a key matching the given X-BFX-APIKEY.': AuthenticationError,
-                    'This API key does not have permission for this action': AuthenticationError, // authenticated but not authorized
                     'Key price should be a decimal number, e.g. "123.456"': InvalidOrder, // on isNaN (price)
                     'Key amount should be a decimal number, e.g. "123.456"': InvalidOrder, // on isNaN (amount)
                     'ERR_RATE_LIMIT': DDoSProtection,
@@ -294,6 +294,7 @@ module.exports = class bitfinex extends Exchange {
                     'Cannot evaluate your available balance, please try again': ExchangeNotAvailable,
                 },
                 'broad': {
+                    'This API key does not have permission': PermissionDenied, // authenticated but not authorized
                     'Invalid order: not enough exchange balance for ': InsufficientFunds, // when buying cost is greater than the available quote currency
                     'Invalid order: minimum size for ': InvalidOrder, // when amount below limits.amount.min
                     'Invalid order': InvalidOrder, // ?
@@ -768,27 +769,28 @@ module.exports = class bitfinex extends Exchange {
         return this.parseOHLCVs (response, market, timeframe, since, limit);
     }
 
-    getCurrencyName (currency) {
-        if (currency in this.options['currencyNames'])
-            return this.options['currencyNames'][currency];
-        throw new NotSupported (this.id + ' ' + currency + ' not supported for withdrawal');
+    getCurrencyName (code) {
+        if (code in this.options['currencyNames'])
+            return this.options['currencyNames'][code];
+        throw new NotSupported (this.id + ' ' + code + ' not supported for withdrawal');
     }
 
-    async createDepositAddress (currency, params = {}) {
-        let response = await this.fetchDepositAddress (currency, this.extend ({
+    async createDepositAddress (code, params = {}) {
+        let response = await this.fetchDepositAddress (code, this.extend ({
             'renew': 1,
         }, params));
         let address = this.safeString (response, 'address');
         this.checkAddress (address);
         return {
-            'currency': currency,
-            'address': address,
             'info': response['info'],
+            'currency': code,
+            'address': address,
+            'tag': undefined,
         };
     }
 
-    async fetchDepositAddress (currency, params = {}) {
-        let name = this.getCurrencyName (currency);
+    async fetchDepositAddress (code, params = {}) {
+        let name = this.getCurrencyName (code);
         let request = {
             'method': name,
             'wallet_name': 'exchange',
@@ -803,7 +805,7 @@ module.exports = class bitfinex extends Exchange {
         }
         this.checkAddress (address);
         return {
-            'currency': currency,
+            'currency': code,
             'address': address,
             'tag': tag,
             'info': response,
@@ -904,9 +906,9 @@ module.exports = class bitfinex extends Exchange {
         return (status in statuses) ? statuses[status] : status;
     }
 
-    async withdraw (currency, amount, address, tag = undefined, params = {}) {
+    async withdraw (code, amount, address, tag = undefined, params = {}) {
         this.checkAddress (address);
-        let name = this.getCurrencyName (currency);
+        let name = this.getCurrencyName (code);
         let request = {
             'withdraw_type': name,
             'walletselected': 'exchange',

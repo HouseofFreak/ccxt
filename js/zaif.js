@@ -189,7 +189,9 @@ module.exports = class zaif extends Exchange {
         let timestamp = this.milliseconds ();
         let vwap = ticker['vwap'];
         let baseVolume = ticker['volume'];
-        let quoteVolume = baseVolume * vwap;
+        let quoteVolume = undefined;
+        if (baseVolume !== undefined && vwap !== undefined)
+            quoteVolume = baseVolume * vwap;
         let last = ticker['last'];
         return {
             'symbol': symbol,
@@ -347,18 +349,24 @@ module.exports = class zaif extends Exchange {
         return this.parseOrders (response['return'], market, since, limit);
     }
 
-    async withdraw (currency, amount, address, tag = undefined, params = {}) {
+    async withdraw (code, amount, address, tag = undefined, params = {}) {
         this.checkAddress (address);
         await this.loadMarkets ();
-        if (currency === 'JPY')
-            throw new ExchangeError (this.id + ' does not allow ' + currency + ' withdrawals');
-        let result = await this.privatePostWithdraw (this.extend ({
-            'currency': currency,
+        let currency = this.currency (code);
+        if (code === 'JPY') {
+            throw new ExchangeError (this.id + ' withdraw() does not allow ' + code + ' withdrawals');
+        }
+        let request = {
+            'currency': currency['id'],
             'amount': amount,
             'address': address,
-            // 'message': 'Hi!', // XEM only
+            // 'message': 'Hi!', // XEM and others
             // 'opt_fee': 0.003, // BTC and MONA only
-        }, params));
+        };
+        if (tag !== undefined) {
+            request['message'] = tag;
+        }
+        let result = await this.privatePostWithdraw (this.extend (request, params));
         return {
             'info': result,
             'id': result['return']['txid'],
