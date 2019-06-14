@@ -199,7 +199,7 @@ module.exports = class kraken extends Exchange {
             },
             'commonCurrencies': {
                 'XDG': 'DOGE',
-                'FEE': 'KFEE',
+                'FEE': 'KFEE'
             },
             'options': {
                 'cacheDepositMethodsOnFetchDepositAddress': true, // will issue up to two calls in fetchDepositAddress
@@ -239,6 +239,13 @@ module.exports = class kraken extends Exchange {
                         'conx-param': {
                             'url': '{baseurl}',
                             'id': '{id}',
+                        },
+                    },
+                    'trade': {
+                        'conx-tpl': 'default',
+                        'conx-param': {
+                            'url': '{baseurl}',
+                            'id': '{id}'
                         },
                     },
                 },
@@ -1443,6 +1450,9 @@ module.exports = class kraken extends Exchange {
         let msg = JSON.parse (data);
         let event = this.safeString (msg, 'event');
         let status = this.safeString (msg, 'status');
+
+        console.log('onMessage', data)
+
         if (event === undefined) {
             // channel data
             let chanId = msg[0];
@@ -1461,6 +1471,8 @@ module.exports = class kraken extends Exchange {
             let event = channels[chanKey]['event'];
             if (event === 'ob') {
                 this._websocketHandleOrderBook (contextId, symbol, data);
+            } else if (event == 'trade') {
+                this._websocketHandleTrade (contextId, symbol, data);
             }
         } else if (event === 'subscriptionStatus') {
             // event
@@ -1473,7 +1485,12 @@ module.exports = class kraken extends Exchange {
             let event = this.safeString (subscriptionInfo, 'name');
             event = this._websocketTranslateEvent (event);
             if (status === 'subscribed') {
-                this._websocketHandleSubscription (contextId, event, symbol, msg);
+                let channel = this.safeString (msg, 'channelName');
+                if (channel === 'trade') {
+                    this._websocketHandleSubscription (contextId, 'trade', symbol, msg);
+                } else {
+                    this._websocketHandleSubscription (contextId, event, symbol, msg);
+                }
             } else if (status === 'unsubscribed') {
                 this._websocketHandleUnsubscription (contextId, msg);
             } else if (status === 'error') {
@@ -1515,7 +1532,12 @@ module.exports = class kraken extends Exchange {
             'nonce': undefined,
         };
         this._contextSetSymbolData (contextId, event, symbol, symbolData);
-        this._websocketProcessPendingNonces (contextId, 'sub-nonces', 'ob', symbol, true, undefined);
+
+        if (event === 'ob') {
+            this._websocketProcessPendingNonces (contextId, 'sub-nonces', 'ob', symbol, true, undefined);
+        } else if (event === 'trade') {
+            this._websocketProcessPendingNonces (contextId, 'sub-nonces', 'trade', symbol, true, undefined);
+        }
     }
 
     _websocketHandleUnsubscription (contextId, msg) {
@@ -1549,6 +1571,16 @@ module.exports = class kraken extends Exchange {
         this._contextSetSymbolData (contextId, 'ob', symbol, symbolData);
     }
 
+    _websocketHandleTrade (contextId, symbol, trades) {
+        let symbolData = this._contextGetSymbolData (contextId, 'trade', symbol);
+
+        for (let i = 0; i < trades.length; i++) {
+            let trade = this.parseTrade(trades[i], this.market (symbol))
+
+            this.emit ('trade', symbol, trade);
+        }
+    }
+
     _websocketProcessPendingNonces (contextId, nonceKey, event, symbol, success, ex) {
         let symbolData = this._contextGetSymbolData (contextId, event, symbol);
         if (nonceKey in symbolData) {
@@ -1565,34 +1597,51 @@ module.exports = class kraken extends Exchange {
     }
 
     _websocketSubscribe (contextId, event, symbol, nonce, params = {}) {
-        if (event !== 'ob') {
+        if (event !== 'ob' && event !== 'trade') {
             throw new NotSupported ('subscribe ' + event + '(' + symbol + ') not supported for exchange ' + this.id);
         }
         // save nonce for subscription response
         let symbolData = this._contextGetSymbolData (contextId, event, symbol);
+
         if (!('sub-nonces' in symbolData)) {
             symbolData['sub-nonces'] = {};
         }
-        let depthValidValues = [10, 25, 100, 500, 1000];
-        let depth = this.safeInteger (params, 'depth', 1000);
-        if (!this.inArray (depth, depthValidValues)) {
-            throw new ExchangeError (this.id + 'Not valid "depth" value (' + depthValidValues.toString () + ')');
+
+        if (event === 'ob') {
+            let depthValidValues = [10, 25, 100, 500, 1000];
+            let depth = this.safeInteger (params, 'depth', 1000);
+            if (!this.inArray (depth, depthValidValues)) {
+                throw new ExchangeError (this.id + 'Not valid "depth" value (' + depthValidValues.toString () + ')');
+            }
+            symbolData['limit'] = this.safeInteger (params, 'limit', undefined);
+            symbolData['depth'] = depth;
+            let nonceStr = nonce.toString ();
+            let handle = this._setTimeout (contextId, this.timeout, this._websocketMethodMap ('_websocketTimeoutRemoveNonce'), [contextId, nonceStr, event, symbol, 'sub-nonce']);
+            symbolData['sub-nonces'][nonceStr] = handle;
+            this._contextSetSymbolData (contextId, event, symbol, symbolData);
+            // send request
+            this.websocketSendJson ({
+                'event': 'subscribe',
+                'pair': [symbol],
+                'subscription': {
+                    'name': 'book',
+                    'depth': depth,
+                },
+            });
+        } else if (event == 'trade') {
+            let nonceStr = nonce.toString ();
+            let handle = this._setTimeout (contextId, this.timeout, this._websocketMethodMap ('_websocketTimeoutRemoveNonce'), [contextId, nonceStr, event, symbol, 'sub-nonce']);
+            symbolData['sub-nonces'][nonceStr] = handle;
+            this._contextSetSymbolData (contextId, event, symbol, symbolData);
+
+            this.websocketSendJson ({
+                'event': 'subscribe',
+                'pair': [symbol],
+                'subscription': {
+                    'name': 'trade'
+                },
+            });
         }
-        symbolData['limit'] = this.safeInteger (params, 'limit', undefined);
-        symbolData['depth'] = depth;
-        let nonceStr = nonce.toString ();
-        let handle = this._setTimeout (contextId, this.timeout, this._websocketMethodMap ('_websocketTimeoutRemoveNonce'), [contextId, nonceStr, event, symbol, 'sub-nonce']);
-        symbolData['sub-nonces'][nonceStr] = handle;
-        this._contextSetSymbolData (contextId, event, symbol, symbolData);
-        // send request
-        this.websocketSendJson ({
-            'event': 'subscribe',
-            'pair': [symbol],
-            'subscription': {
-                'name': 'book',
-                'depth': depth,
-            },
-        });
     }
 
     _websocketUnsubscribe (contextId, event, symbol, nonce, params = {}) {
