@@ -32,7 +32,7 @@ class hitbtc (Exchange):
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766555-8eaec20e-5edc-11e7-9c5b-6dc69fc42f5e.jpg',
-                'api': 'http://api.hitbtc.com',
+                'api': 'https://api.hitbtc.com',
                 'www': 'https://hitbtc.com',
                 'referral': 'https://hitbtc.com/?ref_id=5a5d39a65d466',
                 'doc': 'https://github.com/hitbtc-com/hitbtc-api/blob/master/APIv1.md',
@@ -489,7 +489,7 @@ class hitbtc (Exchange):
                 },
             },
             'commonCurrencies': {
-                'BCC': 'BCC',
+                'BCH': 'Bitcoin Cash',
                 'BET': 'DAO.Casino',
                 'CAT': 'BitClave',
                 'DRK': 'DASH',
@@ -506,7 +506,7 @@ class hitbtc (Exchange):
             },
         })
 
-    def fetch_markets(self):
+    def fetch_markets(self, params={}):
         markets = self.publicGetSymbols()
         result = []
         for p in range(0, len(markets['symbols'])):
@@ -584,7 +584,7 @@ class hitbtc (Exchange):
         return self.parse_order_book(orderbook)
 
     def parse_ticker(self, ticker, market=None):
-        timestamp = ticker['timestamp']
+        timestamp = self.safe_integer(ticker, 'timestamp')
         symbol = None
         if market:
             symbol = market['symbol']
@@ -628,12 +628,13 @@ class hitbtc (Exchange):
     def fetch_ticker(self, symbol, params={}):
         self.load_markets()
         market = self.market(symbol)
-        ticker = self.publicGetSymbolTicker(self.extend({
+        request = {
             'symbol': market['id'],
-        }, params))
-        if 'message' in ticker:
-            raise ExchangeError(self.id + ' ' + ticker['message'])
-        return self.parse_ticker(ticker, market)
+        }
+        response = self.publicGetSymbolTicker(self.extend(request, params))
+        if 'message' in response:
+            raise ExchangeError(self.id + ' ' + response['message'])
+        return self.parse_ticker(response, market)
 
     def parse_trade(self, trade, market=None):
         if isinstance(trade, list):
@@ -642,7 +643,7 @@ class hitbtc (Exchange):
 
     def parse_public_trade(self, trade, market=None):
         symbol = None
-        if market:
+        if market is not None:
             symbol = market['symbol']
         side = None
         tradeLength = len(trade)
@@ -662,7 +663,7 @@ class hitbtc (Exchange):
 
     def parse_order_trade(self, trade, market=None):
         symbol = None
-        if market:
+        if market is not None:
             symbol = market['symbol']
         amount = self.safe_float(trade, 'execQuantity')
         if market:
@@ -674,16 +675,19 @@ class hitbtc (Exchange):
             'currency': None,
             'rate': None,
         }
-        timestamp = trade['timestamp']
+        timestamp = self.safe_integer(trade, 'timestamp')
+        id = self.safe_string(trade, 'tradeId')
+        orderId = self.safe_string(trade, 'clientOrderId')
+        side = self.safe_string(trade, 'side')
         return {
             'info': trade,
-            'id': trade['tradeId'],
-            'order': trade['clientOrderId'],
+            'id': id,
+            'order': orderId,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'symbol': symbol,
             'type': None,
-            'side': trade['side'],
+            'side': side,
             'price': price,
             'amount': amount,
             'cost': cost,
@@ -747,9 +751,10 @@ class hitbtc (Exchange):
 
     def cancel_order(self, id, symbol=None, params={}):
         self.load_markets()
-        return self.tradingPostCancelOrder(self.extend({
+        request = {
             'clientOrderId': id,
-        }, params))
+        }
+        return self.tradingPostCancelOrder(self.extend(request, params))
 
     def parse_order_status(self, status):
         statuses = {
@@ -767,7 +772,7 @@ class hitbtc (Exchange):
         if timestamp is None:
             timestamp = self.safe_integer(order, 'timestamp')
         symbol = None
-        if not market:
+        if market is None:
             market = self.markets_by_id[order['symbol']]
         status = self.parse_order_status(self.safe_string(order, 'orderStatus'))
         price = self.safe_float(order, 'orderPrice')
@@ -806,16 +811,19 @@ class hitbtc (Exchange):
             'currency': feeCurrency,
             'rate': None,
         }
+        id = self.safe_string(order, 'clientOrderId')
+        type = self.safe_string(order, 'type')
+        side = self.safe_string(order, 'side')
         return {
-            'id': str(order['clientOrderId']),
+            'id': id,
             'info': order,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'lastTradeTimestamp': None,
             'status': status,
             'symbol': symbol,
-            'type': order['type'],
-            'side': order['side'],
+            'type': type,
+            'side': side,
             'price': price,
             'cost': cost,
             'amount': amount,
@@ -826,9 +834,10 @@ class hitbtc (Exchange):
 
     def fetch_order(self, id, symbol=None, params={}):
         self.load_markets()
-        response = self.tradingGetOrder(self.extend({
+        request = {
             'clientOrderId': id,
-        }, params))
+        }
+        response = self.tradingGetOrder(self.extend(request, params))
         if response['orders'][0]:
             return self.parse_order(response['orders'][0])
         raise OrderNotFound(self.id + ' fetchOrder() error: ' + self.response)
@@ -867,9 +876,10 @@ class hitbtc (Exchange):
         market = None
         if symbol is not None:
             market = self.market(symbol)
-        response = self.tradingGetTradesByOrder(self.extend({
+        request = {
             'clientOrderId': id,
-        }, params))
+        }
+        response = self.tradingGetTradesByOrder(self.extend(request, params))
         return self.parse_trades(response['trades'], market, since, limit)
 
     def withdraw(self, code, amount, address, tag=None, params={}):
@@ -881,8 +891,8 @@ class hitbtc (Exchange):
             'amount': amount,
             'address': address,
         }
-        if tag:
-            request['paymentId'] = tag
+        if tag is not None:
+            request['extra_id'] = tag
         response = self.paymentPostPayout(self.extend(request, params))
         return {
             'info': response,

@@ -27,7 +27,7 @@ module.exports = class zaif extends Exchange {
                 'api': 'https://api.zaif.jp',
                 'www': 'https://zaif.jp',
                 'doc': [
-                    'http://techbureau-api-document.readthedocs.io/ja/latest/index.html',
+                    'https://techbureau-api-document.readthedocs.io/ja/latest/index.html',
                     'https://corp.zaif.jp/api-docs',
                     'https://corp.zaif.jp/api-docs/api_links',
                     'https://www.npmjs.com/package/zaif.jp',
@@ -38,8 +38,8 @@ module.exports = class zaif extends Exchange {
             'fees': {
                 'trading': {
                     'percentage': true,
-                    'taker': -0.0001,
-                    'maker': -0.0005,
+                    'taker': 0.1 / 100,
+                    'maker': 0,
                 },
             },
             'api': {
@@ -98,6 +98,16 @@ module.exports = class zaif extends Exchange {
                     ],
                 },
             },
+            'options': {
+                // zaif schedule defines several market-specific fees
+                'fees': {
+                    'BTC/JPY': { 'maker': 0, 'taker': 0 },
+                    'BCH/JPY': { 'maker': 0, 'taker': 0.3 / 100 },
+                    'BCH/BTC': { 'maker': 0, 'taker': 0.3 / 100 },
+                    'PEPECASH/JPY': { 'maker': 0, 'taker': 0.01 / 100 },
+                    'PEPECASH/BT': { 'maker': 0, 'taker': 0.01 / 100 },
+                },
+            },
             'exceptions': {
                 'exact': {
                     'unsupported currency_pair': BadRequest, // {"error": "unsupported currency_pair"}
@@ -108,7 +118,7 @@ module.exports = class zaif extends Exchange {
         });
     }
 
-    async fetchMarkets () {
+    async fetchMarkets (params = {}) {
         let markets = await this.publicGetCurrencyPairsAll ();
         let result = [];
         for (let p = 0; p < markets.length; p++) {
@@ -120,6 +130,9 @@ module.exports = class zaif extends Exchange {
                 'amount': -Math.log10 (market['item_unit_step']),
                 'price': market['aux_unit_point'],
             };
+            const fees = this.safeValue (this.options['fees'], symbol, this.fees['trading']);
+            const taker = fees['taker'];
+            const maker = fees['maker'];
             result.push ({
                 'id': id,
                 'symbol': symbol,
@@ -127,6 +140,8 @@ module.exports = class zaif extends Exchange {
                 'quote': quote,
                 'active': true, // can trade or not
                 'precision': precision,
+                'taker': taker,
+                'maker': maker,
                 'limits': {
                     'amount': {
                         'min': this.safeFloat (market, 'item_unit_min'),
@@ -190,8 +205,9 @@ module.exports = class zaif extends Exchange {
         let vwap = ticker['vwap'];
         let baseVolume = ticker['volume'];
         let quoteVolume = undefined;
-        if (baseVolume !== undefined && vwap !== undefined)
+        if (baseVolume !== undefined && vwap !== undefined) {
             quoteVolume = baseVolume * vwap;
+        }
         let last = ticker['last'];
         return {
             'symbol': symbol,
@@ -222,8 +238,11 @@ module.exports = class zaif extends Exchange {
         let timestamp = trade['date'] * 1000;
         let id = this.safeString (trade, 'id');
         id = this.safeString (trade, 'tid', id);
-        if (!market)
+        let price = this.safeFloat (trade, 'price');
+        let amount = this.safeFloat (trade, 'amount');
+        if (!market) {
             market = this.markets_by_id[trade['currency_pair']];
+        }
         return {
             'id': id.toString (),
             'info': trade,
@@ -232,8 +251,8 @@ module.exports = class zaif extends Exchange {
             'symbol': market['symbol'],
             'type': undefined,
             'side': side,
-            'price': trade['price'],
-            'amount': trade['amount'],
+            'price': price,
+            'amount': amount,
         };
     }
 
@@ -255,8 +274,9 @@ module.exports = class zaif extends Exchange {
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
         await this.loadMarkets ();
-        if (type === 'market')
+        if (type !== 'limit') {
             throw new ExchangeError (this.id + ' allows limit orders only');
+        }
         let response = await this.privatePostTrade (this.extend ({
             'currency_pair': this.marketId (symbol),
             'action': (side === 'buy') ? 'bid' : 'ask',
@@ -278,8 +298,9 @@ module.exports = class zaif extends Exchange {
     parseOrder (order, market = undefined) {
         let side = (order['action'] === 'bid') ? 'buy' : 'sell';
         let timestamp = parseInt (order['timestamp']) * 1000;
-        if (!market)
+        if (!market) {
             market = this.markets_by_id[order['currency_pair']];
+        }
         let price = order['price'];
         let amount = order['amount'];
         return {
@@ -301,16 +322,19 @@ module.exports = class zaif extends Exchange {
         };
     }
 
-    parseOrders (orders, market = undefined, since = undefined, limit = undefined) {
-        let ids = Object.keys (orders);
+    parseOrders (orders, market = undefined, since = undefined, limit = undefined, params = {}) {
         let result = [];
+        let ids = Object.keys (orders);
+        let symbol = undefined;
+        if (market !== undefined) {
+            symbol = market['symbol'];
+        }
         for (let i = 0; i < ids.length; i++) {
             let id = ids[i];
-            let order = orders[id];
-            let extended = this.extend (order, { 'id': id });
-            result.push (this.parseOrder (extended, market));
+            let order = this.extend ({ 'id': id }, orders[id]);
+            result.push (this.extend (this.parseOrder (order, market), params));
         }
-        return this.filterBySinceLimit (result, since, limit);
+        return this.filterBySymbolSinceLimit (result, symbol, since, limit);
     }
 
     async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
@@ -408,10 +432,10 @@ module.exports = class zaif extends Exchange {
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
 
-    handleErrors (httpCode, reason, url, method, headers, body) {
-        if (!this.isJsonEncodedObject (body))
-            return; // fallback to default error handler
-        const response = JSON.parse (body);
+    handleErrors (httpCode, reason, url, method, headers, body, response) {
+        if (response === undefined) {
+            return;
+        }
         //
         //     {"error": "unsupported currency_pair"}
         //

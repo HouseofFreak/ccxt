@@ -26,7 +26,8 @@ class allcoin extends okcoinusd {
                     'private' => 'https://api.allcoin.com/api',
                 ),
                 'www' => 'https://www.allcoin.com',
-                'doc' => 'https://www.allcoin.com/About/APIReference',
+                'doc' => 'https://www.allcoin.com/api_market/market',
+                'referral' => 'https://www.allcoin.com',
             ),
             'api' => array (
                 'web' => array (
@@ -59,8 +60,8 @@ class allcoin extends okcoinusd {
         ));
     }
 
-    public function fetch_markets () {
-        $result = array ();
+    public function fetch_markets ($params = array ()) {
+        $result = array();
         $response = $this->webGetHomeMarketOverViewDetail ();
         $coins = $response['marketCoins'];
         for ($j = 0; $j < count ($coins); $j++) {
@@ -69,8 +70,8 @@ class allcoin extends okcoinusd {
                 $market = $markets[$k]['Market'];
                 $base = $market['Primary'];
                 $quote = $market['Secondary'];
-                $baseId = strtolower ($base);
-                $quoteId = strtolower ($quote);
+                $baseId = strtolower($base);
+                $quoteId = strtolower($quote);
                 $id = $baseId . '_' . $quoteId;
                 $symbol = $base . '/' . $quote;
                 $active = $market['TradeEnabled'] && $market['BuyEnabled'] && $market['SellEnabled'];

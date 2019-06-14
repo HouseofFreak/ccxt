@@ -19,6 +19,8 @@ class nova extends Exchange {
             'has' => array (
                 'CORS' => false,
                 'createMarketOrder' => false,
+                'createDepositAddress' => true,
+                'fetchDepositAddress' => true,
             ),
             'urls' => array (
                 'logo' => 'https://user-images.githubusercontent.com/1294454/30518571-78ca0bca-9b8a-11e7-8840-64b83a4a94b2.jpg',
@@ -63,18 +65,19 @@ class nova extends Exchange {
         ));
     }
 
-    public function fetch_markets () {
+    public function fetch_markets ($params = array ()) {
         $response = $this->publicGetMarkets ();
         $markets = $response['markets'];
-        $result = array ();
+        $result = array();
         for ($i = 0; $i < count ($markets); $i++) {
             $market = $markets[$i];
             $id = $market['marketname'];
-            list ($quote, $base) = explode ('_', $id);
+            list($quote, $base) = explode('_', $id);
             $symbol = $base . '/' . $quote;
             $active = true;
-            if ($market['disabled'])
+            if ($market['disabled']) {
                 $active = false;
+            }
             $result[] = array (
                 'id' => $id,
                 'symbol' => $symbol,
@@ -118,8 +121,8 @@ class nova extends Exchange {
             'close' => $last,
             'last' => $last,
             'previousClose' => null,
-            'change' => $this->safe_float($ticker, 'change24h'),
-            'percentage' => null,
+            'change' => null,
+            'percentage' => $this->safe_float($ticker, 'change24h'),
             'average' => null,
             'baseVolume' => null,
             'quoteVolume' => $this->safe_float($ticker, 'volume24h'),
@@ -137,7 +140,7 @@ class nova extends Exchange {
             'id' => null,
             'order' => null,
             'type' => null,
-            'side' => strtolower ($trade['tradetype']),
+            'side' => strtolower($trade['tradetype']),
             'price' => $this->safe_float($trade, 'price'),
             'amount' => $this->safe_float($trade, 'amount'),
         );
@@ -154,64 +157,109 @@ class nova extends Exchange {
 
     public function fetch_balance ($params = array ()) {
         $this->load_markets();
-        $response = $this->privatePostGetbalances ();
-        $balances = $response['balances'];
-        $result = array ( 'info' => $response );
-        for ($b = 0; $b < count ($balances); $b++) {
-            $balance = $balances[$b];
-            $currency = $balance['currency'];
-            $lockbox = floatval ($balance['amount_lockbox']);
-            $trades = floatval ($balance['amount_trades']);
+        $response = $this->privatePostGetbalances ($params);
+        $balances = $this->safe_value($response, 'balances');
+        $result = array( 'info' => $response );
+        for ($i = 0; $i < count ($balances); $i++) {
+            $balance = $balances[$i];
+            $currencyId = $this->safe_string($balance, 'currency');
+            $code = $this->common_currency_code($currencyId);
+            $lockbox = $this->safe_float($balance, 'amount_lockbox');
+            $trades = $this->safe_float($balance, 'amount_trades');
             $account = array (
-                'free' => floatval ($balance['amount']),
+                'free' => $this->safe_float($balance, 'amount'),
                 'used' => $this->sum ($lockbox, $trades),
-                'total' => floatval ($balance['amount_total']),
+                'total' => $this->safe_float($balance, 'amount_total'),
             );
-            $result[$currency] = $account;
+            $result[$code] = $account;
         }
         return $this->parse_balance($result);
     }
 
     public function create_order ($symbol, $type, $side, $amount, $price = null, $params = array ()) {
-        if ($type === 'market')
-            throw new ExchangeError ($this->id . ' allows limit orders only');
+        if ($type === 'market') {
+            throw new ExchangeError($this->id . ' allows limit orders only');
+        }
         $this->load_markets();
         $amount = (string) $amount;
         $price = (string) $price;
         $market = $this->market ($symbol);
-        $order = array (
-            'tradetype' => strtoupper ($side),
+        $request = array (
+            'tradetype' => strtoupper($side),
             'tradeamount' => $amount,
             'tradeprice' => $price,
             'tradebase' => 1,
             'pair' => $market['id'],
         );
-        $response = $this->privatePostTradePair (array_merge ($order, $params));
+        $response = $this->privatePostTradePair (array_merge ($request, $params));
+        $tradeItems = $this->safe_value($response, 'tradeitems', array());
+        $tradeItemsByType = $this->index_by($tradeItems, 'type');
+        $created = $this->safe_value($tradeItemsByType, 'created', array());
+        $orderId = $this->safe_string($created, 'orderid');
         return array (
             'info' => $response,
-            'id' => null,
+            'id' => $orderId,
         );
     }
 
     public function cancel_order ($id, $symbol = null, $params = array ()) {
-        return $this->privatePostCancelorder (array_merge (array (
+        $request = array (
             'orderid' => $id,
-        ), $params));
+        );
+        return $this->privatePostCancelorder (array_merge ($request, $params));
+    }
+
+    public function create_deposit_address ($code, $params = array ()) {
+        $this->load_markets();
+        $currency = $this->currency ($code);
+        $request = array (
+            'currency' => $currency['id'],
+        );
+        $response = $this->privatePostGetnewdepositaddressCurrency (array_merge ($request, $params));
+        $address = $this->safe_string($response, 'address');
+        $this->check_address($address);
+        $tag = $this->safe_string($response, 'tag');
+        return array (
+            'currency' => $code,
+            'address' => $address,
+            'tag' => $tag,
+            'info' => $response,
+        );
+    }
+
+    public function fetch_deposit_address ($code, $params = array ()) {
+        $this->load_markets();
+        $currency = $this->currency ($code);
+        $request = array (
+            'currency' => $currency['id'],
+        );
+        $response = $this->privatePostGetdepositaddressCurrency (array_merge ($request, $params));
+        $address = $this->safe_string($response, 'address');
+        $this->check_address($address);
+        $tag = $this->safe_string($response, 'tag');
+        return array (
+            'currency' => $code,
+            'address' => $address,
+            'tag' => $tag,
+            'info' => $response,
+        );
     }
 
     public function sign ($path, $api = 'public', $method = 'GET', $params = array (), $headers = null, $body = null) {
         $url = $this->urls['api'] . '/' . $this->version . '/';
-        if ($api === 'private')
+        if ($api === 'private') {
             $url .= $api . '/';
+        }
         $url .= $this->implode_params($path, $params);
         $query = $this->omit ($params, $this->extract_params($path));
         if ($api === 'public') {
-            if ($query)
+            if ($query) {
                 $url .= '?' . $this->urlencode ($query);
+            }
         } else {
             $this->check_required_credentials();
             $nonce = (string) $this->nonce ();
-            $url .= '?' . $this->urlencode (array ( 'nonce' => $nonce ));
+            $url .= '?' . $this->urlencode (array( 'nonce' => $nonce ));
             $signature = $this->hmac ($this->encode ($url), $this->encode ($this->secret), 'sha512', 'base64');
             $body = $this->urlencode (array_merge (array (
                 'apikey' => $this->apiKey,
@@ -221,14 +269,16 @@ class nova extends Exchange {
                 'Content-Type' => 'application/x-www-form-urlencoded',
             );
         }
-        return array ( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
+        return array( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
     }
 
     public function request ($path, $api = 'public', $method = 'GET', $params = array (), $headers = null, $body = null) {
         $response = $this->fetch2 ($path, $api, $method, $params, $headers, $body);
-        if (is_array ($response) && array_key_exists ('status', $response))
-            if ($response['status'] !== 'success')
-                throw new ExchangeError ($this->id . ' ' . $this->json ($response));
+        if (is_array($response) && array_key_exists('status', $response)) {
+            if ($response['status'] !== 'success') {
+                throw new ExchangeError($this->id . ' ' . $this->json ($response));
+            }
+        }
         return $response;
     }
 }

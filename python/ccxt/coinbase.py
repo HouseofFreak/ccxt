@@ -4,14 +4,6 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.base.exchange import Exchange
-
-# -----------------------------------------------------------------------------
-
-try:
-    basestring  # Python 3
-except NameError:
-    basestring = str  # Python 2
-import json
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import ArgumentsRequired
@@ -42,11 +34,12 @@ class coinbase (Exchange):
                 'fetchCurrencies': True,
                 'fetchDepositAddress': False,
                 'fetchMarkets': False,
-                'fetchMyTrades': True,
+                'fetchMyTrades': False,
                 'fetchOHLCV': False,
                 'fetchOpenOrders': False,
                 'fetchOrder': False,
                 'fetchOrderBook': False,
+                'fetchL2OrderBook': False,
                 'fetchOrders': False,
                 'fetchTicker': True,
                 'fetchTickers': False,
@@ -56,6 +49,8 @@ class coinbase (Exchange):
                 'fetchTransactions': False,
                 'fetchDeposits': True,
                 'fetchWithdrawals': True,
+                'fetchMySells': True,
+                'fetchMyBuys': True,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/40811661-b6eceae2-653a-11e8-829e-10bfadb078cf.jpg',
@@ -163,28 +158,30 @@ class coinbase (Exchange):
             },
         })
 
-    def fetch_time(self):
-        response = self.publicGetTime()
-        data = response['data']
-        return self.parse8601(data['iso'])
+    def fetch_time(self, params={}):
+        response = self.publicGetTime(params)
+        data = self.safe_value(response, 'data', {})
+        return self.parse8601(self.safe_string(data, 'iso'))
 
-    def load_accounts(self, reload=False):
-        if reload:
-            self.accounts = self.fetch_accounts()
-        else:
-            if self.accounts:
-                return self.accounts
-            else:
-                self.accounts = self.fetch_accounts()
-                self.accountsById = self.index_by(self.accounts, 'id')
-        return self.accounts
-
-    def fetch_accounts(self):
+    def fetch_accounts(self, params={}):
         self.load_markets()
-        response = self.privateGetAccounts()
-        return response['data']
+        response = self.privateGetAccounts(params)
+        return self.safe_value(response, 'data')
 
-    def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
+    def fetch_my_sells(self, symbol=None, since=None, limit=None, params={}):
+        # they don't have an endpoint for all historical trades
+        accountId = self.safe_string_2(params, 'account_id', 'accountId')
+        if accountId is None:
+            raise ArgumentsRequired(self.id + ' fetchMyTrades requires an account_id or accountId extra parameter, use fetchAccounts or loadAccounts to get ids of all your accounts.')
+        self.load_markets()
+        query = self.omit(params, ['account_id', 'accountId'])
+        sells = self.privateGetAccountsAccountIdSells(self.extend({
+            'account_id': accountId,
+        }, query))
+        return self.parse_trades(sells['data'], None, since, limit)
+
+    def fetch_my_buys(self, symbol=None, since=None, limit=None, params={}):
+        # they don't have an endpoint for all historical trades
         accountId = self.safe_string_2(params, 'account_id', 'accountId')
         if accountId is None:
             raise ArgumentsRequired(self.id + ' fetchMyTrades requires an account_id or accountId extra parameter, use fetchAccounts or loadAccounts to get ids of all your accounts.')
@@ -193,14 +190,7 @@ class coinbase (Exchange):
         buys = self.privateGetAccountsAccountIdBuys(self.extend({
             'account_id': accountId,
         }, query))
-        sells = self.privateGetAccountsAccountIdSells(self.extend({
-            'account_id': accountId,
-        }, query))
-        parsedBuys = self.parse_trades(buys['data'], None, since, limit)
-        parsedSells = self.parse_trades(sells['data'], None, since, limit)
-        result = self.array_concat(parsedBuys, parsedSells)
-        sortedResult = self.sort_by(result, 'timestamp')
-        return self.filter_by_symbol_since_limit(sortedResult, symbol, since, limit)
+        return self.parse_trades(buys['data'], None, since, limit)
 
     def fetch_transactions_with_method(self, method, code=None, since=None, limit=None, params={}):
         accountId = self.safe_string_2(params, 'account_id', 'accountId')
@@ -286,7 +276,6 @@ class coinbase (Exchange):
         id = self.safe_string(transaction, 'id')
         timestamp = self.parse8601(self.safe_value(transaction, 'created_at'))
         updated = self.parse8601(self.safe_value(transaction, 'updated_at'))
-        orderId = None
         type = self.safe_string(transaction, 'resource')
         amount = self.safe_float(amountObject, 'amount')
         currencyId = self.safe_string(amountObject, 'currency')
@@ -306,7 +295,6 @@ class coinbase (Exchange):
             'info': transaction,
             'id': id,
             'txid': id,
-            'order': orderId,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'address': None,
@@ -408,10 +396,10 @@ class coinbase (Exchange):
         response = self.publicGetCurrencies(params)
         currencies = response['data']
         result = {}
-        for c in range(0, len(currencies)):
-            currency = currencies[c]
-            id = currency['id']
-            name = currency['name']
+        for i in range(0, len(currencies)):
+            currency = currencies[i]
+            id = self.safe_string(currency, 'id')
+            name = self.safe_string(currency, 'name')
             code = self.common_currency_code(id)
             minimum = self.safe_float(currency, 'min_size')
             result[code] = {
@@ -484,8 +472,9 @@ class coinbase (Exchange):
         }
 
     def fetch_balance(self, params={}):
-        response = self.privateGetAccounts()
-        balances = response['data']
+        self.load_markets()
+        response = self.privateGetAccounts(params)
+        balances = self.safe_value(response, 'data')
         accounts = self.safe_value(params, 'type', self.options['accounts'])
         result = {'info': response}
         for b in range(0, len(balances)):
@@ -499,8 +488,8 @@ class coinbase (Exchange):
                 free = total
                 used = None
                 if code in result:
-                    result[code]['free'] += total
-                    result[code]['total'] += total
+                    result[code]['free'] = self.sum(result[code]['free'], total)
+                    result[code]['total'] = self.sum(result[code]['total'], total)
                 else:
                     account = {
                         'free': free,
@@ -525,8 +514,8 @@ class coinbase (Exchange):
                 if query:
                     body = self.json(query)
                     payload = body
-            what = nonce + method + '/' + self.version + request + payload
-            signature = self.hmac(self.encode(what), self.encode(self.secret))
+            auth = nonce + method + '/' + self.version + request + payload
+            signature = self.hmac(self.encode(auth), self.encode(self.secret))
             headers = {
                 'CB-ACCESS-KEY': self.apiKey,
                 'CB-ACCESS-SIGN': signature,
@@ -535,46 +524,42 @@ class coinbase (Exchange):
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, code, reason, url, method, headers, body):
-        if not isinstance(body, basestring):
+    def handle_errors(self, code, reason, url, method, headers, body, response):
+        if response is None:
             return  # fallback to default error handler
-        if len(body) < 2:
-            return  # fallback to default error handler
-        if (body[0] == '{') or (body[0] == '['):
-            response = json.loads(body)
-            feedback = self.id + ' ' + body
-            #
-            #    {"error": "invalid_request", "error_description": "The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed."}
-            #
-            # or
-            #
-            #    {
-            #      "errors": [
-            #        {
-            #          "id": "not_found",
-            #          "message": "Not found"
-            #        }
-            #      ]
-            #    }
-            #
-            exceptions = self.exceptions
-            errorCode = self.safe_string(response, 'error')
-            if errorCode is not None:
-                if errorCode in exceptions:
-                    raise exceptions[errorCode](feedback)
-                else:
-                    raise ExchangeError(feedback)
-            errors = self.safe_value(response, 'errors')
-            if errors is not None:
-                if isinstance(errors, list):
-                    numErrors = len(errors)
-                    if numErrors > 0:
-                        errorCode = self.safe_string(errors[0], 'id')
-                        if errorCode is not None:
-                            if errorCode in exceptions:
-                                raise exceptions[errorCode](feedback)
-                            else:
-                                raise ExchangeError(feedback)
-            data = self.safe_value(response, 'data')
-            if data is None:
-                raise ExchangeError(self.id + ' failed due to a malformed response ' + self.json(response))
+        feedback = self.id + ' ' + body
+        #
+        #    {"error": "invalid_request", "error_description": "The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed."}
+        #
+        # or
+        #
+        #    {
+        #      "errors": [
+        #        {
+        #          "id": "not_found",
+        #          "message": "Not found"
+        #        }
+        #      ]
+        #    }
+        #
+        exceptions = self.exceptions
+        errorCode = self.safe_string(response, 'error')
+        if errorCode is not None:
+            if errorCode in exceptions:
+                raise exceptions[errorCode](feedback)
+            else:
+                raise ExchangeError(feedback)
+        errors = self.safe_value(response, 'errors')
+        if errors is not None:
+            if isinstance(errors, list):
+                numErrors = len(errors)
+                if numErrors > 0:
+                    errorCode = self.safe_string(errors[0], 'id')
+                    if errorCode is not None:
+                        if errorCode in exceptions:
+                            raise exceptions[errorCode](feedback)
+                        else:
+                            raise ExchangeError(feedback)
+        data = self.safe_value(response, 'data')
+        if data is None:
+            raise ExchangeError(self.id + ' failed due to a malformed response ' + self.json(response))

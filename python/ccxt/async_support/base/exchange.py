@@ -2,7 +2,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.17.498'
+__version__ = '1.18.696'
 
 # -----------------------------------------------------------------------------
 
@@ -25,7 +25,6 @@ from ccxt.async_support.base.throttle import throttle
 # -----------------------------------------------------------------------------
 
 from ccxt.base.errors import ExchangeError
-from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import ExchangeNotAvailable
 from ccxt.base.errors import RequestTimeout
 from ccxt.base.errors import NotSupported
@@ -63,7 +62,7 @@ class Exchange(BaseExchange):
 
     def __del__(self):
         if self.session is not None:
-            self.logger.warning(self.id + " requires to release all resources with an explicit call to the .close() coroutine. If you are creating the exchange instance from within your async coroutine, add exchange.close() to your code into a place when you're done with the exchange and don't need the exchange instance anymore (at the end of your async coroutine).")
+            self.logger.warning(self.id + " requires to release all resources with an explicit call to the .close() coroutine. If you are using the exchange instance with async coroutines, add exchange.close() to your code into a place when you're done with the exchange and don't need the exchange instance anymore (at the end of your async coroutine).")
 
     if sys.version_info >= (3, 5):
         async def __aenter__(self):
@@ -117,37 +116,37 @@ class Exchange(BaseExchange):
 
     async def fetch(self, url, method='GET', headers=None, body=None):
         """Perform a HTTP request and return decoded JSON data"""
-        headers = self.prepare_request_headers(headers)
-
+        request_headers = self.prepare_request_headers(headers)
         url = self.proxy + url
 
         if self.verbose:
             print("\nRequest:", method, url, headers, body)
-
         self.logger.debug("%s %s, Request: %s %s", method, url, headers, body)
 
         encoded_body = body.encode() if body else None
         session_method = getattr(self.session, method.lower())
-        http_status_code = None
 
+        response = None
+        http_response = None
+        json_response = None
         try:
             async with session_method(yarl.URL(url, encoded=True),
                                       data=encoded_body,
-                                      headers=headers,
+                                      headers=request_headers,
                                       timeout=(self.timeout / 1000),
                                       proxy=self.aiohttp_proxy) as response:
-                http_status_code = response.status
-                text = await response.text()
-                if self.enableLastHttpResponse:
-                    self.last_http_response = text
+                http_response = await response.text()
+                json_response = self.parse_json(http_response) if self.is_json_encoded_object(http_response) else None
                 headers = response.headers
+                if self.enableLastHttpResponse:
+                    self.last_http_response = http_response
                 if self.enableLastResponseHeaders:
                     self.last_response_headers = headers
-                self.handle_errors(http_status_code, text, url, method, headers, text)
-                self.handle_rest_errors(None, http_status_code, text, url, method)
+                if self.enableLastJsonResponse:
+                    self.last_json_response = json_response
                 if self.verbose:
-                    print("\nResponse:", method, url, str(http_status_code), str(headers), text)
-                self.logger.debug("%s %s, Response: %s %s %s", method, url, response.status, headers, text)
+                    print("\nResponse:", method, url, response.status, headers, http_response)
+                self.logger.debug("%s %s, Response: %s %s %s", method, url, response.status, headers, http_response)
 
         except socket.gaierror as e:
             self.raise_error(ExchangeNotAvailable, url, method, e, None)
@@ -158,62 +157,48 @@ class Exchange(BaseExchange):
         except aiohttp.client_exceptions.ClientConnectionError as e:
             self.raise_error(ExchangeNotAvailable, url, method, e, None)
 
-        except aiohttp.client_exceptions.ClientError as e:
+        except aiohttp.client_exceptions.ClientError as e:  # base exception class
             self.raise_error(ExchangeError, url, method, e, None)
 
-        self.handle_errors(http_status_code, text, url, method, headers, text)
-        return self.handle_rest_response(text, url, method, headers, body)
+        self.handle_errors(response.status, response.reason, url, method, headers, http_response, json_response)
+        self.handle_rest_errors(None, response.status, http_response, url, method)
+        self.handle_rest_response(http_response, json_response, url, method, headers, body)
+        if json_response is not None:
+            return json_response
+        return http_response
 
-    async def load_markets(self, reload=False):
+    async def load_markets(self, reload=False, params={}):
         if not reload:
             if self.markets:
                 if not self.markets_by_id:
                     return self.set_markets(self.markets)
                 return self.markets
-        markets = await self.fetch_markets()
         currencies = None
         if self.has['fetchCurrencies']:
             currencies = await self.fetch_currencies()
+        markets = await self.fetch_markets(params)
         return self.set_markets(markets, currencies)
 
     async def fetch_fees(self):
         trading = {}
         funding = {}
-        try:
+        if self.has['fetchTradingFees']:
             trading = await self.fetch_trading_fees()
-        except AuthenticationError:
-            pass
-        except AttributeError:
-            pass
-
-        try:
+        if self.has['fetchFundingFees']:
             funding = await self.fetch_funding_fees()
-        except AuthenticationError:
-            pass
-        except AttributeError:
-            pass
-
         return {
             'trading': trading,
             'funding': funding,
         }
 
-    async def load_fees(self):
-        await self.load_markets()
-        self.populate_fees()
-        if not (self.has['fetchTradingFees'] or self.has['fetchFundingFees']):
-            return self.fees
+    async def load_fees(self, reload=False):
+        if not reload:
+            if self.loaded_fees != Exchange.loaded_fees:
+                return self.loaded_fees
+        self.loaded_fees = self.deep_extend(self.loaded_fees, await self.fetch_fees())
+        return self.loaded_fees
 
-        fetched_fees = await self.fetch_fees()
-        if fetched_fees['funding']:
-            self.fees['funding']['fee_loaded'] = True
-        if fetched_fees['trading']:
-            self.fees['trading']['fee_loaded'] = True
-
-        self.fees = self.deep_extend(self.fees, fetched_fees)
-        return self.fees
-
-    async def fetch_markets(self):
+    async def fetch_markets(self, params={}):
         # markets are returned as a list
         # currencies are returned as a dict
         # this is for historical reasons
@@ -270,6 +255,14 @@ class Exchange(BaseExchange):
         await self.cancel_order(id, symbol)
         return await self.create_order(symbol, *args)
 
+    async def fetch_trading_fees(self, params={}):
+        self.raise_error(NotSupported, details='fetch_trading_fees() not supported yet')
+
+    async def fetch_trading_fee(self, symbol, params={}):
+        if not self.has['fetchTradingFees']:
+            self.raise_error(NotSupported, details='fetch_trading_fee() not supported yet')
+        return await self.fetch_trading_fees(params)
+
     async def load_trading_limits(self, symbols=None, reload=False, params={}):
         if self.has['fetchTradingLimits']:
             if reload or not('limitsLoaded' in list(self.options.keys())):
@@ -279,3 +272,14 @@ class Exchange(BaseExchange):
                     self.markets[symbol] = self.deep_extend(self.markets[symbol], response[symbol])
                 self.options['limitsLoaded'] = self.milliseconds()
         return self.markets
+
+    async def load_accounts(self, reload=False, params={}):
+        if reload:
+            self.accounts = await self.fetch_accounts(params)
+        else:
+            if self.accounts:
+                return self.accounts
+            else:
+                self.accounts = await self.fetch_accounts(params)
+        self.accountsById = self.index_by(self.accounts, 'id')
+        return self.accounts

@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError } = require ('./base/errors');
+const { ExchangeError, ExchangeNotAvailable } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ module.exports = class _1btcxe extends Exchange {
         });
     }
 
-    async fetchMarkets () {
+    async fetchMarkets (params = {}) {
         return [
             { 'id': 'USD', 'symbol': 'BTC/USD', 'base': 'BTC', 'quote': 'USD' },
             { 'id': 'EUR', 'symbol': 'BTC/EUR', 'base': 'BTC', 'quote': 'EUR' },
@@ -160,7 +160,7 @@ module.exports = class _1btcxe extends Exchange {
             'currency': market['id'],
             'timeframe': this.timeframes[timeframe],
         }, params));
-        let ohlcvs = this.omit (response['historical-prices'], 'request_currency');
+        let ohlcvs = this.toArray (this.omit (response['historical-prices'], 'request_currency'));
         return this.parseOHLCVs (ohlcvs, market, timeframe, since, limit);
     }
 
@@ -182,23 +182,28 @@ module.exports = class _1btcxe extends Exchange {
 
     async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
         let market = this.market (symbol);
-        let response = await this.publicGetTransactions (this.extend ({
+        let request = {
             'currency': market['id'],
-        }, params));
-        let trades = this.omit (response['transactions'], 'request_currency');
+        };
+        if (limit !== undefined) {
+            request['limit'] = limit;
+        }
+        let response = await this.publicGetTransactions (this.extend (request, params));
+        let trades = this.toArray (this.omit (response['transactions'], 'request_currency'));
         return this.parseTrades (trades, market, since, limit);
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
-        let order = {
+        const request = {
             'side': side,
             'type': type,
             'currency': this.marketId (symbol),
             'amount': amount,
         };
-        if (type === 'limit')
-            order['limit_price'] = price;
-        let result = await this.privatePostOrdersNew (this.extend (order, params));
+        if (type === 'limit') {
+            request['limit_price'] = price;
+        }
+        const result = await this.privatePostOrdersNew (this.extend (request, params));
         return {
             'info': result,
             'id': result,
@@ -206,19 +211,22 @@ module.exports = class _1btcxe extends Exchange {
     }
 
     async cancelOrder (id, symbol = undefined, params = {}) {
-        return await this.privatePostOrdersCancel ({ 'id': id });
+        const request = {
+            'id': id,
+        };
+        return await this.privatePostOrdersCancel (this.extend (request, params));
     }
 
     async withdraw (code, amount, address, tag = undefined, params = {}) {
         this.checkAddress (address);
         await this.loadMarkets ();
-        let currency = this.currency (code);
+        const currency = this.currency (code);
         const request = {
             'currency': currency['id'],
             'amount': parseFloat (amount),
             'address': address,
         };
-        let response = await this.privatePostWithdrawalsNew (this.extend (request, params));
+        const response = await this.privatePostWithdrawalsNew (this.extend (request, params));
         return {
             'info': response,
             'id': response['result']['uuid'],
@@ -226,12 +234,14 @@ module.exports = class _1btcxe extends Exchange {
     }
 
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
-        if (this.id === 'cryptocapital')
+        if (this.id === 'cryptocapital') {
             throw new ExchangeError (this.id + ' is an abstract base API for _1btcxe');
+        }
         let url = this.urls['api'] + '/' + path;
         if (api === 'public') {
-            if (Object.keys (params).length)
+            if (Object.keys (params).length) {
                 url += '?' + this.urlencode (params);
+            }
         } else {
             this.checkRequiredCredentials ();
             let query = this.extend ({
@@ -248,6 +258,11 @@ module.exports = class _1btcxe extends Exchange {
 
     async request (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let response = await this.fetch2 (path, api, method, params, headers, body);
+        if (typeof response === 'string') {
+            if (response.indexOf ('Maintenance') >= 0) {
+                throw new ExchangeNotAvailable (this.id + ' on maintenance');
+            }
+        }
         if ('errors' in response) {
             let errors = [];
             for (let e = 0; e < response['errors'].length; e++) {

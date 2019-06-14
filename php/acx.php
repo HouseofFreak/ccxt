@@ -90,7 +90,7 @@ class acx extends Exchange {
                 'funding' => array (
                     'tierBased' => false,
                     'percentage' => true,
-                    'withdraw' => array (), // There is only 1% fee on withdrawals to your bank account.
+                    'withdraw' => array(), // There is only 1% fee on withdrawals to your bank account.
                 ),
             ),
             'exceptions' => array (
@@ -100,17 +100,22 @@ class acx extends Exchange {
         ));
     }
 
-    public function fetch_markets () {
+    public function fetch_markets ($params = array ()) {
         $markets = $this->publicGetMarkets ();
-        $result = array ();
+        $result = array();
         for ($p = 0; $p < count ($markets); $p++) {
             $market = $markets[$p];
             $id = $market['id'];
             $symbol = $market['name'];
             $baseId = $this->safe_string($market, 'base_unit');
             $quoteId = $this->safe_string($market, 'quote_unit');
-            $base = strtoupper ($baseId);
-            $quote = strtoupper ($quoteId);
+            if (($baseId === null) || ($quoteId === null)) {
+                $ids = explode('/', $symbol);
+                $baseId = strtolower($ids[0]);
+                $quoteId = strtolower($ids[1]);
+            }
+            $base = strtoupper($baseId);
+            $quote = strtoupper($quoteId);
             $base = $this->common_currency_code($base);
             $quote = $this->common_currency_code($quote);
             // todo => find out their undocumented $precision and limits
@@ -136,11 +141,11 @@ class acx extends Exchange {
         $this->load_markets();
         $response = $this->privateGetMembersMe ();
         $balances = $response['accounts'];
-        $result = array ( 'info' => $balances );
+        $result = array( 'info' => $balances );
         for ($b = 0; $b < count ($balances); $b++) {
             $balance = $balances[$b];
             $currency = $balance['currency'];
-            $uppercase = strtoupper ($currency);
+            $uppercase = strtoupper($currency);
             $account = array (
                 'free' => floatval ($balance['balance']),
                 'used' => floatval ($balance['locked']),
@@ -199,20 +204,20 @@ class acx extends Exchange {
     public function fetch_tickers ($symbols = null, $params = array ()) {
         $this->load_markets();
         $tickers = $this->publicGetTickers ($params);
-        $ids = is_array ($tickers) ? array_keys ($tickers) : array ();
-        $result = array ();
+        $ids = is_array($tickers) ? array_keys($tickers) : array();
+        $result = array();
         for ($i = 0; $i < count ($ids); $i++) {
             $id = $ids[$i];
             $market = null;
             $symbol = $id;
-            if (is_array ($this->markets_by_id) && array_key_exists ($id, $this->markets_by_id)) {
+            if (is_array($this->markets_by_id) && array_key_exists($id, $this->markets_by_id)) {
                 $market = $this->markets_by_id[$id];
                 $symbol = $market['symbol'];
             } else {
                 $base = mb_substr ($id, 0, 3);
                 $quote = mb_substr ($id, 3, 6);
-                $base = strtoupper ($base);
-                $quote = strtoupper ($quote);
+                $base = strtoupper($base);
+                $quote = strtoupper($quote);
                 $base = $this->common_currency_code($base);
                 $quote = $this->common_currency_code($quote);
                 $symbol = $base . '/' . $quote;
@@ -347,11 +352,11 @@ class acx extends Exchange {
 
     public function cancel_order ($id, $symbol = null, $params = array ()) {
         $this->load_markets();
-        $result = $this->privatePostOrderDelete (array ( 'id' => $id ));
+        $result = $this->privatePostOrderDelete (array( 'id' => $id ));
         $order = $this->parse_order($result);
         $status = $order['status'];
         if ($status === 'closed' || $status === 'canceled') {
-            throw new OrderNotFound ($this->id . ' ' . $this->json ($order));
+            throw new OrderNotFound($this->id . ' ' . $this->json ($order));
         }
         return $order;
     }
@@ -360,7 +365,7 @@ class acx extends Exchange {
         $this->check_address($address);
         $this->load_markets();
         $currency = $this->currency ($code);
-        // they have XRP but no docs on memo/$tag
+        // they have XRP but no docs on memo/tag
         $request = array (
             'currency' => $currency['id'],
             'sum' => $amount,
@@ -379,12 +384,12 @@ class acx extends Exchange {
     }
 
     public function encode_params ($params) {
-        if (is_array ($params) && array_key_exists ('orders', $params)) {
+        if (is_array($params) && array_key_exists('orders', $params)) {
             $orders = $params['orders'];
             $query = $this->urlencode ($this->keysort ($this->omit ($params, 'orders')));
             for ($i = 0; $i < count ($orders); $i++) {
                 $order = $orders[$i];
-                $keys = is_array ($order) ? array_keys ($order) : array ();
+                $keys = is_array($order) ? array_keys($order) : array();
                 for ($k = 0; $k < count ($keys); $k++) {
                     $key = $keys[$k];
                     $value = $order[$key];
@@ -397,8 +402,8 @@ class acx extends Exchange {
     }
 
     public function sign ($path, $api = 'public', $method = 'GET', $params = array (), $headers = null, $body = null) {
-        $request = '/api' . '/' . $this->version . '/' . $this->implode_params($path, $params);
-        if (is_array ($this->urls) && array_key_exists ('extension', $this->urls))
+        $request = '/api/' . $this->version . '/' . $this->implode_params($path, $params);
+        if (is_array($this->urls) && array_key_exists('extension', $this->urls))
             $request .= $this->urls['extension'];
         $query = $this->omit ($params, $this->extract_params($path));
         $url = $this->urls['api'] . $request;
@@ -420,21 +425,20 @@ class acx extends Exchange {
                 $url .= '?' . $suffix;
             } else {
                 $body = $suffix;
-                $headers = array ( 'Content-Type' => 'application/x-www-form-urlencoded' );
+                $headers = array( 'Content-Type' => 'application/x-www-form-urlencoded' );
             }
         }
-        return array ( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
+        return array( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
     }
 
-    public function handle_errors ($code, $reason, $url, $method, $headers, $body) {
+    public function handle_errors ($code, $reason, $url, $method, $headers, $body, $response) {
         if ($code === 400) {
-            $response = json_decode ($body, $as_associative_array = true);
             $error = $this->safe_value($response, 'error');
             $errorCode = $this->safe_string($error, 'code');
             $feedback = $this->id . ' ' . $this->json ($response);
             $exceptions = $this->exceptions;
-            if (is_array ($exceptions) && array_key_exists ($errorCode, $exceptions)) {
-                throw new $exceptions[$errorCode] ($feedback);
+            if (is_array($exceptions) && array_key_exists($errorCode, $exceptions)) {
+                throw new $exceptions[$errorCode]($feedback);
             }
             // fallback to default $error handler
         }

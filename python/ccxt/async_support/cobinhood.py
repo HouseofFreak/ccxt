@@ -4,12 +4,12 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.async_support.base.exchange import Exchange
-import json
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import PermissionDenied
 from ccxt.base.errors import InsufficientFunds
 from ccxt.base.errors import InvalidAddress
 from ccxt.base.errors import InvalidOrder
+from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import InvalidNonce
 
 
@@ -188,6 +188,7 @@ class cobinhood (Exchange):
                 'invalid_nonce': InvalidNonce,
                 'unauthorized_scope': PermissionDenied,
                 'invalid_address': InvalidAddress,
+                'parameter_error': OrderNotFound,
             },
             'commonCurrencies': {
                 'SMT': 'SocialMedia.Market',
@@ -201,13 +202,14 @@ class cobinhood (Exchange):
         result = {}
         for i in range(0, len(currencies)):
             currency = currencies[i]
-            id = currency['currency']
+            id = self.safe_string(currency, 'currency')
+            name = self.safe_string(currency, 'name')
             code = self.common_currency_code(id)
             minUnit = self.safe_float(currency, 'min_unit')
             result[code] = {
                 'id': id,
                 'code': code,
-                'name': currency['name'],
+                'name': name,
                 'active': True,
                 'fiat': False,
                 'precision': self.precision_from_string(currency['min_unit']),
@@ -241,13 +243,13 @@ class cobinhood (Exchange):
             }
         return result
 
-    async def fetch_markets(self):
-        response = await self.publicGetMarketTradingPairs()
-        markets = response['result']['trading_pairs']
+    async def fetch_markets(self, params={}):
+        response = await self.publicGetMarketTradingPairs(params)
+        markets = self.safe_value(response['result'], 'trading_pairs')
         result = []
         for i in range(0, len(markets)):
             market = markets[i]
-            id = market['id']
+            id = self.safe_string(market, 'id')
             baseId, quoteId = id.split('-')
             base = self.common_currency_code(baseId)
             quote = self.common_currency_code(quoteId)
@@ -325,16 +327,17 @@ class cobinhood (Exchange):
     async def fetch_ticker(self, symbol, params={}):
         await self.load_markets()
         market = self.market(symbol)
-        response = await self.publicGetMarketTickersTradingPairId(self.extend({
+        request = {
             'trading_pair_id': market['id'],
-        }, params))
-        ticker = response['result']['ticker']
+        }
+        response = await self.publicGetMarketTickersTradingPairId(self.extend(request, params))
+        ticker = self.safe_value(response['result'], 'ticker')
         return self.parse_ticker(ticker, market)
 
     async def fetch_tickers(self, symbols=None, params={}):
         await self.load_markets()
         response = await self.publicGetMarketTickers(params)
-        tickers = response['result']['tickers']
+        tickers = self.safe_value(response['result'], 'tickers')
         result = []
         for i in range(0, len(tickers)):
             result.append(self.parse_ticker(tickers[i]))
@@ -354,17 +357,26 @@ class cobinhood (Exchange):
         symbol = None
         if market:
             symbol = market['symbol']
-        timestamp = trade['timestamp']
+        timestamp = self.safe_integer(trade, 'timestamp')
         price = self.safe_float(trade, 'price')
         amount = self.safe_float(trade, 'size')
-        cost = price * amount
-        side = 'sell' if (trade['maker_side'] == 'bid') else 'buy'
+        cost = None
+        if price is not None:
+            if amount is not None:
+                cost = price * amount
+        # you can't determine your side from maker/taker side and vice versa
+        # you can't determine if your order/trade was a maker or a taker based
+        # on just the side of your order/trade
+        # https://github.com/ccxt/ccxt/issues/4300
+        # side = 'sell' if (trade['maker_side'] == 'bid') else 'buy'
+        side = None
+        id = self.safe_string(trade, 'id')
         return {
             'info': trade,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'symbol': symbol,
-            'id': trade['id'],
+            'id': id,
             'order': None,
             'type': None,
             'side': side,
@@ -377,11 +389,12 @@ class cobinhood (Exchange):
     async def fetch_trades(self, symbol, since=None, limit=50, params={}):
         await self.load_markets()
         market = self.market(symbol)
-        response = await self.publicGetMarketTradesTradingPairId(self.extend({
+        request = {
             'trading_pair_id': market['id'],
             'limit': limit,  # default 20, but that seems too little
-        }, params))
-        trades = response['result']['trades']
+        }
+        response = await self.publicGetMarketTradesTradingPairId(self.extend(request, params))
+        trades = self.safe_value(response['result'], 'trades')
         return self.parse_trades(trades, market, since, limit)
 
     def parse_ohlcv(self, ohlcv, market=None, timeframe='5m', since=None, limit=None):
@@ -417,25 +430,26 @@ class cobinhood (Exchange):
         if since is not None:
             request['start_time'] = since
         response = await self.publicGetChartCandlesTradingPairId(self.extend(request, params))
-        ohlcv = response['result']['candles']
+        ohlcv = self.safe_value(response['result'], 'candles')
         return self.parse_ohlcvs(ohlcv, market, timeframe, since, limit)
 
     async def fetch_balance(self, params={}):
         await self.load_markets()
         response = await self.privateGetWalletBalances(params)
         result = {'info': response}
-        balances = response['result']['balances']
+        balances = self.safe_value(response['result'], 'balances')
         for i in range(0, len(balances)):
             balance = balances[i]
-            currency = balance['currency']
-            if currency in self.currencies_by_id:
-                currency = self.currencies_by_id[currency]['code']
+            currencyId = self.safe_string(balance, 'currency')
+            code = currencyId
+            if currencyId in self.currencies_by_id:
+                code = self.currencies_by_id[currencyId]['code']
             account = {
                 'used': float(balance['on_order']),
                 'total': float(balance['total']),
             }
             account['free'] = float(account['total'] - account['used'])
-            result[currency] = account
+            result[code] = account
         return self.parse_balance(result)
 
     def parse_order_status(self, status):
@@ -451,9 +465,7 @@ class cobinhood (Exchange):
             'cancelled': 'canceled',
             'triggered': 'triggered',
         }
-        if status in statuses:
-            return statuses[status]
-        return status
+        return self.safe_string(statuses, status, status)
 
     def parse_order(self, order, market=None):
         #
@@ -537,28 +549,33 @@ class cobinhood (Exchange):
         return order
 
     async def edit_order(self, id, symbol, type, side, amount, price, params={}):
-        response = await self.privatePutTradingOrdersOrderId(self.extend({
+        await self.load_markets()
+        request = {
             'order_id': id,
             'price': self.price_to_precision(symbol, price),
             'size': self.amount_to_precision(symbol, amount),
-        }, params))
+        }
+        response = await self.privatePutTradingOrdersOrderId(self.extend(request, params))
         return self.parse_order(self.extend(response, {
             'id': id,
         }))
 
     async def cancel_order(self, id, symbol=None, params={}):
-        response = await self.privateDeleteTradingOrdersOrderId(self.extend({
+        await self.load_markets()
+        request = {
             'order_id': id,
-        }, params))
+        }
+        response = await self.privateDeleteTradingOrdersOrderId(self.extend(request, params))
         return self.parse_order(self.extend(response, {
             'id': id,
         }))
 
     async def fetch_order(self, id, symbol=None, params={}):
         await self.load_markets()
-        response = await self.privateGetTradingOrdersOrderId(self.extend({
+        request = {
             'order_id': str(id),
-        }, params))
+        }
+        response = await self.privateGetTradingOrdersOrderId(self.extend(request, params))
         return self.parse_order(response['result']['order'])
 
     async def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
@@ -566,14 +583,30 @@ class cobinhood (Exchange):
         result = await self.privateGetTradingOrders(params)
         orders = self.parse_orders(result['result']['orders'], None, since, limit)
         if symbol is not None:
-            return self.filter_by_symbol(orders, symbol)
-        return orders
+            return self.filter_by_symbol_since_limit(orders, symbol, since, limit)
+        return self.filter_by_since_limit(orders, since, limit)
+
+    async def fetch_closed_orders(self, symbol=None, since=None, limit=None, params={}):
+        await self.load_markets()
+        request = {}
+        market = None
+        if symbol is not None:
+            market = self.market(symbol)
+            request['trading_pair_id'] = market['id']
+        if limit is not None:
+            request['limit'] = limit  # default 50, max 100
+        response = await self.privateGetTradingOrderHistory(self.extend(request, params))
+        orders = self.parse_orders(response['result']['orders'], market, since, limit)
+        if symbol is not None:
+            return self.filter_by_symbol_since_limit(orders, symbol, since, limit)
+        return self.filter_by_since_limit(orders, since, limit)
 
     async def fetch_order_trades(self, id, symbol=None, since=None, limit=None, params={}):
         await self.load_markets()
-        response = await self.privateGetTradingOrdersOrderIdTrades(self.extend({
+        request = {
             'order_id': id,
-        }, params))
+        }
+        response = await self.privateGetTradingOrdersOrderIdTrades(self.extend(request, params))
         market = None if (symbol is None) else self.market(symbol)
         return self.parse_trades(response['result']['trades'], market)
 
@@ -609,9 +642,10 @@ class cobinhood (Exchange):
     async def fetch_deposit_address(self, code, params={}):
         await self.load_markets()
         currency = self.currency(code)
-        response = await self.privateGetWalletDepositAddresses(self.extend({
+        request = {
             'currency': currency['id'],
-        }, params))
+        }
+        response = await self.privateGetWalletDepositAddresses(self.extend(request, params))
         #
         #     {success:    True,
         #        result: {deposit_addresses: [{      address: "abcdefg",
@@ -654,7 +688,7 @@ class cobinhood (Exchange):
     async def fetch_deposits(self, code=None, since=None, limit=None, params={}):
         await self.load_markets()
         if code is None:
-            raise ExchangeError(self.id + ' fetchDeposits() requires a currency code arguemnt')
+            raise ExchangeError(self.id + ' fetchDeposits() requires a currency code argument')
         currency = self.currency(code)
         request = {
             'currency': currency['id'],
@@ -665,7 +699,7 @@ class cobinhood (Exchange):
     async def fetch_withdrawals(self, code=None, since=None, limit=None, params={}):
         await self.load_markets()
         if code is None:
-            raise ExchangeError(self.id + ' fetchWithdrawals() requires a currency code arguemnt')
+            raise ExchangeError(self.id + ' fetchWithdrawals() requires a currency code argument')
         currency = self.currency(code)
         request = {
             'currency': currency['id'],
@@ -688,7 +722,7 @@ class cobinhood (Exchange):
             'tx_rejected': 'failed',
             'tx_confirmed': 'ok',
         }
-        return statuses[status] if (status in list(statuses.keys())) else status
+        return self.safe_string(statuses, status, status)
 
     def parse_transaction(self, transaction, currency=None):
         timestamp = self.safe_integer(transaction, 'created_at')
@@ -753,12 +787,11 @@ class cobinhood (Exchange):
             body = self.json(query)
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, code, reason, url, method, headers, body):
+    def handle_errors(self, code, reason, url, method, headers, body, response):
         if code < 400 or code >= 600:
             return
         if body[0] != '{':
             raise ExchangeError(self.id + ' ' + body)
-        response = json.loads(body)
         feedback = self.id + ' ' + self.json(response)
         errorCode = self.safe_value(response['error'], 'error_code')
         if method == 'DELETE' or method == 'GET':

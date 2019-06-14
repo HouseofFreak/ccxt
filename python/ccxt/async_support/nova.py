@@ -20,6 +20,8 @@ class nova (Exchange):
             'has': {
                 'CORS': False,
                 'createMarketOrder': False,
+                'createDepositAddress': True,
+                'fetchDepositAddress': True,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/30518571-78ca0bca-9b8a-11e7-8840-64b83a4a94b2.jpg',
@@ -63,7 +65,7 @@ class nova (Exchange):
             },
         })
 
-    async def fetch_markets(self):
+    async def fetch_markets(self, params={}):
         response = await self.publicGetMarkets()
         markets = response['markets']
         result = []
@@ -115,8 +117,8 @@ class nova (Exchange):
             'close': last,
             'last': last,
             'previousClose': None,
-            'change': self.safe_float(ticker, 'change24h'),
-            'percentage': None,
+            'change': None,
+            'percentage': self.safe_float(ticker, 'change24h'),
             'average': None,
             'baseVolume': None,
             'quoteVolume': self.safe_float(ticker, 'volume24h'),
@@ -148,20 +150,21 @@ class nova (Exchange):
 
     async def fetch_balance(self, params={}):
         await self.load_markets()
-        response = await self.privatePostGetbalances()
-        balances = response['balances']
+        response = await self.privatePostGetbalances(params)
+        balances = self.safe_value(response, 'balances')
         result = {'info': response}
-        for b in range(0, len(balances)):
-            balance = balances[b]
-            currency = balance['currency']
-            lockbox = float(balance['amount_lockbox'])
-            trades = float(balance['amount_trades'])
+        for i in range(0, len(balances)):
+            balance = balances[i]
+            currencyId = self.safe_string(balance, 'currency')
+            code = self.common_currency_code(currencyId)
+            lockbox = self.safe_float(balance, 'amount_lockbox')
+            trades = self.safe_float(balance, 'amount_trades')
             account = {
-                'free': float(balance['amount']),
+                'free': self.safe_float(balance, 'amount'),
                 'used': self.sum(lockbox, trades),
-                'total': float(balance['amount_total']),
+                'total': self.safe_float(balance, 'amount_total'),
             }
-            result[currency] = account
+            result[code] = account
         return self.parse_balance(result)
 
     async def create_order(self, symbol, type, side, amount, price=None, params={}):
@@ -171,23 +174,62 @@ class nova (Exchange):
         amount = str(amount)
         price = str(price)
         market = self.market(symbol)
-        order = {
+        request = {
             'tradetype': side.upper(),
             'tradeamount': amount,
             'tradeprice': price,
             'tradebase': 1,
             'pair': market['id'],
         }
-        response = await self.privatePostTradePair(self.extend(order, params))
+        response = await self.privatePostTradePair(self.extend(request, params))
+        tradeItems = self.safe_value(response, 'tradeitems', [])
+        tradeItemsByType = self.index_by(tradeItems, 'type')
+        created = self.safe_value(tradeItemsByType, 'created', {})
+        orderId = self.safe_string(created, 'orderid')
         return {
             'info': response,
-            'id': None,
+            'id': orderId,
         }
 
     async def cancel_order(self, id, symbol=None, params={}):
-        return await self.privatePostCancelorder(self.extend({
+        request = {
             'orderid': id,
-        }, params))
+        }
+        return await self.privatePostCancelorder(self.extend(request, params))
+
+    async def create_deposit_address(self, code, params={}):
+        await self.load_markets()
+        currency = self.currency(code)
+        request = {
+            'currency': currency['id'],
+        }
+        response = await self.privatePostGetnewdepositaddressCurrency(self.extend(request, params))
+        address = self.safe_string(response, 'address')
+        self.check_address(address)
+        tag = self.safe_string(response, 'tag')
+        return {
+            'currency': code,
+            'address': address,
+            'tag': tag,
+            'info': response,
+        }
+
+    async def fetch_deposit_address(self, code, params={}):
+        await self.load_markets()
+        currency = self.currency(code)
+        request = {
+            'currency': currency['id'],
+        }
+        response = await self.privatePostGetdepositaddressCurrency(self.extend(request, params))
+        address = self.safe_string(response, 'address')
+        self.check_address(address)
+        tag = self.safe_string(response, 'tag')
+        return {
+            'currency': code,
+            'address': address,
+            'tag': tag,
+            'info': response,
+        }
 
     def sign(self, path, api='public', method='GET', params={}, headers=None, body=None):
         url = self.urls['api'] + '/' + self.version + '/'

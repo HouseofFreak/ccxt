@@ -25,7 +25,8 @@ class allcoin (okcoinusd):
                     'private': 'https://api.allcoin.com/api',
                 },
                 'www': 'https://www.allcoin.com',
-                'doc': 'https://www.allcoin.com/About/APIReference',
+                'doc': 'https://www.allcoin.com/api_market/market',
+                'referral': 'https://www.allcoin.com',
             },
             'api': {
                 'web': {
@@ -57,7 +58,7 @@ class allcoin (okcoinusd):
             },
         })
 
-    async def fetch_markets(self):
+    async def fetch_markets(self, params={}):
         result = []
         response = await self.webGetHomeMarketOverViewDetail()
         coins = response['marketCoins']

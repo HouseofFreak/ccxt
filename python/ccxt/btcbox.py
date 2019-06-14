@@ -4,7 +4,6 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.base.exchange import Exchange
-import json
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import PermissionDenied
@@ -36,6 +35,7 @@ class btcbox (Exchange):
                 'api': 'https://www.btcbox.co.jp/api',
                 'www': 'https://www.btcbox.co.jp/',
                 'doc': 'https://www.btcbox.co.jp/help/asm',
+                'fees': 'https://support.btcbox.co.jp/hc/en-us/articles/360001235694-Fees-introduction',
             },
             'api': {
                 'public': {
@@ -57,10 +57,10 @@ class btcbox (Exchange):
                 },
             },
             'markets': {
-                'BTC/JPY': {'id': 'BTC/JPY', 'symbol': 'BTC/JPY', 'base': 'BTC', 'quote': 'JPY', 'baseId': 'btc', 'quoteId': 'jpy'},
-                'ETH/JPY': {'id': 'ETH/JPY', 'symbol': 'ETH/JPY', 'base': 'ETH', 'quote': 'JPY', 'baseId': 'eth', 'quoteId': 'jpy'},
-                'LTC/JPY': {'id': 'LTC/JPY', 'symbol': 'LTC/JPY', 'base': 'LTC', 'quote': 'JPY', 'baseId': 'ltc', 'quoteId': 'jpy'},
-                'BCH/JPY': {'id': 'BCH/JPY', 'symbol': 'BCH/JPY', 'base': 'BCH', 'quote': 'JPY', 'baseId': 'bch', 'quoteId': 'jpy'},
+                'BTC/JPY': {'id': 'btc', 'symbol': 'BTC/JPY', 'base': 'BTC', 'quote': 'JPY', 'baseId': 'btc', 'quoteId': 'jpy', 'taker': 0.05 / 100, 'maker': 0.05 / 100},
+                'ETH/JPY': {'id': 'eth', 'symbol': 'ETH/JPY', 'base': 'ETH', 'quote': 'JPY', 'baseId': 'eth', 'quoteId': 'jpy', 'taker': 0.10 / 100, 'maker': 0.10 / 100},
+                'LTC/JPY': {'id': 'ltc', 'symbol': 'LTC/JPY', 'base': 'LTC', 'quote': 'JPY', 'baseId': 'ltc', 'quoteId': 'jpy', 'taker': 0.10 / 100, 'maker': 0.10 / 100},
+                'BCH/JPY': {'id': 'bch', 'symbol': 'BCH/JPY', 'base': 'BCH', 'quote': 'JPY', 'baseId': 'bch', 'quoteId': 'jpy', 'taker': 0.10 / 100, 'maker': 0.10 / 100},
             },
             'exceptions': {
                 '104': AuthenticationError,
@@ -78,21 +78,18 @@ class btcbox (Exchange):
 
     def fetch_balance(self, params={}):
         self.load_markets()
-        balances = self.privatePostBalance()
-        result = {'info': balances}
-        currencies = list(self.currencies.keys())
-        for i in range(0, len(currencies)):
-            currency = currencies[i]
-            lowercase = currency.lower()
-            if lowercase == 'dash':
-                lowercase = 'drk'
+        response = self.privatePostBalance(params)
+        result = {'info': response}
+        codes = list(self.currencies.keys())
+        for i in range(0, len(codes)):
+            code = codes[i]
+            currency = self.currency(code)
+            currencyId = currency['id']
             account = self.account()
-            free = lowercase + '_balance'
-            used = lowercase + '_lock'
-            if free in balances:
-                account['free'] = float(balances[free])
-            if used in balances:
-                account['used'] = float(balances[used])
+            free = currencyId + '_balance'
+            used = currencyId + '_lock'
+            account['free'] = self.safe_float(response, free)
+            account['used'] = self.safe_float(response, used)
             account['total'] = self.sum(account['free'], account['used'])
             result[currency] = account
         return self.parse_balance(result)
@@ -104,13 +101,13 @@ class btcbox (Exchange):
         numSymbols = len(self.symbols)
         if numSymbols > 1:
             request['coin'] = market['baseId']
-        orderbook = self.publicGetDepth(self.extend(request, params))
-        return self.parse_order_book(orderbook)
+        response = self.publicGetDepth(self.extend(request, params))
+        return self.parse_order_book(response)
 
     def parse_ticker(self, ticker, market=None):
         timestamp = self.milliseconds()
         symbol = None
-        if market:
+        if market is not None:
             symbol = market['symbol']
         last = self.safe_float(ticker, 'last')
         return {
@@ -143,22 +140,37 @@ class btcbox (Exchange):
         numSymbols = len(self.symbols)
         if numSymbols > 1:
             request['coin'] = market['baseId']
-        ticker = self.publicGetTicker(self.extend(request, params))
-        return self.parse_ticker(ticker, market)
+        response = self.publicGetTicker(self.extend(request, params))
+        return self.parse_ticker(response, market)
 
-    def parse_trade(self, trade, market):
-        timestamp = int(trade['date']) * 1000  # GMT time
+    def parse_trade(self, trade, market=None):
+        timestamp = self.safe_integer(trade, 'date')
+        if timestamp is not None:
+            timestamp *= 1000  # GMT time
+        symbol = None
+        if market is not None:
+            symbol = market['symbol']
+        id = self.safe_string(trade, 'tid')
+        price = self.safe_float(trade, 'price')
+        amount = self.safe_float(trade, 'amount')
+        cost = None
+        if amount is not None:
+            if price is not None:
+                cost = price * amount
+        type = None
+        side = self.safe_string(trade, 'type')
         return {
             'info': trade,
-            'id': trade['tid'],
+            'id': id,
             'order': None,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
-            'symbol': market['symbol'],
-            'type': None,
-            'side': trade['type'],
-            'price': trade['price'],
-            'amount': trade['amount'],
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': price,
+            'amount': amount,
+            'cost': cost,
         }
 
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
@@ -178,26 +190,53 @@ class btcbox (Exchange):
             'amount': amount,
             'price': price,
             'type': side,
+            'coin': market['baseId'],
         }
-        numSymbols = len(self.symbols)
-        if numSymbols > 1:
-            request['coin'] = market['baseId']
         response = self.privatePostTradeAdd(self.extend(request, params))
-        return {
-            'info': response,
-            'id': response['id'],
-        }
+        #
+        #     {
+        #         "result":true,
+        #         "id":"11"
+        #     }
+        #
+        return self.parse_order(response, market)
 
     def cancel_order(self, id, symbol=None, params={}):
         self.load_markets()
-        return self.privatePostTradeCancel(self.extend({
+        # a special case for btcbox – default symbol is BTC/JPY
+        if symbol is None:
+            symbol = 'BTC/JPY'
+        market = self.market(symbol)
+        request = {
             'id': id,
-        }, params))
+            'coin': market['baseId'],
+        }
+        response = self.privatePostTradeCancel(self.extend(request, params))
+        #
+        #     {"result":true, "id":"11"}
+        #
+        return self.parse_order(response, market)
 
-    def parse_order(self, order):
+    def parse_order_status(self, status):
+        statuses = {
+            # TODO: complete list
+            'part': 'open',  # partially or not at all executed
+            'all': 'closed',  # fully executed
+            'cancelled': 'canceled',
+            'closed': 'closed',  # never encountered, seems to be bug in the doc
+            'no': 'closed',  # not clarified in the docs...
+        }
+        return self.safe_string(statuses, status, status)
+
+    def parse_order(self, order, market=None):
+        #
         # {"id":11,"datetime":"2014-10-21 10:47:20","type":"sell","price":42000,"amount_original":1.2,"amount_outstanding":1.2,"status":"closed","trades":[]}
+        #
         id = self.safe_string(order, 'id')
-        timestamp = self.parse8601(order['datetime'] + '+09:00')  # Tokyo time
+        datetimeString = self.safe_string(order, 'datetime')
+        timestamp = None
+        if datetimeString is not None:
+            timestamp = self.parse8601(order['datetime'] + '+09:00')  # Tokyo time
         amount = self.safe_float(order, 'amount_original')
         remaining = self.safe_float(order, 'amount_outstanding')
         filled = None
@@ -210,21 +249,16 @@ class btcbox (Exchange):
             if filled is not None:
                 cost = filled * price
         # status is set by fetchOrder method only
-        statuses = {
-            # TODO: complete list
-            'part': 'open',  # partially or not at all executed
-            'all': 'closed',  # fully executed
-            'cancelled': 'canceled',
-            'closed': 'closed',  # never encountered, seems to be bug in the doc
-        }
-        status = None
-        if order['status'] in statuses:
-            status = statuses[order['status']]
+        status = self.parse_order_status(self.safe_string(order, 'status'))
         # fetchOrders do not return status, use heuristic
         if status is None:
             if remaining is not None and remaining == 0:
                 status = 'closed'
         trades = None  # todo: self.parse_trades(order['trades'])
+        symbol = None
+        if market is not None:
+            symbol = market['symbol']
+        side = self.safe_string(order, 'type')
         return {
             'id': id,
             'timestamp': timestamp,
@@ -233,10 +267,10 @@ class btcbox (Exchange):
             'amount': amount,
             'remaining': remaining,
             'filled': filled,
-            'side': order['type'],
+            'side': side,
             'type': None,
             'status': status,
-            'symbol': 'BTC/JPY',
+            'symbol': symbol,
             'price': price,
             'cost': cost,
             'trades': trades,
@@ -246,30 +280,41 @@ class btcbox (Exchange):
 
     def fetch_order(self, id, symbol=None, params={}):
         self.load_markets()
-        response = self.privatePostTradeView(self.extend({
+        # a special case for btcbox – default symbol is BTC/JPY
+        if symbol is None:
+            symbol = 'BTC/JPY'
+        market = self.market(symbol)
+        request = self.extend({
             'id': id,
-        }, params))
-        return self.parse_order(response)
+            'coin': market['baseId'],
+        }, params)
+        response = self.privatePostTradeView(self.extend(request, params))
+        return self.parse_order(response, market)
+
+    def fetch_orders_by_type(self, type, symbol=None, since=None, limit=None, params={}):
+        self.load_markets()
+        # a special case for btcbox – default symbol is BTC/JPY
+        if symbol is None:
+            symbol = 'BTC/JPY'
+        market = self.market(symbol)
+        request = {
+            'type': type,  # 'open' or 'all'
+            'coin': market['baseId'],
+        }
+        response = self.privatePostTradeList(self.extend(request, params))
+        orders = self.parse_orders(response, market, since, limit)
+        # status(open/closed/canceled) is None
+        # btcbox does not return status, but we know it's 'open' as we queried for open orders
+        if type == 'open':
+            for i in range(0, len(orders)):
+                orders[i]['status'] = 'open'
+        return orders
 
     def fetch_orders(self, symbol=None, since=None, limit=None, params={}):
-        self.load_markets()
-        response = self.privatePostTradeList(self.extend({
-            'type': 'all',  # 'open' or 'all'
-        }, params))
-        # status(open/closed/canceled) is None
-        return self.parse_orders(response)
+        return self.fetch_orders_by_type('all', symbol, since, limit, params)
 
     def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
-        self.load_markets()
-        response = self.privatePostTradeList(self.extend({
-            'type': 'open',  # 'open' or 'all'
-        }, params))
-        orders = self.parse_orders(response)
-        # btcbox does not return status, but we know it's 'open' as we queried for open orders
-        for i in range(0, len(orders)):
-            order = orders[i]
-            order['status'] = 'open'
-        return orders
+        return self.fetch_orders_by_type('open', symbol, since, limit, params)
 
     def nonce(self):
         return self.milliseconds()
@@ -295,13 +340,12 @@ class btcbox (Exchange):
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, httpCode, reason, url, method, headers, body):
+    def handle_errors(self, httpCode, reason, url, method, headers, body, response):
+        if response is None:
+            return  # resort to defaultErrorHandler
         # typical error response: {"result":false,"code":"401"}
         if httpCode >= 400:
             return  # resort to defaultErrorHandler
-        if body[0] != '{':
-            return  # not json, resort to defaultErrorHandler
-        response = json.loads(body)
         result = self.safe_value(response, 'result')
         if result is None or result is True:
             return  # either public API(no error codes expected) or success

@@ -122,7 +122,7 @@ class bitlish (Exchange):
             },
         })
 
-    def fetch_markets(self):
+    def fetch_markets(self, params={}):
         markets = self.publicGetPairs()
         result = []
         keys = list(markets.keys())
@@ -179,8 +179,18 @@ class bitlish (Exchange):
         result = {}
         for i in range(0, len(ids)):
             id = ids[i]
-            market = self.markets_by_id[id]
-            symbol = market['symbol']
+            market = self.safe_value(self.markets_by_id, id)
+            symbol = None
+            if market is not None:
+                symbol = market['symbol']
+            else:
+                baseId = id[0:3]
+                quoteId = id[3:6]
+                base = baseId.upper()
+                quote = quoteId.upper()
+                base = self.common_currency_code(base)
+                quote = self.common_currency_code(quote)
+                symbol = base + '/' + quote
             ticker = tickers[id]
             result[symbol] = self.parse_ticker(ticker, market)
         return result
@@ -269,11 +279,11 @@ class bitlish (Exchange):
             result[currency] = account
         return self.parse_balance(result)
 
-    def sign_in(self):
-        return self.privatePostSignin({
+    def sign_in(self, params={}):
+        return self.privatePostSignin(self.extend({
             'login': self.login,
             'passwd': self.password,
-        })
+        }, params))
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         self.load_markets()

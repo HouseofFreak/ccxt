@@ -30,11 +30,12 @@ module.exports = class coinbase extends Exchange {
                 'fetchCurrencies': true,
                 'fetchDepositAddress': false,
                 'fetchMarkets': false,
-                'fetchMyTrades': true,
+                'fetchMyTrades': false,
                 'fetchOHLCV': false,
                 'fetchOpenOrders': false,
                 'fetchOrder': false,
                 'fetchOrderBook': false,
+                'fetchL2OrderBook': false,
                 'fetchOrders': false,
                 'fetchTicker': true,
                 'fetchTickers': false,
@@ -44,6 +45,8 @@ module.exports = class coinbase extends Exchange {
                 'fetchTransactions': false,
                 'fetchDeposits': true,
                 'fetchWithdrawals': true,
+                'fetchMySells': true,
+                'fetchMyBuys': true,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/40811661-b6eceae2-653a-11e8-829e-10bfadb078cf.jpg',
@@ -152,33 +155,34 @@ module.exports = class coinbase extends Exchange {
         });
     }
 
-    async fetchTime () {
-        let response = await this.publicGetTime ();
-        let data = response['data'];
-        return this.parse8601 (data['iso']);
+    async fetchTime (params = {}) {
+        const response = await this.publicGetTime (params);
+        const data = this.safeValue (response, 'data', {});
+        return this.parse8601 (this.safeString (data, 'iso'));
     }
 
-    async loadAccounts (reload = false) {
-        if (reload) {
-            this.accounts = await this.fetchAccounts ();
-        } else {
-            if (this.accounts) {
-                return this.accounts;
-            } else {
-                this.accounts = await this.fetchAccounts ();
-                this.accountsById = this.indexBy (this.accounts, 'id');
-            }
-        }
-        return this.accounts;
-    }
-
-    async fetchAccounts () {
+    async fetchAccounts (params = {}) {
         await this.loadMarkets ();
-        let response = await this.privateGetAccounts ();
-        return response['data'];
+        const response = await this.privateGetAccounts (params);
+        return this.safeValue (response, 'data');
     }
 
-    async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+    async fetchMySells (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        // they don't have an endpoint for all historical trades
+        const accountId = this.safeString2 (params, 'account_id', 'accountId');
+        if (accountId === undefined) {
+            throw new ArgumentsRequired (this.id + ' fetchMyTrades requires an account_id or accountId extra parameter, use fetchAccounts or loadAccounts to get ids of all your accounts.');
+        }
+        await this.loadMarkets ();
+        const query = this.omit (params, [ 'account_id', 'accountId' ]);
+        const sells = await this.privateGetAccountsAccountIdSells (this.extend ({
+            'account_id': accountId,
+        }, query));
+        return this.parseTrades (sells['data'], undefined, since, limit);
+    }
+
+    async fetchMyBuys (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        // they don't have an endpoint for all historical trades
         const accountId = this.safeString2 (params, 'account_id', 'accountId');
         if (accountId === undefined) {
             throw new ArgumentsRequired (this.id + ' fetchMyTrades requires an account_id or accountId extra parameter, use fetchAccounts or loadAccounts to get ids of all your accounts.');
@@ -188,14 +192,7 @@ module.exports = class coinbase extends Exchange {
         const buys = await this.privateGetAccountsAccountIdBuys (this.extend ({
             'account_id': accountId,
         }, query));
-        const sells = await this.privateGetAccountsAccountIdSells (this.extend ({
-            'account_id': accountId,
-        }, query));
-        const parsedBuys = this.parseTrades (buys['data'], undefined, since, limit);
-        const parsedSells = this.parseTrades (sells['data'], undefined, since, limit);
-        let result = this.arrayConcat (parsedBuys, parsedSells);
-        let sortedResult = this.sortBy (result, 'timestamp');
-        return this.filterBySymbolSinceLimit (sortedResult, symbol, since, limit);
+        return this.parseTrades (buys['data'], undefined, since, limit);
     }
 
     async fetchTransactionsWithMethod (method, code = undefined, since = undefined, limit = undefined, params = {}) {
@@ -282,33 +279,31 @@ module.exports = class coinbase extends Exchange {
         //           },
         //           "payout_at": "2015-02-18T16:54:00-08:00"
         //         }
-        let amountObject = this.safeValue (transaction, 'amount', {});
-        let feeObject = this.safeValue (transaction, 'fee', {});
-        let id = this.safeString (transaction, 'id');
-        let timestamp = this.parse8601 (this.safeValue (transaction, 'created_at'));
-        let updated = this.parse8601 (this.safeValue (transaction, 'updated_at'));
-        let orderId = undefined;
-        let type = this.safeString (transaction, 'resource');
-        let amount = this.safeFloat (amountObject, 'amount');
-        let currencyId = this.safeString (amountObject, 'currency');
-        let currency = this.commonCurrencyCode (currencyId);
-        let feeCost = this.safeFloat (feeObject, 'amount');
-        let feeCurrencyId = this.safeString (feeObject, 'currency');
-        let feeCurrency = this.commonCurrencyCode (feeCurrencyId);
-        let fee = {
+        const amountObject = this.safeValue (transaction, 'amount', {});
+        const feeObject = this.safeValue (transaction, 'fee', {});
+        const id = this.safeString (transaction, 'id');
+        const timestamp = this.parse8601 (this.safeValue (transaction, 'created_at'));
+        const updated = this.parse8601 (this.safeValue (transaction, 'updated_at'));
+        const type = this.safeString (transaction, 'resource');
+        const amount = this.safeFloat (amountObject, 'amount');
+        const currencyId = this.safeString (amountObject, 'currency');
+        const currency = this.commonCurrencyCode (currencyId);
+        const feeCost = this.safeFloat (feeObject, 'amount');
+        const feeCurrencyId = this.safeString (feeObject, 'currency');
+        const feeCurrency = this.commonCurrencyCode (feeCurrencyId);
+        const fee = {
             'cost': feeCost,
             'currency': feeCurrency,
         };
         let status = this.parseTransactionStatus (this.safeString (transaction, 'status'));
         if (status === undefined) {
-            let committed = this.safeValue (transaction, 'committed');
+            const committed = this.safeValue (transaction, 'committed');
             status = committed ? 'ok' : 'pending';
         }
         return {
             'info': transaction,
             'id': id,
             'txid': id,
-            'order': orderId,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
             'address': undefined,
@@ -363,36 +358,36 @@ module.exports = class coinbase extends Exchange {
         //     }
         //
         let symbol = undefined;
-        let totalObject = this.safeValue (trade, 'total', {});
-        let amountObject = this.safeValue (trade, 'amount', {});
-        let subtotalObject = this.safeValue (trade, 'subtotal', {});
-        let feeObject = this.safeValue (trade, 'fee', {});
-        let id = this.safeString (trade, 'id');
-        let timestamp = this.parse8601 (this.safeValue (trade, 'created_at'));
+        const totalObject = this.safeValue (trade, 'total', {});
+        const amountObject = this.safeValue (trade, 'amount', {});
+        const subtotalObject = this.safeValue (trade, 'subtotal', {});
+        const feeObject = this.safeValue (trade, 'fee', {});
+        const id = this.safeString (trade, 'id');
+        const timestamp = this.parse8601 (this.safeValue (trade, 'created_at'));
         if (market === undefined) {
-            let baseId = this.safeString (totalObject, 'currency');
-            let quoteId = this.safeString (amountObject, 'currency');
+            const baseId = this.safeString (totalObject, 'currency');
+            const quoteId = this.safeString (amountObject, 'currency');
             if ((baseId !== undefined) && (quoteId !== undefined)) {
-                let base = this.commonCurrencyCode (baseId);
-                let quote = this.commonCurrencyCode (quoteId);
+                const base = this.commonCurrencyCode (baseId);
+                const quote = this.commonCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
-        let orderId = undefined;
-        let side = this.safeString (trade, 'resource');
-        let type = undefined;
-        let cost = this.safeFloat (subtotalObject, 'amount');
-        let amount = this.safeFloat (amountObject, 'amount');
+        const orderId = undefined;
+        const side = this.safeString (trade, 'resource');
+        const type = undefined;
+        const cost = this.safeFloat (subtotalObject, 'amount');
+        const amount = this.safeFloat (amountObject, 'amount');
         let price = undefined;
         if (cost !== undefined) {
             if (amount !== undefined) {
                 price = cost / amount;
             }
         }
-        let feeCost = this.safeFloat (feeObject, 'amount');
-        let feeCurrencyId = this.safeString (feeObject, 'currency');
-        let feeCurrency = this.commonCurrencyCode (feeCurrencyId);
-        let fee = {
+        const feeCost = this.safeFloat (feeObject, 'amount');
+        const feeCurrencyId = this.safeString (feeObject, 'currency');
+        const feeCurrency = this.commonCurrencyCode (feeCurrencyId);
+        const fee = {
             'cost': feeCost,
             'currency': feeCurrency,
         };
@@ -413,15 +408,15 @@ module.exports = class coinbase extends Exchange {
     }
 
     async fetchCurrencies (params = {}) {
-        let response = await this.publicGetCurrencies (params);
-        let currencies = response['data'];
-        let result = {};
-        for (let c = 0; c < currencies.length; c++) {
-            let currency = currencies[c];
-            let id = currency['id'];
-            let name = currency['name'];
-            let code = this.commonCurrencyCode (id);
-            let minimum = this.safeFloat (currency, 'min_size');
+        const response = await this.publicGetCurrencies (params);
+        const currencies = response['data'];
+        const result = {};
+        for (let i = 0; i < currencies.length; i++) {
+            const currency = currencies[i];
+            const id = this.safeString (currency, 'id');
+            const name = this.safeString (currency, 'name');
+            const code = this.commonCurrencyCode (id);
+            const minimum = this.safeFloat (currency, 'min_size');
             result[code] = {
                 'id': id,
                 'code': code,
@@ -455,17 +450,17 @@ module.exports = class coinbase extends Exchange {
 
     async fetchTicker (symbol, params = {}) {
         await this.loadMarkets ();
-        let timestamp = this.seconds ();
-        let market = this.market (symbol);
-        let request = this.extend ({
+        const timestamp = this.seconds ();
+        const market = this.market (symbol);
+        const request = this.extend ({
             'symbol': market['id'],
         }, params);
-        let buy = await this.publicGetPricesSymbolBuy (request);
-        let sell = await this.publicGetPricesSymbolSell (request);
-        let spot = await this.publicGetPricesSymbolSpot (request);
-        let ask = this.safeFloat (buy['data'], 'amount');
-        let bid = this.safeFloat (sell['data'], 'amount');
-        let last = this.safeFloat (spot['data'], 'amount');
+        const buy = await this.publicGetPricesSymbolBuy (request);
+        const sell = await this.publicGetPricesSymbolSell (request);
+        const spot = await this.publicGetPricesSymbolSpot (request);
+        const ask = this.safeFloat (buy['data'], 'amount');
+        const bid = this.safeFloat (sell['data'], 'amount');
+        const last = this.safeFloat (spot['data'], 'amount');
         return {
             'symbol': symbol,
             'timestamp': timestamp,
@@ -495,25 +490,27 @@ module.exports = class coinbase extends Exchange {
     }
 
     async fetchBalance (params = {}) {
-        let response = await this.privateGetAccounts ();
-        let balances = response['data'];
-        let accounts = this.safeValue (params, 'type', this.options['accounts']);
-        let result = { 'info': response };
+        await this.loadMarkets ();
+        const response = await this.privateGetAccounts (params);
+        const balances = this.safeValue (response, 'data');
+        const accounts = this.safeValue (params, 'type', this.options['accounts']);
+        const result = { 'info': response };
         for (let b = 0; b < balances.length; b++) {
-            let balance = balances[b];
+            const balance = balances[b];
             if (this.inArray (balance['type'], accounts)) {
-                let currencyId = balance['balance']['currency'];
+                const currencyId = balance['balance']['currency'];
                 let code = currencyId;
-                if (currencyId in this.currencies_by_id)
+                if (currencyId in this.currencies_by_id) {
                     code = this.currencies_by_id[currencyId]['code'];
-                let total = this.safeFloat (balance['balance'], 'amount');
+                }
+                const total = this.safeFloat (balance['balance'], 'amount');
                 let free = total;
                 let used = undefined;
                 if (code in result) {
-                    result[code]['free'] += total;
-                    result[code]['total'] += total;
+                    result[code]['free'] = this.sum (result[code]['free'], total);
+                    result[code]['total'] = this.sum (result[code]['total'], total);
                 } else {
-                    let account = {
+                    const account = {
                         'free': free,
                         'used': used,
                         'total': total,
@@ -527,15 +524,16 @@ module.exports = class coinbase extends Exchange {
 
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let request = '/' + this.implodeParams (path, params);
-        let query = this.omit (params, this.extractParams (path));
+        const query = this.omit (params, this.extractParams (path));
         if (method === 'GET') {
-            if (Object.keys (query).length)
+            if (Object.keys (query).length) {
                 request += '?' + this.urlencode (query);
+            }
         }
-        let url = this.urls['api'] + '/' + this.version + request;
+        const url = this.urls['api'] + '/' + this.version + request;
         if (api === 'private') {
             this.checkRequiredCredentials ();
-            let nonce = this.nonce ().toString ();
+            const nonce = this.nonce ().toString ();
             let payload = '';
             if (method !== 'GET') {
                 if (Object.keys (query).length) {
@@ -543,8 +541,8 @@ module.exports = class coinbase extends Exchange {
                     payload = body;
                 }
             }
-            let what = nonce + method + '/' + this.version + request + payload;
-            let signature = this.hmac (this.encode (what), this.encode (this.secret));
+            const auth = nonce + method + '/' + this.version + request + payload;
+            const signature = this.hmac (this.encode (auth), this.encode (this.secret));
             headers = {
                 'CB-ACCESS-KEY': this.apiKey,
                 'CB-ACCESS-SIGN': signature,
@@ -555,56 +553,53 @@ module.exports = class coinbase extends Exchange {
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
 
-    handleErrors (code, reason, url, method, headers, body) {
-        if (typeof body !== 'string')
+    handleErrors (code, reason, url, method, headers, body, response) {
+        if (response === undefined) {
             return; // fallback to default error handler
-        if (body.length < 2)
-            return; // fallback to default error handler
-        if ((body[0] === '{') || (body[0] === '[')) {
-            let response = JSON.parse (body);
-            let feedback = this.id + ' ' + body;
-            //
-            //    {"error": "invalid_request", "error_description": "The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed."}
-            //
-            // or
-            //
-            //    {
-            //      "errors": [
-            //        {
-            //          "id": "not_found",
-            //          "message": "Not found"
-            //        }
-            //      ]
-            //    }
-            //
-            let exceptions = this.exceptions;
-            let errorCode = this.safeString (response, 'error');
-            if (errorCode !== undefined) {
-                if (errorCode in exceptions) {
-                    throw new exceptions[errorCode] (feedback);
-                } else {
-                    throw new ExchangeError (feedback);
-                }
+        }
+        const feedback = this.id + ' ' + body;
+        //
+        //    {"error": "invalid_request", "error_description": "The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed."}
+        //
+        // or
+        //
+        //    {
+        //      "errors": [
+        //        {
+        //          "id": "not_found",
+        //          "message": "Not found"
+        //        }
+        //      ]
+        //    }
+        //
+        const exceptions = this.exceptions;
+        let errorCode = this.safeString (response, 'error');
+        if (errorCode !== undefined) {
+            if (errorCode in exceptions) {
+                throw new exceptions[errorCode] (feedback);
+            } else {
+                throw new ExchangeError (feedback);
             }
-            let errors = this.safeValue (response, 'errors');
-            if (errors !== undefined) {
-                if (Array.isArray (errors)) {
-                    let numErrors = errors.length;
-                    if (numErrors > 0) {
-                        errorCode = this.safeString (errors[0], 'id');
-                        if (errorCode !== undefined) {
-                            if (errorCode in exceptions) {
-                                throw new exceptions[errorCode] (feedback);
-                            } else {
-                                throw new ExchangeError (feedback);
-                            }
+        }
+        const errors = this.safeValue (response, 'errors');
+        if (errors !== undefined) {
+            if (Array.isArray (errors)) {
+                const numErrors = errors.length;
+                if (numErrors > 0) {
+                    errorCode = this.safeString (errors[0], 'id');
+                    if (errorCode !== undefined) {
+                        if (errorCode in exceptions) {
+                            throw new exceptions[errorCode] (feedback);
+                        } else {
+                            throw new ExchangeError (feedback);
                         }
                     }
                 }
             }
-            let data = this.safeValue (response, 'data');
-            if (data === undefined)
-                throw new ExchangeError (this.id + ' failed due to a malformed response ' + this.json (response));
+        }
+        const data = this.safeValue (response, 'data');
+        if (data === undefined) {
+            throw new ExchangeError (this.id + ' failed due to a malformed response ' + this.json (response));
         }
     }
 };

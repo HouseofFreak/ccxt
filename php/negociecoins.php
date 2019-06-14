@@ -17,6 +17,7 @@ class negociecoins extends Exchange {
             'rateLimit' => 1000,
             'version' => 'v3',
             'has' => array (
+                'createMarketOrder' => false,
                 'fetchOrder' => true,
                 'fetchOrders' => true,
                 'fetchOpenOrders' => true,
@@ -60,12 +61,12 @@ class negociecoins extends Exchange {
                 ),
             ),
             'markets' => array (
-                'B2X/BRL' => array ( 'id' => 'b2xbrl', 'symbol' => 'B2X/BRL', 'base' => 'B2X', 'quote' => 'BRL' ),
-                'BCH/BRL' => array ( 'id' => 'bchbrl', 'symbol' => 'BCH/BRL', 'base' => 'BCH', 'quote' => 'BRL' ),
-                'BTC/BRL' => array ( 'id' => 'btcbrl', 'symbol' => 'BTC/BRL', 'base' => 'BTC', 'quote' => 'BRL' ),
-                'BTG/BRL' => array ( 'id' => 'btgbrl', 'symbol' => 'BTG/BRL', 'base' => 'BTG', 'quote' => 'BRL' ),
-                'DASH/BRL' => array ( 'id' => 'dashbrl', 'symbol' => 'DASH/BRL', 'base' => 'DASH', 'quote' => 'BRL' ),
-                'LTC/BRL' => array ( 'id' => 'ltcbrl', 'symbol' => 'LTC/BRL', 'base' => 'LTC', 'quote' => 'BRL' ),
+                'B2X/BRL' => array( 'id' => 'b2xbrl', 'symbol' => 'B2X/BRL', 'base' => 'B2X', 'quote' => 'BRL' ),
+                'BCH/BRL' => array( 'id' => 'bchbrl', 'symbol' => 'BCH/BRL', 'base' => 'BCH', 'quote' => 'BRL' ),
+                'BTC/BRL' => array( 'id' => 'btcbrl', 'symbol' => 'BTC/BRL', 'base' => 'BTC', 'quote' => 'BRL' ),
+                'BTG/BRL' => array( 'id' => 'btgbrl', 'symbol' => 'BTG/BRL', 'base' => 'BTG', 'quote' => 'BRL' ),
+                'DASH/BRL' => array( 'id' => 'dashbrl', 'symbol' => 'DASH/BRL', 'base' => 'DASH', 'quote' => 'BRL' ),
+                'LTC/BRL' => array( 'id' => 'ltcbrl', 'symbol' => 'LTC/BRL', 'base' => 'LTC', 'quote' => 'BRL' ),
             ),
             'fees' => array (
                 'trading' => array (
@@ -125,18 +126,20 @@ class negociecoins extends Exchange {
     public function fetch_ticker ($symbol, $params = array ()) {
         $this->load_markets();
         $market = $this->market ($symbol);
-        $ticker = $this->publicGetPARTicker (array_merge (array (
+        $request = array (
             'PAR' => $market['id'],
-        ), $params));
+        );
+        $ticker = $this->publicGetPARTicker (array_merge ($request, $params));
         return $this->parse_ticker($ticker, $market);
     }
 
     public function fetch_order_book ($symbol, $limit = null, $params = array ()) {
         $this->load_markets();
-        $orderbook = $this->publicGetPAROrderbook (array_merge (array (
+        $request = array (
             'PAR' => $this->market_id($symbol),
-        ), $params));
-        return $this->parse_order_book($orderbook, null, 'bid', 'ask', 'price', 'quantity');
+        );
+        $response = $this->publicGetPAROrderbook (array_merge ($request, $params));
+        return $this->parse_order_book($response, null, 'bid', 'ask', 'price', 'quantity');
     }
 
     public function parse_trade ($trade, $market = null) {
@@ -152,7 +155,7 @@ class negociecoins extends Exchange {
             'id' => $this->safe_string($trade, 'tid'),
             'order' => null,
             'type' => 'limit',
-            'side' => strtolower ($trade['type']),
+            'side' => strtolower($trade['type']),
             'price' => $price,
             'amount' => $amount,
             'cost' => $cost,
@@ -164,32 +167,43 @@ class negociecoins extends Exchange {
     public function fetch_trades ($symbol, $since = null, $limit = null, $params = array ()) {
         $this->load_markets();
         $market = $this->market ($symbol);
-        if ($since === null)
+        if ($since === null) {
             $since = 0;
+        }
         $request = array (
             'PAR' => $market['id'],
             'timestamp_inicial' => intval ($since / 1000),
         );
-        $trades = $this->publicGetPARTradesTimestampInicial (array_merge ($request, $params));
-        return $this->parse_trades($trades, $market, $since, $limit);
+        $response = $this->publicGetPARTradesTimestampInicial (array_merge ($request, $params));
+        return $this->parse_trades($response, $market, $since, $limit);
     }
 
     public function fetch_balance ($params = array ()) {
         $this->load_markets();
-        $balances = $this->privateGetUserBalance ($params);
-        $result = array ( 'info' => $balances );
-        $currencies = is_array ($balances) ? array_keys ($balances) : array ();
-        for ($i = 0; $i < count ($currencies); $i++) {
-            $id = $currencies[$i];
-            $balance = $balances[$id];
-            $currency = $this->common_currency_code($id);
+        $response = $this->privateGetUserBalance ($params);
+        //
+        //     {
+        //         "coins" => array (
+        //             array("name":"BRL","available":0.0,"$openOrders":0.0,"$withdraw":0.0,"total":0.0),
+        //             array("name":"BTC","available":0.0,"$openOrders":0.0,"$withdraw":0.0,"total":0.0),
+        //         ),
+        //     }
+        //
+        $result = array( 'info' => $response );
+        $balances = $this->safe_value($response, 'coins');
+        for ($i = 0; $i < count ($balances); $i++) {
+            $balance = $balances[$i];
+            $currencyId = $this->safe_string($balance, 'name');
+            $code = $this->common_currency_code($currencyId);
+            $openOrders = $this->safe_float($balance, 'openOrders');
+            $withdraw = $this->safe_float($balance, 'withdraw');
             $account = array (
-                'free' => floatval ($balance['total']),
-                'used' => 0.0,
-                'total' => floatval ($balance['available']),
+                'free' => $this->safe_float($balance, 'total'),
+                'used' => $this->sum ($openOrders, $withdraw),
+                'total' => $this->safe_float($balance, 'available'),
             );
             $account['used'] = $account['total'] - $account['free'];
-            $result[$currency] = $account;
+            $result[$code] = $account;
         }
         return $this->parse_balance($result);
     }
@@ -198,8 +212,9 @@ class negociecoins extends Exchange {
         $symbol = null;
         if ($market === null) {
             $market = $this->safe_value($this->marketsById, $order['pair']);
-            if ($market)
+            if ($market) {
                 $symbol = $market['symbol'];
+            }
         }
         $timestamp = $this->parse8601 ($order['created']);
         $price = $this->safe_float($order, 'price');
@@ -276,6 +291,9 @@ class negociecoins extends Exchange {
 
     public function fetch_orders ($symbol = null, $since = null, $limit = null, $params = array ()) {
         $this->load_markets();
+        if ($symbol === null) {
+            throw new ArgumentsRequired($this->id . ' fetchOrders () requires a $symbol argument');
+        }
         $market = $this->market ($symbol);
         $request = array (
             'pair' => $market['id'],
@@ -286,10 +304,12 @@ class negociecoins extends Exchange {
             // startDate yyyy-MM-dd
             // endDate => yyyy-MM-dd
         );
-        if ($since !== null)
+        if ($since !== null) {
             $request['startDate'] = $this->ymd ($since);
-        if ($limit !== null)
+        }
+        if ($limit !== null) {
             $request['pageSize'] = $limit;
+        }
         $orders = $this->privatePostUserOrders (array_merge ($request, $params));
         return $this->parse_orders($orders, $market);
     }
@@ -315,8 +335,9 @@ class negociecoins extends Exchange {
         $query = $this->omit ($params, $this->extract_params($path));
         $queryString = $this->urlencode ($query);
         if ($api === 'public') {
-            if (strlen ($queryString))
+            if (strlen ($queryString)) {
                 $url .= '?' . $queryString;
+            }
         } else {
             $this->check_required_credentials();
             $timestamp = (string) $this->seconds ();
@@ -328,12 +349,12 @@ class negociecoins extends Exchange {
             } else {
                 $body = '';
             }
-            $uri = strtolower ($this->encode_uri_component($url));
-            $payload = implode ('', array ($this->apiKey, $method, $uri, $timestamp, $nonce, $content));
+            $uri = strtolower($this->encode_uri_component($url));
+            $payload = implode('', array($this->apiKey, $method, $uri, $timestamp, $nonce, $content));
             $secret = base64_decode ($this->secret);
-            $signature = $this->hmac ($this->encode ($payload), $this->encode ($secret), 'sha256', 'base64');
-            $signature = $this->binary_to_string($signature);
-            $auth = implode (':', array ($this->apiKey, $signature, $nonce, $timestamp));
+            $signature = $this->hmac ($this->encode ($payload), $secret, 'sha256', 'base64');
+            $signature = $this->decode ($signature);
+            $auth = implode(':', array($this->apiKey, $signature, $nonce, $timestamp));
             $headers = array (
                 'Authorization' => 'amx ' . $auth,
             );
@@ -345,6 +366,6 @@ class negociecoins extends Exchange {
                 $body = null;
             }
         }
-        return array ( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
+        return array( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
     }
 }

@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------
 
 const liqui = require ('./liqui.js');
-const { ExchangeError, InsufficientFunds, InvalidOrder, DDoSProtection } = require ('./base/errors');
+const { ExchangeError, InsufficientFunds, AuthenticationError } = require ('./base/errors');
 
 // ---------------------------------------------------------------------------
 
@@ -18,6 +18,10 @@ module.exports = class yobit extends liqui {
             'has': {
                 'createDepositAddress': true,
                 'fetchDepositAddress': true,
+                'fetchDeposits': false,
+                'fetchWithdrawals': false,
+                'fetchTransactions': false,
+                'fetchTickers': false,
                 'CORS': false,
                 'withdraw': true,
             },
@@ -133,38 +137,44 @@ module.exports = class yobit extends liqui {
             },
             'options': {
                 'fetchOrdersRequiresSymbol': true,
+                'fetchTickersMaxLength': 512,
+            },
+            'exceptions': {
+                'broad': {
+                    'Total transaction amount': ExchangeError, // { "success": 0, "error": "Total transaction amount is less than minimal total: 0.00010000"}
+                    'Insufficient funds': InsufficientFunds,
+                    'invalid key': AuthenticationError,
+                },
             },
         });
     }
 
     parseOrderStatus (status) {
-        let statuses = {
+        const statuses = {
             '0': 'open',
             '1': 'closed',
             '2': 'canceled',
             '3': 'open', // or partially-filled and closed? https://github.com/ccxt/ccxt/issues/1594
         };
-        if (status in statuses)
-            return statuses[status];
-        return status;
+        return this.safeString (statuses, status, status);
     }
 
     async fetchBalance (params = {}) {
         await this.loadMarkets ();
-        let response = await this.privatePostGetInfo ();
-        let balances = response['return'];
-        let result = { 'info': balances };
-        let sides = { 'free': 'funds', 'total': 'funds_incl_orders' };
-        let keys = Object.keys (sides);
+        const response = await this.privatePostGetInfo (params);
+        const balances = response['return'];
+        const result = { 'info': balances };
+        const sides = { 'free': 'funds', 'total': 'funds_incl_orders' };
+        const keys = Object.keys (sides);
         for (let i = 0; i < keys.length; i++) {
-            let key = keys[i];
-            let side = sides[key];
+            const key = keys[i];
+            const side = sides[key];
             if (side in balances) {
-                let currencies = Object.keys (balances[side]);
+                const currencies = Object.keys (balances[side]);
                 for (let j = 0; j < currencies.length; j++) {
-                    let lowercase = currencies[j];
-                    let uppercase = lowercase.toUpperCase ();
-                    let currency = this.commonCurrencyCode (uppercase);
+                    const lowercase = currencies[j];
+                    const uppercase = lowercase.toUpperCase ();
+                    const currency = this.commonCurrencyCode (uppercase);
                     let account = undefined;
                     if (currency in result) {
                         account = result[currency];
@@ -172,8 +182,9 @@ module.exports = class yobit extends liqui {
                         account = this.account ();
                     }
                     account[key] = balances[side][lowercase];
-                    if ((account['total'] !== undefined) && (account['free'] !== undefined))
+                    if ((account['total'] !== undefined) && (account['free'] !== undefined)) {
                         account['used'] = account['total'] - account['free'];
+                    }
                     result[currency] = account;
                 }
             }
@@ -182,10 +193,11 @@ module.exports = class yobit extends liqui {
     }
 
     async createDepositAddress (code, params = {}) {
-        let response = await this.fetchDepositAddress (code, this.extend ({
+        const request = {
             'need_new': 1,
-        }, params));
-        let address = this.safeString (response, 'address');
+        };
+        const response = await this.fetchDepositAddress (code, this.extend (request, params));
+        const address = this.safeString (response, 'address');
         this.checkAddress (address);
         return {
             'currency': code,
@@ -197,13 +209,13 @@ module.exports = class yobit extends liqui {
 
     async fetchDepositAddress (code, params = {}) {
         await this.loadMarkets ();
-        let currency = this.currency (code);
-        let request = {
+        const currency = this.currency (code);
+        const request = {
             'coinName': currency['id'],
             'need_new': 0,
         };
-        let response = await this.privatePostGetDepositAddress (this.extend (request, params));
-        let address = this.safeString (response['return'], 'address');
+        const response = await this.privatePostGetDepositAddress (this.extend (request, params));
+        const address = this.safeString (response['return'], 'address');
         this.checkAddress (address);
         return {
             'currency': code,
@@ -213,41 +225,58 @@ module.exports = class yobit extends liqui {
         };
     }
 
+    async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let market = undefined;
+        // some derived classes use camelcase notation for request fields
+        const request = {
+            // 'from': 123456789, // trade ID, from which the display starts numerical 0 (test result: liqui ignores this field)
+            // 'count': 1000, // the number of trades for display numerical, default = 1000
+            // 'from_id': trade ID, from which the display starts numerical 0
+            // 'end_id': trade ID on which the display ends numerical ∞
+            // 'order': 'ASC', // sorting, default = DESC (test result: liqui ignores this field, most recent trade always goes last)
+            // 'since': 1234567890, // UTC start time, default = 0 (test result: liqui ignores this field)
+            // 'end': 1234567890, // UTC end time, default = ∞ (test result: liqui ignores this field)
+            // 'pair': 'eth_btc', // default = all markets
+        };
+        if (symbol !== undefined) {
+            market = this.market (symbol);
+            request['pair'] = market['id'];
+        }
+        if (limit !== undefined) {
+            request['count'] = parseInt (limit);
+        }
+        if (since !== undefined) {
+            request['since'] = parseInt (since / 1000);
+        }
+        const method = this.options['fetchMyTradesMethod'];
+        const response = await this[method] (this.extend (request, params));
+        const trades = this.safeValue (response, 'return', {});
+        const ids = Object.keys (trades);
+        const result = [];
+        for (let i = 0; i < ids.length; i++) {
+            const id = ids[i];
+            const trade = this.parseTrade (this.extend (trades[id], {
+                'trade_id': id,
+            }), market);
+            result.push (trade);
+        }
+        return this.filterBySymbolSinceLimit (result, symbol, since, limit);
+    }
+
     async withdraw (code, amount, address, tag = undefined, params = {}) {
         this.checkAddress (address);
         await this.loadMarkets ();
-        let currency = this.currency (code);
-        let response = await this.privatePostWithdrawCoinsToAddress (this.extend ({
+        const currency = this.currency (code);
+        const request = {
             'coinName': currency['id'],
             'amount': amount,
             'address': address,
-        }, params));
+        };
+        const response = await this.privatePostWithdrawCoinsToAddress (this.extend (request, params));
         return {
             'info': response,
             'id': undefined,
         };
-    }
-
-    handleErrors (code, reason, url, method, headers, body) {
-        if (body[0] === '{') {
-            let response = JSON.parse (body);
-            if ('success' in response) {
-                if (!response['success']) {
-                    if ('error_log' in response) {
-                        if (response['error_log'].indexOf ('Insufficient funds') >= 0) { // not enougTh is a typo inside Liqui's own API...
-                            throw new InsufficientFunds (this.id + ' ' + this.json (response));
-                        } else if (response['error_log'] === 'Requests too often') {
-                            throw new DDoSProtection (this.id + ' ' + this.json (response));
-                        } else if ((response['error_log'] === 'not available') || (response['error_log'] === 'external service unavailable')) {
-                            throw new DDoSProtection (this.id + ' ' + this.json (response));
-                        } else if (response['error_log'] === 'Total transaction amount') {
-                            // eg {"success":0,"error":"Total transaction amount is less than minimal total: 0.00010000"}
-                            throw new InvalidOrder (this.id + ' ' + this.json (response));
-                        }
-                    }
-                    throw new ExchangeError (this.id + ' ' + this.json (response));
-                }
-            }
-        }
     }
 };

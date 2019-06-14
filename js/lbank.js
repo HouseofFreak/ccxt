@@ -42,6 +42,7 @@ module.exports = class lbank extends Exchange {
                 'www': 'https://www.lbank.info',
                 'doc': 'https://github.com/LBank-exchange/lbank-official-api-docs',
                 'fees': 'https://lbankinfo.zendesk.com/hc/zh-cn/articles/115002295114--%E8%B4%B9%E7%8E%87%E8%AF%B4%E6%98%8E',
+                'referral': 'https://www.lbex.io/sign-up.html?icode=7QCY&lang=en-US',
             },
             'api': {
                 'public': {
@@ -106,7 +107,7 @@ module.exports = class lbank extends Exchange {
         });
     }
 
-    async fetchMarkets () {
+    async fetchMarkets (params = {}) {
         let markets = await this.publicGetAccuracy ();
         let result = [];
         for (let i = 0; i < markets.length; i++) {
@@ -245,9 +246,12 @@ module.exports = class lbank extends Exchange {
 
     async fetchOrderBook (symbol, limit = 60, params = {}) {
         await this.loadMarkets ();
+        let size = 60;
+        if (limit !== undefined)
+            size = Math.min (limit, size);
         let response = await this.publicGetDepth (this.extend ({
             'symbol': this.marketId (symbol),
-            'size': Math.min (limit, 60),
+            'size': size,
         }, params));
         return this.parseOrderBook (response);
     }
@@ -282,7 +286,7 @@ module.exports = class lbank extends Exchange {
             'size': 100,
         };
         if (since !== undefined)
-            request['time'] = parseInt (since / 1000);
+            request['time'] = parseInt (since);
         if (limit !== undefined)
             request['size'] = limit;
         let response = await this.publicGetTrades (this.extend (request, params));

@@ -4,7 +4,6 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.async_support.base.exchange import Exchange
-import json
 from ccxt.base.errors import ExchangeError
 
 
@@ -22,7 +21,7 @@ class virwox (Exchange):
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766894-6da9d360-5eea-11e7-90aa-41f2711b7405.jpg',
                 'api': {
-                    'public': 'http://api.virwox.com/api/json.php',
+                    'public': 'https://api.virwox.com/api/json.php',
                     'private': 'https://www.virwox.com/api/trading.php',
                 },
                 'www': 'https://www.virwox.com',
@@ -82,7 +81,7 @@ class virwox (Exchange):
             },
         })
 
-    async def fetch_markets(self):
+    async def fetch_markets(self, params={}):
         markets = await self.publicGetGetInstruments()
         keys = list(markets['result'].keys())
         result = []
@@ -205,30 +204,31 @@ class virwox (Exchange):
             'instrument': symbol,
             'timespan': 3600,
         }, params))
-        result = response['result']
-        trades = result['data']
+        result = self.safe_value(response, 'result', {})
+        trades = self.safe_value(result, 'data', [])
         return self.parse_trades(trades, market)
 
     async def create_order(self, symbol, type, side, amount, price=None, params={}):
         await self.load_markets()
         market = self.market(symbol)
-        order = {
+        request = {
             'instrument': market['symbol'],
             'orderType': side.upper(),
             'amount': amount,
         }
         if type == 'limit':
-            order['price'] = price
-        response = await self.privatePostPlaceOrder(self.extend(order, params))
+            request['price'] = price
+        response = await self.privatePostPlaceOrder(self.extend(request, params))
         return {
             'info': response,
-            'id': str(response['result']['orderID']),
+            'id': self.safe_string(response['result'], 'orderID'),
         }
 
     async def cancel_order(self, id, symbol=None, params={}):
-        return await self.privatePostCancelOrder(self.extend({
+        request = {
             'orderID': id,
-        }, params))
+        }
+        return await self.privatePostCancelOrder(self.extend(request, params))
 
     def sign(self, path, api='public', method='GET', params={}, headers=None, body=None):
         url = self.urls['api'][api]
@@ -253,10 +253,9 @@ class virwox (Exchange):
             })
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, code, reason, url, method, headers, body):
+    def handle_errors(self, code, reason, url, method, headers, body, response):
         if code == 200:
             if (body[0] == '{') or (body[0] == '['):
-                response = json.loads(body)
                 if 'result' in response:
                     result = response['result']
                     if 'errorCode' in result:

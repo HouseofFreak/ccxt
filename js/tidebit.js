@@ -43,6 +43,7 @@ module.exports = class tidebit extends Exchange {
                     'https://www.tidebit.com/documents/api/guide',
                     'https://www.tidebit.com/swagger/#/default',
                 ],
+                'referral': 'http://bit.ly/2IX0LrM',
             },
             'api': {
                 'public': {
@@ -137,7 +138,7 @@ module.exports = class tidebit extends Exchange {
         }
     }
 
-    async fetchMarkets () {
+    async fetchMarkets (params = {}) {
         let markets = await this.publicGetMarkets ();
         let result = [];
         for (let p = 0; p < markets.length; p++) {
@@ -169,8 +170,9 @@ module.exports = class tidebit extends Exchange {
             let balance = balances[b];
             let currencyId = balance['currency'];
             let code = currencyId.toUpperCase ();
-            if (currencyId in this.currencies_by_id)
+            if (currencyId in this.currencies_by_id) {
                 code = this.currencies_by_id[currencyId]['code'];
+            }
             let account = {
                 'free': parseFloat (balance['balance']),
                 'used': parseFloat (balance['locked']),
@@ -188,8 +190,9 @@ module.exports = class tidebit extends Exchange {
         let request = {
             'market': market['id'],
         };
-        if (limit === undefined)
+        if (limit === undefined) {
             request['limit'] = limit; // default = 300
+        }
         request['market'] = market['id'];
         let orderbook = await this.publicGetDepth (this.extend (request, params));
         let timestamp = orderbook['timestamp'] * 1000;
@@ -200,8 +203,9 @@ module.exports = class tidebit extends Exchange {
         let timestamp = ticker['at'] * 1000;
         ticker = ticker['ticker'];
         let symbol = undefined;
-        if (market !== undefined)
+        if (market !== undefined) {
             symbol = market['symbol'];
+        }
         let last = this.safeFloat (ticker, 'last');
         return {
             'symbol': symbol,
@@ -301,10 +305,11 @@ module.exports = class tidebit extends Exchange {
 
     async fetchOHLCV (symbol, timeframe = '1m', since = undefined, limit = undefined, params = {}) {
         await this.loadMarkets ();
-        let market = this.market (symbol);
-        if (limit === undefined)
+        const market = this.market (symbol);
+        if (limit === undefined) {
             limit = 30; // default is 30
-        let request = {
+        }
+        const request = {
             'market': market['id'],
             'period': this.timeframes[timeframe],
             'limit': limit,
@@ -314,7 +319,7 @@ module.exports = class tidebit extends Exchange {
         } else {
             request['timestamp'] = 1800000;
         }
-        let response = await this.publicGetK (this.extend (request, params));
+        const response = await this.publicGetK (this.extend (request, params));
         return this.parseOHLCVs (response, market, timeframe, since, limit);
     }
 
@@ -444,9 +449,8 @@ module.exports = class tidebit extends Exchange {
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
 
-    handleErrors (code, reason, url, method, headers, body) {
+    handleErrors (code, reason, url, method, headers, body, response) {
         if (code === 400) {
-            const response = JSON.parse (body);
             const error = this.safeValue (response, 'error');
             const errorCode = this.safeString (error, 'code');
             const feedback = this.id + ' ' + this.json (response);

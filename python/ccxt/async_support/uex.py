@@ -4,14 +4,6 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.async_support.base.exchange import Exchange
-
-# -----------------------------------------------------------------------------
-
-try:
-    basestring  # Python 3
-except NameError:
-    basestring = str  # Python 2
-import json
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import PermissionDenied
@@ -186,7 +178,7 @@ class uex (Exchange):
             'cost': float(self.currency_to_precision(market[key], cost)),
         }
 
-    async def fetch_markets(self):
+    async def fetch_markets(self, params={}):
         response = await self.publicGetCommonSymbols()
         #
         #     {code:   "0",
@@ -1123,22 +1115,18 @@ class uex (Exchange):
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, httpCode, reason, url, method, headers, body):
-        if not isinstance(body, basestring):
+    def handle_errors(self, httpCode, reason, url, method, headers, body, response):
+        if response is None:
             return  # fallback to default error handler
-        if len(body) < 2:
-            return  # fallback to default error handler
-        if (body[0] == '{') or (body[0] == '['):
-            response = json.loads(body)
-            #
-            # {"code":"0","msg":"suc","data":{}}
-            #
-            code = self.safe_string(response, 'code')
-            # message = self.safe_string(response, 'msg')
-            feedback = self.id + ' ' + self.json(response)
-            exceptions = self.exceptions
-            if code != '0':
-                if code in exceptions:
-                    raise exceptions[code](feedback)
-                else:
-                    raise ExchangeError(feedback)
+        #
+        # {"code":"0","msg":"suc","data":{}}
+        #
+        code = self.safe_string(response, 'code')
+        # message = self.safe_string(response, 'msg')
+        feedback = self.id + ' ' + self.json(response)
+        exceptions = self.exceptions
+        if code != '0':
+            if code in exceptions:
+                raise exceptions[code](feedback)
+            else:
+                raise ExchangeError(feedback)

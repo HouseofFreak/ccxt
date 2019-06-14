@@ -4,21 +4,14 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.base.exchange import Exchange
-
-# -----------------------------------------------------------------------------
-
-try:
-    basestring  # Python 3
-except NameError:
-    basestring = str  # Python 2
 import math
-import json
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import ArgumentsRequired
 from ccxt.base.errors import InsufficientFunds
 from ccxt.base.errors import InvalidOrder
 from ccxt.base.errors import OrderNotFound
+from ccxt.base.decimal_to_precision import ROUND
 
 
 class rightbtc (Exchange):
@@ -150,7 +143,7 @@ class rightbtc (Exchange):
             },
         })
 
-    def fetch_markets(self):
+    def fetch_markets(self, params={}):
         response = self.publicGetTradingPairs()
         # zh = self.publicGetGetAssetsTradingPairsZh()
         markets = self.extend(response['status']['message'])
@@ -203,7 +196,7 @@ class rightbtc (Exchange):
 
     def parse_ticker(self, ticker, market=None):
         symbol = market['symbol']
-        timestamp = ticker['date']
+        timestamp = self.safe_integer(ticker, 'date')
         last = self.divide_safe_float(ticker, 'last', 1e8)
         high = self.divide_safe_float(ticker, 'high', 1e8)
         low = self.divide_safe_float(ticker, 'low', 1e8)
@@ -236,10 +229,14 @@ class rightbtc (Exchange):
     def fetch_ticker(self, symbol, params={}):
         self.load_markets()
         market = self.market(symbol)
-        response = self.publicGetTickerTradingPair(self.extend({
+        request = {
             'trading_pair': market['id'],
-        }, params))
-        return self.parse_ticker(response['result'], market)
+        }
+        response = self.publicGetTickerTradingPair(self.extend(request, params))
+        result = self.safe_value(response, 'result')
+        if not result:
+            raise ExchangeError(self.id + ' fetchTicker returned an empty response for symbol ' + symbol)
+        return self.parse_ticker(result, market)
 
     def fetch_tickers(self, symbols=None, params={}):
         self.load_markets()
@@ -418,8 +415,11 @@ class rightbtc (Exchange):
         market = self.market(symbol)
         order = {
             'trading_pair': market['id'],
-            'quantity': int(amount * 1e8),
-            'limit': int(price * 1e8),
+            # We need to use decimalToPrecision here, since
+            #   0.036*1e8 == 3599999.9999999995
+            # which would get truncated to 3599999 after int// which would then be rejected by rightBtc because it's too precise
+            'quantity': int(self.decimal_to_precision(amount * 1e8, ROUND, 0, self.precisionMode)),
+            'limit': int(self.decimal_to_precision(price * 1e8, ROUND, 0, self.precisionMode)),
             'type': type.upper(),
             'side': side.upper(),
         }
@@ -431,10 +431,11 @@ class rightbtc (Exchange):
             raise ArgumentsRequired(self.id + ' cancelOrder requires a symbol argument')
         self.load_markets()
         market = self.market(symbol)
-        response = self.traderDeleteOrderTradingPairIds(self.extend({
+        request = {
             'trading_pair': market['id'],
             'ids': id,
-        }, params))
+        }
+        response = self.traderDeleteOrderTradingPairIds(self.extend(request, params))
         return response
 
     def parse_order_status(self, status):
@@ -443,9 +444,7 @@ class rightbtc (Exchange):
             'TRADE': 'closed',  # TRADE means filled or partially filled orders
             'CANCEL': 'canceled',
         }
-        if status in statuses:
-            return statuses[status]
-        return status
+        return self.safe_string(statuses, status, status)
 
     def parse_order(self, order, market=None):
         #
@@ -492,8 +491,7 @@ class rightbtc (Exchange):
             timestamp = order['time']
         elif 'transactTime' in order:
             timestamp = order['transactTime']
-        price = self.safe_float(order, 'limit')
-        price = self.safe_float(order, 'price', price)
+        price = self.safe_float_2(order, 'limit', 'price')
         if price is not None:
             price = price / 1e8
         amount = self.divide_safe_float(order, 'quantity', 1e8)
@@ -524,7 +522,7 @@ class rightbtc (Exchange):
                 'currency': feeCurrency,
             }
         trades = None
-        result = {
+        return {
             'info': order,
             'id': id,
             'timestamp': timestamp,
@@ -542,7 +540,6 @@ class rightbtc (Exchange):
             'fee': fee,
             'trades': trades,
         }
-        return result
 
     def fetch_order(self, id, symbol=None, params={}):
         if symbol is None:
@@ -616,7 +613,7 @@ class rightbtc (Exchange):
     def fetch_orders(self, symbol=None, since=None, limit=None, params={}):
         ids = self.safe_string(params, 'ids')
         if (symbol is None) or (ids is None):
-            raise ExchangeError(self.id + " fetchOrders requires a 'symbol' argument and an extra 'ids' parameter. The 'ids' should be an array or a string of one or more order ids separated with slashes.")  # eslint-disable-line quotes
+            raise ArgumentsRequired(self.id + " fetchOrders requires a 'symbol' argument and an extra 'ids' parameter. The 'ids' should be an array or a string of one or more order ids separated with slashes.")  # eslint-disable-line quotes
         if isinstance(ids, list):
             ids = '/'.join(ids)
         self.load_markets()
@@ -655,10 +652,11 @@ class rightbtc (Exchange):
             raise ArgumentsRequired(self.id + ' fetchMyTrades requires a symbol argument')
         self.load_markets()
         market = self.market(symbol)
-        response = self.traderGetHistorysTradingPairPage(self.extend({
+        request = {
             'trading_pair': market['id'],
             'page': 0,
-        }, params))
+        }
+        response = self.traderGetHistorysTradingPairPage(self.extend(request, params))
         #
         # response = {
         #         "status": {
@@ -709,23 +707,19 @@ class rightbtc (Exchange):
                 headers['Content-Type'] = 'application/json'
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, httpCode, reason, url, method, headers, body):
-        if not isinstance(body, basestring):
+    def handle_errors(self, httpCode, reason, url, method, headers, body, response):
+        if response is None:
             return  # fallback to default error handler
-        if len(body) < 2:
-            return  # fallback to default error handler
-        if (body[0] == '{') or (body[0] == '['):
-            response = json.loads(body)
-            status = self.safe_value(response, 'status')
-            if status is not None:
-                #
-                #     {"status":{"success":0,"message":"ERR_USERTOKEN_NOT_FOUND"}}
-                #
-                success = self.safe_string(status, 'success')
-                if success != '1':
-                    message = self.safe_string(status, 'message')
-                    feedback = self.id + ' ' + self.json(response)
-                    exceptions = self.exceptions
-                    if message in exceptions:
-                        raise exceptions[message](feedback)
-                    raise ExchangeError(feedback)
+        status = self.safe_value(response, 'status')
+        if status is not None:
+            #
+            #     {"status":{"success":0,"message":"ERR_USERTOKEN_NOT_FOUND"}}
+            #
+            success = self.safe_string(status, 'success')
+            if success != '1':
+                message = self.safe_string(status, 'message')
+                feedback = self.id + ' ' + self.json(response)
+                exceptions = self.exceptions
+                if message in exceptions:
+                    raise exceptions[message](feedback)
+                raise ExchangeError(feedback)

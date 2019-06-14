@@ -3,7 +3,6 @@
 /*  ------------------------------------------------------------------------ */
 
 const functions = require ('./functions')
-    , Market    = require ('./Market')
 
 const {
     isNode
@@ -11,6 +10,7 @@ const {
     , values
     , deepExtend
     , extend
+    , clone
     , flatten
     , unique
     , indexBy
@@ -23,6 +23,11 @@ const {
     , throttle
     , capitalize
     , now
+    , microseconds
+    , seconds
+    , iso8601
+    , parse8601
+    , parseDate
     , sleep
     , timeout
     , TimedOut
@@ -40,7 +45,7 @@ const {
 
 const { TRUNCATE, ROUND, DECIMAL_PLACES } = functions.precisionConstants
 
-const defaultFetch = typeof (fetch) === "undefined" ? require ('fetch-ponyfill') ().fetch : fetch
+const defaultFetch = typeof (fetch) === "undefined" ? require ('../static_dependencies/fetch-ponyfill/fetch-node') ().fetch : fetch
 
 // ----------------------------------------------------------------------------
 // web3 / 0x imports
@@ -61,26 +66,9 @@ try {
 } catch (e) {
 }
 
-const journal = undefined // isNode && require ('./journal') // stub until we get a better solution for Webpack and React
-
 /*  ------------------------------------------------------------------------ */
 
 module.exports = class Exchange {
-
-    getMarket (symbol) {
-
-        if (!this.marketClasses)
-            this.marketClasses = {}
-
-        let marketClass = this.marketClasses[symbol]
-
-        if (marketClass)
-            return marketClass
-
-        marketClass = new Market (this, symbol)
-        this.marketClasses[symbol] = marketClass // only one Market instance per market
-        return marketClass
-    }
 
     describe () {
         return {
@@ -91,15 +79,14 @@ module.exports = class Exchange {
             'rateLimit': 2000, // milliseconds = seconds * 1000
             'certified': false,
             'has': {
-                'CORS': false,
-                'publicAPI': true,
-                'privateAPI': true,
+                'cancelAllOrders': false,
                 'cancelOrder': true,
                 'cancelOrders': false,
+                'CORS': false,
                 'createDepositAddress': false,
-                'createOrder': true,
-                'createMarketOrder': true,
                 'createLimitOrder': true,
+                'createMarketOrder': true,
+                'createOrder': true,
                 'deposit': false,
                 'editOrder': 'emulated',
                 'fetchBalance': true,
@@ -110,6 +97,7 @@ module.exports = class Exchange {
                 'fetchDeposits': false,
                 'fetchFundingFees': false,
                 'fetchL2OrderBook': true,
+                'fetchLedger': false,
                 'fetchMarkets': true,
                 'fetchMyTrades': false,
                 'fetchOHLCV': 'emulated',
@@ -121,10 +109,13 @@ module.exports = class Exchange {
                 'fetchTicker': true,
                 'fetchTickers': false,
                 'fetchTrades': true,
+                'fetchTradingFee': false,
                 'fetchTradingFees': false,
                 'fetchTradingLimits': false,
                 'fetchTransactions': false,
                 'fetchWithdrawals': false,
+                'privateAPI': true,
+                'publicAPI': true,
                 'withdraw': false,
             },
             'urls': {
@@ -144,6 +135,7 @@ module.exports = class Exchange {
                 'twofa':      false, // 2-factor authentication (one-time password key)
                 'privateKey': false, // a "0x"-prefixed hexstring private key for a wallet
                 'walletAddress': false, // the wallet address "0x"-prefixed hexstring
+                'token':      false, // reserved for HTTP auth in some cases
             },
             'markets': undefined, // to be filled manually or by fetchMarkets
             'currencies': {}, // to be filled manually or by fetchMarkets
@@ -162,7 +154,6 @@ module.exports = class Exchange {
                     'deposit': {},
                 },
             },
-            'parseJsonResponse': true, // whether a reply is required to be in JSON or not
             'skipJsonOnStatusCodes': [], // array of http status codes which override requirement for JSON response
             'exceptions': undefined,
             'httpExceptions': {
@@ -178,6 +169,7 @@ module.exports = class Exchange {
                 '521': ExchangeNotAvailable,
                 '522': ExchangeNotAvailable,
                 '525': ExchangeNotAvailable,
+                '526': ExchangeNotAvailable,
                 '400': ExchangeNotAvailable,
                 '403': ExchangeNotAvailable,
                 '405': ExchangeNotAvailable,
@@ -197,8 +189,24 @@ module.exports = class Exchange {
                 'XBT': 'BTC',
                 'BCC': 'BCH',
                 'DRK': 'DASH',
+                'BCHABC': 'BCH',
+                'BCHSV': 'BSV',
             },
             'precisionMode': DECIMAL_PLACES,
+            'limits': {
+                'amount': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+                'price': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+                'cost': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+            },
         } // return
     } // describe ()
 
@@ -229,66 +237,11 @@ module.exports = class Exchange {
         this.proxy = ''
         this.origin = '*' // CORS origin
 
-        this.iso8601 = (timestamp) => {
-            const _timestampNumber = parseInt (timestamp, 10);
-
-            // undefined, null and lots of nasty non-numeric values yield NaN
-            if (isNaN (_timestampNumber) || _timestampNumber < 0) {
-                return undefined;
-            }
-
-            // last line of defence
-            try {
-                return new Date (_timestampNumber).toISOString ();
-            } catch (e) {
-                return undefined;
-            }
-        }
-
-        this.parse8601 = (x) => {
-            if (typeof x !== 'string' || !x) {
-                return undefined;
-            }
-
-            if (x.match (/^[0-9]+$/)) {
-                // a valid number in a string, not a date.
-                return undefined;
-            }
-
-            if (x.indexOf ('-') < 0 || x.indexOf (':') < 0) { // no date can be without a dash and a colon
-                return undefined;
-            }
-
-            // last line of defence
-            try {
-                const candidate = Date.parse (((x.indexOf ('+') >= 0) || (x.slice (-1) === 'Z')) ? x : (x + 'Z').replace (/\s(\d\d):/, 'T$1:'));
-                if (isNaN (candidate)) {
-                    return undefined;
-                }
-                return candidate;
-            } catch (e) {
-                return undefined;
-            }
-        }
-
-        this.parseDate = (x) => {
-            if (typeof x !== 'string' || !x) {
-                return undefined;
-            }
-
-            if (x.indexOf ('GMT') >= 0) {
-                try {
-                    return Date.parse (x);
-                } catch (e) {
-                    return undefined;
-                }
-            }
-
-            return this.parse8601 (x);
-        }
-
-        this.microseconds     = () => now () * 1000 // TODO: utilize performance.now for that purpose
-        this.seconds          = () => Math.floor (now () / 1000)
+        this.iso8601       = iso8601
+        this.parse8601    = parse8601
+        this.parseDate    = parseDate
+        this.microseconds = microseconds
+        this.seconds      = seconds
 
         this.minFundingAddressLength = 1 // used in checkAddress
         this.substituteCommonCurrencyCodes = true  // reserved
@@ -299,9 +252,8 @@ module.exports = class Exchange {
         this.timeout       = 10000 // milliseconds
         this.verbose       = false
         this.debug         = false
-        this.journal       = 'debug.json'
         this.userAgent     = undefined
-        this.twofa         = false // two-factor authentication (2FA)
+        this.twofa         = undefined // two-factor authentication (2FA)
 
         this.apiKey        = undefined
         this.secret        = undefined
@@ -310,6 +262,7 @@ module.exports = class Exchange {
         this.password      = undefined
         this.privateKey    = undefined // a "0x"-prefixed hexstring private key for a wallet
         this.walletAddress = undefined // a wallet address "0x"-prefixed hexstring
+        this.token         = undefined // reserved for HTTP auth in some cases
 
         this.balance     = {}
         this.orderbooks  = {}
@@ -319,6 +272,7 @@ module.exports = class Exchange {
         this.transactions = {}
 
         this.requiresWeb3 = false
+        this.precision = {}
 
         this.enableLastJsonResponse = true
         this.enableLastHttpResponse = true
@@ -359,12 +313,9 @@ module.exports = class Exchange {
         if (this.markets)
             this.setMarkets (this.markets)
 
-        if (this.debug && journal) {
-            journal (() => this.journal, this, Object.keys (this.has))
-        }
-
         if (this.requiresWeb3 && !this.web3 && Web3) {
-            this.web3 = new Web3 (new Web3.providers.HttpProvider ())
+            const provider = (this.web3ProviderURL) ? new Web3.providers.HttpProvider (this.web3ProviderURL) : new Web3.providers.HttpProvider ()
+            this.web3 = new Web3 (Web3.givenProvider || provider)
         }
     }
 
@@ -384,10 +335,15 @@ module.exports = class Exchange {
         return encodeURIComponent (...args)
     }
 
-    checkRequiredCredentials () {
+    checkRequiredCredentials (error = true) {
         Object.keys (this.requiredCredentials).forEach ((key) => {
-            if (this.requiredCredentials[key] && !this[key])
-                throw new AuthenticationError (this.id + ' requires `' + key + '`')
+            if (this.requiredCredentials[key] && !this[key]) {
+                if (error) {
+                    throw new AuthenticationError (this.id + ' requires `' + key + '` credential')
+                } else {
+                    return error
+                }
+            }
         })
     }
 
@@ -424,8 +380,22 @@ module.exports = class Exchange {
             // TypeError Failed to execute 'fetch' on 'Window': Illegal invocation
             const fetchImplementation = this.fetchImplementation
 
+            const params = { method, headers, body, timeout: this.timeout }
+
+            if (this.httpAgent && url.indexOf ('http://') === 0) {
+                params['agent'] = this.httpAgent;
+            } else if (this.httpsAgent && url.indexOf ('https://') === 0) {
+                params['agent'] = this.httpsAgent;
+            } else if (this.agent) {
+                const [ protocol, ... rest ] = url.split ('//')
+                // this.agent.protocol contains a colon ('https:' or 'http:')
+                if (protocol === this.agent.protocol) {
+                    params['agent'] = this.agent;
+                }
+            }
+
             let promise =
-                fetchImplementation (url, this.extend ({ method, headers, body, 'agent': this.agent || null, timeout: this.timeout }, this.fetchOptions))
+                fetchImplementation (url, this.extend (params, this.fetchOptions))
                     .catch (e => {
                         if (isNode)
                             throw new ExchangeNotAvailable ([ this.id, method, url, e.type, e.message ].join (' '))
@@ -438,6 +408,28 @@ module.exports = class Exchange {
                     throw new RequestTimeout (this.id + ' ' + method + ' ' + url + ' request timed out (' + this.timeout + ' ms)')
                 throw e
             })
+        }
+    }
+
+    setSandboxMode (enabled) {
+        if (!!enabled) {
+            if ('test' in this.urls) {
+                if (typeof this.urls['api'] === 'string') {
+                    this.urls['api_backup'] = this.urls['api']
+                    this.urls['api'] = this.urls['test']
+                } else {
+                    this.urls['api_backup'] = clone (this.urls['api'])
+                    this.urls['api'] = clone (this.urls['test'])
+                }
+            } else {
+                throw new NotSupported (this.id + ' does not have a sandbox URL')
+            }
+        } else if ('api_backup' in this.urls) {
+            if (typeof this.urls['api'] === 'string') {
+                this.urls['api'] = this.urls['api_backup']
+            } else {
+                this.urls['api'] = clone (this.urls['api_backup'])
+            }
         }
     }
 
@@ -526,10 +518,14 @@ module.exports = class Exchange {
         return this.fetch2 (path, type, method, params, headers, body)
     }
 
-    parseJson (response, responseBody, url, method) {
+    parseJson (jsonString) {
+        return JSON.parse (jsonString)
+    }
+
+    parseRestResponse (response, responseBody, url, method) {
         try {
 
-            return (responseBody.length > 0) ? JSON.parse (responseBody) : {} // empty object for empty body
+            return (responseBody.length > 0) ? this.parseJson (responseBody) : {} // empty object for empty body
 
         } catch (e) {
 
@@ -572,7 +568,7 @@ module.exports = class Exchange {
         return undefined;
     }
 
-    handleErrors (statusCode, statusText, url, method, responseHeaders, responseBody, json) {
+    handleErrors (statusCode, statusText, url, method, responseHeaders, responseBody, response) {
         // override me
     }
 
@@ -603,10 +599,6 @@ module.exports = class Exchange {
         throw new error ([ this.id, method, url, code, reason, details ].join (' '))
     }
 
-    parseIfJsonEncodedObject (input) {
-        return (this.isJsonEncodedObject (input) ? JSON.parse (input) : input)
-    }
-
     isJsonEncodedObject (object) {
         return ((typeof object === 'string') &&
                 (object.length >= 2) &&
@@ -626,8 +618,8 @@ module.exports = class Exchange {
 
         return response.text ().then ((responseBody) => {
 
-            let jsonRequired = this.parseJsonResponse && !this.skipJsonOnStatusCodes.includes (response.status)
-            let json = jsonRequired ? this.parseJson (response, responseBody, url, method) : undefined
+            const shouldParseJson = this.isJsonEncodedObject (responseBody) && !this.skipJsonOnStatusCodes.includes (response.status)
+            const json = shouldParseJson ? this.parseRestResponse (response, responseBody, url, method) : undefined
 
             let responseHeaders = this.getResponseHeaders (response)
 
@@ -650,7 +642,7 @@ module.exports = class Exchange {
             this.handleErrors (...args)
             this.defaultErrorHandler (response, responseBody, url, method)
 
-            return jsonRequired ? json : responseBody
+            return json || responseBody
         })
     }
 
@@ -695,19 +687,33 @@ module.exports = class Exchange {
         return this.markets
     }
 
-    async loadMarkets (reload = false) {
+    async loadMarkets (reload = false, params = {}) {
         if (!reload && this.markets) {
             if (!this.markets_by_id) {
                 return this.setMarkets (this.markets)
             }
             return this.markets
         }
-        const markets = await this.fetchMarkets ()
         let currencies = undefined
         if (this.has.fetchCurrencies) {
             currencies = await this.fetchCurrencies ()
         }
+        const markets = await this.fetchMarkets (params)
         return this.setMarkets (markets, currencies)
+    }
+
+    async loadAccounts (reload = false, params = {}) {
+        if (reload) {
+            this.accounts = await this.fetchAccounts (params)
+        } else {
+            if (this.accounts) {
+                return this.accounts
+            } else {
+                this.accounts = await this.fetchAccounts (params)
+            }
+        }
+        this.accountsById = this.indexBy (this.accounts, 'id')
+        return this.accounts
     }
 
     fetchBidsAsks (symbols = undefined, params = {}) {
@@ -826,7 +832,7 @@ module.exports = class Exchange {
         return new Promise ((resolve, reject) => resolve (this.currencies));
     }
 
-    fetchMarkets () {
+    fetchMarkets (params = {}) {
         // markets are returned as a list
         // currencies are returned as a dict
         // this is for historical reasons
@@ -1054,6 +1060,17 @@ module.exports = class Exchange {
         return this.fetchPartialBalance ('total', params)
     }
 
+    async fetchTradingFees (params = {}) {
+        throw new NotSupported (this.id + ' fetchTradingFees not supported yet')
+    }
+
+    async fetchTradingFee (symbol, params = {}) {
+        if (!this.has['fetchTradingFees']) {
+            throw new NotSupported (this.id + ' fetchTradingFee not supported yet')
+        }
+        return await this.fetchTradingFees (params)
+    }
+
     async loadTradingLimits (symbols = undefined, reload = false, params = {}) {
         if (this.has['fetchTradingLimits']) {
             if (reload || !('limitsLoaded' in this.options)) {
@@ -1118,25 +1135,62 @@ module.exports = class Exchange {
         return indexed ? indexBy (result, key) : result
     }
 
-    parseTrades (trades, market = undefined, since = undefined, limit = undefined) {
-        let result = Object.values (trades || []).map (trade => this.parseTrade (trade, market))
+    parseTrades (trades, market = undefined, since = undefined, limit = undefined, params = {}) {
+        // this code is commented out temporarily to catch for exchange-specific errors
+        // if (!this.isArray (trades)) {
+        //     throw new ExchangeError (this.id + ' parseTrades expected an array in the trades argument, but got ' + typeof trades);
+        // }
+        let result = Object.values (trades || []).map (trade => this.extend (this.parseTrade (trade, market), params))
         result = sortBy (result, 'timestamp')
         let symbol = (market !== undefined) ? market['symbol'] : undefined
         return this.filterBySymbolSinceLimit (result, symbol, since, limit)
     }
 
-    parseTransactions (transactions, currency = undefined, since = undefined, limit = undefined) {
-        let result = Object.values (transactions || []).map (transaction => this.parseTransaction (transaction, currency))
+    parseTransactions (transactions, currency = undefined, since = undefined, limit = undefined, params = {}) {
+        // this code is commented out temporarily to catch for exchange-specific errors
+        // if (!this.isArray (transactions)) {
+        //     throw new ExchangeError (this.id + ' parseTransactions expected an array in the transactions argument, but got ' + typeof transactions);
+        // }
+        let result = Object.values (transactions || []).map (transaction => this.extend (this.parseTransaction (transaction, currency), params))
         result = this.sortBy (result, 'timestamp');
         let code = (currency !== undefined) ? currency['code'] : undefined;
         return this.filterByCurrencySinceLimit (result, code, since, limit);
     }
 
-    parseOrders (orders, market = undefined, since = undefined, limit = undefined) {
-        let result = Object.values (orders).map (order => this.parseOrder (order, market))
+    parseLedger (data, currency = undefined, since = undefined, limit = undefined, params = {}) {
+        let result = [];
+        let array = Object.values (data || []);
+        for (let i = 0; i < array.length; i++) {
+            result.push (this.extend (this.parseLedgerEntry (array[i], currency), params));
+        }
+        result = this.sortBy (result, 'timestamp');
+        let code = (currency !== undefined) ? currency['code'] : undefined;
+        return this.filterByCurrencySinceLimit (result, code, since, limit);
+    }
+
+    parseOrders (orders, market = undefined, since = undefined, limit = undefined, params = {}) {
+        // this code is commented out temporarily to catch for exchange-specific errors
+        // if (!this.isArray (orders)) {
+        //     throw new ExchangeError (this.id + ' parseOrders expected an array in the orders argument, but got ' + typeof orders);
+        // }
+        let result = Object.values (orders).map (order => this.extend (this.parseOrder (order, market), params))
         result = sortBy (result, 'timestamp')
         let symbol = (market !== undefined) ? market['symbol'] : undefined
         return this.filterBySymbolSinceLimit (result, symbol, since, limit)
+    }
+
+    safeCurrencyCode (data, key, currency = undefined) {
+        let code = undefined;
+        let currencyId = this.safeString (data, key);
+        if (currencyId in this.currencies_by_id) {
+            currency = this.currencies_by_id[currencyId];
+        } else {
+            code = this.commonCurrencyCode (currencyId);
+        }
+        if (currency !== undefined) {
+            code = currency['code'];
+        }
+        return code;
     }
 
     filterBySymbol (array, symbol = undefined) {
@@ -1148,7 +1202,11 @@ module.exports = class Exchange {
     }
 
     parseOHLCVs (ohlcvs, market = undefined, timeframe = '1m', since = undefined, limit = undefined) {
-        ohlcvs = Object.values (ohlcvs)
+        // this code is commented out temporarily to catch for exchange-specific errors
+        // if (!this.isArray (ohlcvs)) {
+        //     throw new ExchangeError (this.id + ' parseOHLCVs expected an array in the ohlcvs argument, but got ' + typeof ohlcvs);
+        // }
+        ohlcvs = Object.values (ohlcvs || [])
         let result = []
         for (let i = 0; i < ohlcvs.length; i++) {
             if (limit && (result.length >= limit))
@@ -1276,10 +1334,13 @@ module.exports = class Exchange {
 
     // ------------------------------------------------------------------------
     // web3 / 0x methods
+    static hasWeb3 () {
+        return Web3 && ethUtil && ethAbi && BigNumber
+    }
 
     checkRequiredDependencies () {
-        if (!Web3 || !ethUtil || !ethAbi || !BigNumber) {
-            throw new ExchangeError ('The following npm modules are required:\nnpm install web3 ethereumjs-util ethereumjs-abi bignumber.js --no-save');
+        if (!Exchange.hasWeb3 ()) {
+            throw new ExchangeError ("The following npm modules are required:\nnpm install web3 ethereumjs-util ethereumjs-abi bignumber.js --no-save");
         }
     }
 
@@ -1402,6 +1463,75 @@ module.exports = class Exchange {
         ]);
     }
 
+    getZeroExOrderHashV2 (order) {
+        // https://github.com/0xProject/0x-monorepo/blob/development/python-packages/order_utils/src/zero_ex/order_utils/__init__.py
+        const addressPadding = '000000000000000000000000';
+        const header = '1901';
+        const domainStructHeader = '91ab3d17e3a50a9d89e63fd30b92be7f5336b03b287bb946787a83a9d62a2766f0f24618f4c4be1e62e026fb039a20ef96f4495294817d1027ffaa6d1f70e61ead7c5bef027816a800da1736444fb58a807ef4c9603b7848673f7e3a68eb14a5';
+        const orderSchemaHash = '770501f88a26ede5c04a20ef877969e961eb11fc13b78aaf414b633da0d4f86f';
+
+        const domainStructHash = ethAbi.soliditySHA3 (
+            [
+                'bytes',
+                'bytes',
+                'address'
+            ],
+            [
+                Buffer.from (domainStructHeader, 'hex'),
+                Buffer.from (addressPadding, 'hex'),
+                order['exchangeAddress']
+            ]
+        );
+        const orderStructHash = ethAbi.soliditySHA3 (
+            [
+                'bytes',
+                'bytes',
+                'address',
+                'bytes',
+                'address',
+                'bytes',
+                'address',
+                'bytes',
+                'address',
+                'uint256',
+                'uint256',
+                'uint256',
+                'uint256',
+                'uint256',
+                'uint256',
+                'string',
+                'string'
+            ],
+            [
+                Buffer.from (orderSchemaHash, 'hex'),
+                Buffer.from (addressPadding, 'hex'),
+                order['makerAddress'],
+                Buffer.from (addressPadding, 'hex'),
+                order['takerAddress'],
+                Buffer.from (addressPadding, 'hex'),
+                order['feeRecipientAddress'],
+                Buffer.from (addressPadding, 'hex'),
+                order['senderAddress'],
+                order['makerAssetAmount'],
+                order['takerAssetAmount'],
+                order['makerFee'],
+                order['takerFee'],
+                order['expirationTimeSeconds'],
+                order['salt'],
+                ethUtil.keccak (Buffer.from (order['makerAssetData'].slice(2), 'hex')),
+                ethUtil.keccak (Buffer.from (order['takerAssetData'].slice(2), 'hex')),
+            ]
+        );
+
+        return '0x' + ethUtil.keccak (
+            Buffer.concat ([
+                Buffer.from (header, 'hex'),
+                domainStructHash,
+                orderStructHash
+            ])
+        ).toString ('hex');
+    }
+
     signZeroExOrder (order, privateKey) {
         const orderHash = this.getZeroExOrderHash (order);
         const signature = this.signMessage (orderHash, privateKey);
@@ -1409,6 +1539,29 @@ module.exports = class Exchange {
             'orderHash': orderHash,
             'ecSignature': signature, // todo fix v if needed
         })
+    }
+
+    signZeroExOrderV2 (order, privateKey) {
+        const orderHash = this.getZeroExOrderHashV2 (order);
+        const signature = this.signMessage (orderHash, privateKey);
+        return this.extend (order, {
+            'orderHash': orderHash,
+            'signature': this.convertECSignatureToSignatureHex(signature),
+        })
+    }
+
+    convertECSignatureToSignatureHex (signature) {
+        // https://github.com/0xProject/0x-monorepo/blob/development/packages/order-utils/src/signature_utils.ts
+        let v = signature.v;
+        if (v !== 27 && v !== 28) {
+            v = v + 27;
+        }
+        const signatureBuffer = Buffer.concat ([
+            ethUtil.toBuffer (v),
+            ethUtil.toBuffer (signature.r),
+            ethUtil.toBuffer (signature.s)
+        ])
+        return '0x' + signatureBuffer.toString ('hex') + '03';
     }
 
     hashMessage (message) {
@@ -1466,5 +1619,13 @@ module.exports = class Exchange {
     signMessage2 (message, privateKey) {
         // an alternative to signMessage using ethUtil (ethereumjs-util) instead of web3
         return this.signHash (this.hashMessage (message), privateKey.slice (-64))
+    }
+
+    oath () {
+        if (typeof this.twofa !== 'undefined') {
+            return this.totp (this.twofa)
+        } else {
+            throw new ExchangeError (this.id + ' this.twofa has not been set')
+        }
     }
 }

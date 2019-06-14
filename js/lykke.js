@@ -17,7 +17,7 @@ module.exports = class lykke extends Exchange {
             'has': {
                 'CORS': false,
                 'fetchOHLCV': false,
-                'fetchTrades': false,
+                'fetchTrades': true,
                 'fetchOpenOrders': true,
                 'fetchClosedOrders': true,
                 'fetchOrder': true,
@@ -50,6 +50,7 @@ module.exports = class lykke extends Exchange {
                 'mobile': {
                     'get': [
                         'Market/{market}',
+                        'Trades/{AssetPairId}',
                     ],
                 },
                 'public': {
@@ -93,6 +94,68 @@ module.exports = class lykke extends Exchange {
                 },
             },
         });
+    }
+
+    parseTrade (trade, market) {
+        //
+        //  public fetchTrades
+        //
+        //   {
+        //     "id": "d5983ab8-e9ec-48c9-bdd0-1b18f8e80a71",
+        //     "assetPairId": "BTCUSD",
+        //     "dateTime": "2019-05-15T06:52:02.147Z",
+        //     "volume": 0.00019681,
+        //     "index": 0,
+        //     "price": 8023.333,
+        //     "action": "Buy"
+        //   }
+        //
+        let symbol = undefined;
+        if (market === undefined) {
+            let marketId = this.safeString (trade, 'AssetPairId');
+            market = this.safeValue (this.markets_by_id, marketId);
+        }
+        if (market) {
+            symbol = market['symbol'];
+        }
+        const id = this.safeString (trade, 'id');
+        const timestamp = this.parse8601 (this.safeString (trade, 'dateTime'));
+        let side = this.safeString (trade, 'action');
+        if (side !== undefined) {
+            side = side.toLowerCase ();
+        }
+        const price = this.safeFloat (trade, 'price');
+        const amount = this.safeFloat (trade, 'volume');
+        const cost = price * amount;
+        return {
+            'id': id,
+            'info': trade,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'symbol': symbol,
+            'type': undefined,
+            'order': undefined,
+            'side': side,
+            'price': price,
+            'amount': amount,
+            'cost': cost,
+            'fee': undefined,
+        };
+    }
+
+    async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        const market = this.market (symbol);
+        if (limit === undefined) {
+            limit = 100;
+        }
+        const request = {
+            'AssetPairId': market['id'],
+            'skip': 0,
+            'take': limit,
+        };
+        const response = await this.mobileGetTradesAssetPairId (this.extend (request, params));
+        return this.parseTrades (response, market, since, limit);
     }
 
     async fetchBalance (params = {}) {
@@ -139,7 +202,7 @@ module.exports = class lykke extends Exchange {
         };
     }
 
-    async fetchMarkets () {
+    async fetchMarkets (params = {}) {
         let markets = await this.publicGetAssetPairs ();
         //
         //     [ {                Id: "AEBTC",
@@ -200,11 +263,12 @@ module.exports = class lykke extends Exchange {
     }
 
     parseTicker (ticker, market = undefined) {
-        let timestamp = this.milliseconds ();
+        const timestamp = this.milliseconds ();
         let symbol = undefined;
-        if (market)
+        if (market) {
             symbol = market['symbol'];
-        let close = parseFloat (ticker['lastPrice']);
+        }
+        const close = parseFloat (ticker['lastPrice']);
         return {
             'symbol': symbol,
             'timestamp': timestamp,
@@ -250,14 +314,15 @@ module.exports = class lykke extends Exchange {
     }
 
     parseOrder (order, market = undefined) {
-        let status = this.parseOrderStatus (this.safeString (order, 'Status'));
+        const status = this.parseOrderStatus (this.safeString (order, 'Status'));
         let symbol = undefined;
         if (market === undefined) {
             let marketId = this.safeString (order, 'AssetPairId');
             market = this.safeValue (this.markets_by_id, marketId);
         }
-        if (market)
+        if (market) {
             symbol = market['symbol'];
+        }
         let lastTradeTimestamp = this.parse8601 (this.safeString (order, 'LastMatchTime'));
         let timestamp = undefined;
         if (('Registered' in order) && (order['Registered'])) {
@@ -265,14 +330,15 @@ module.exports = class lykke extends Exchange {
         } else if (('CreatedAt' in order) && (order['CreatedAt'])) {
             timestamp = this.parse8601 (order['CreatedAt']);
         }
-        let price = this.safeFloat (order, 'Price');
-        let amount = this.safeFloat (order, 'Volume');
-        let remaining = this.safeFloat (order, 'RemainingVolume');
-        let filled = amount - remaining;
-        let cost = filled * price;
-        let result = {
+        const price = this.safeFloat (order, 'Price');
+        const amount = this.safeFloat (order, 'Volume');
+        const remaining = this.safeFloat (order, 'RemainingVolume');
+        const filled = amount - remaining;
+        const cost = filled * price;
+        const id = this.safeString (order, 'Id');
+        return {
             'info': order,
-            'id': order['Id'],
+            'id': id,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
             'lastTradeTimestamp': lastTradeTimestamp,
@@ -288,7 +354,6 @@ module.exports = class lykke extends Exchange {
             'status': status,
             'fee': undefined,
         };
-        return result;
     }
 
     async fetchOrder (id, symbol = undefined, params = {}) {
@@ -346,32 +411,42 @@ module.exports = class lykke extends Exchange {
     }
 
     parseBidAsk (bidask, priceKey = 0, amountKey = 1) {
-        let price = parseFloat (bidask[priceKey]);
-        let amount = parseFloat (bidask[amountKey]);
-        if (amount < 0)
+        const price = this.safeFloat (bidask, priceKey);
+        let amount = this.safeFloat (bidask, amountKey);
+        if (amount < 0) {
             amount = -amount;
+        }
         return [ price, amount ];
     }
 
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let url = this.urls['api'][api] + '/' + this.implodeParams (path, params);
         let query = this.omit (params, this.extractParams (path));
-        if (api === 'public') {
-            if (Object.keys (query).length)
+        if (api === 'mobile') {
+            if (Object.keys (query).length) {
                 url += '?' + this.urlencode (query);
+            }
+        } else if (api === 'public') {
+            if (Object.keys (query).length) {
+                url += '?' + this.urlencode (query);
+            }
         } else if (api === 'private') {
-            if (method === 'GET')
-                if (Object.keys (query).length)
+            if (method === 'GET') {
+                if (Object.keys (query).length) {
                     url += '?' + this.urlencode (query);
+                }
+            }
             this.checkRequiredCredentials ();
             headers = {
                 'api-key': this.apiKey,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             };
-            if (method === 'POST')
-                if (Object.keys (params).length)
+            if (method === 'POST') {
+                if (Object.keys (params).length) {
                     body = this.json (params);
+                }
+            }
         }
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }

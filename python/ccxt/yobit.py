@@ -4,11 +4,9 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.liqui import liqui
-import json
 from ccxt.base.errors import ExchangeError
+from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import InsufficientFunds
-from ccxt.base.errors import InvalidOrder
-from ccxt.base.errors import DDoSProtection
 
 
 class yobit (liqui):
@@ -23,6 +21,10 @@ class yobit (liqui):
             'has': {
                 'createDepositAddress': True,
                 'fetchDepositAddress': True,
+                'fetchDeposits': False,
+                'fetchWithdrawals': False,
+                'fetchTransactions': False,
+                'fetchTickers': False,
                 'CORS': False,
                 'withdraw': True,
             },
@@ -138,6 +140,14 @@ class yobit (liqui):
             },
             'options': {
                 'fetchOrdersRequiresSymbol': True,
+                'fetchTickersMaxLength': 512,
+            },
+            'exceptions': {
+                'broad': {
+                    'Total transaction amount': ExchangeError,  # {"success": 0, "error": "Total transaction amount is less than minimal total: 0.00010000"}
+                    'Insufficient funds': InsufficientFunds,
+                    'invalid key': AuthenticationError,
+                },
             },
         })
 
@@ -148,13 +158,11 @@ class yobit (liqui):
             '2': 'canceled',
             '3': 'open',  # or partially-filled and closed? https://github.com/ccxt/ccxt/issues/1594
         }
-        if status in statuses:
-            return statuses[status]
-        return status
+        return self.safe_string(statuses, status, status)
 
     def fetch_balance(self, params={}):
         self.load_markets()
-        response = self.privatePostGetInfo()
+        response = self.privatePostGetInfo(params)
         balances = response['return']
         result = {'info': balances}
         sides = {'free': 'funds', 'total': 'funds_incl_orders'}
@@ -180,9 +188,10 @@ class yobit (liqui):
         return self.parse_balance(result)
 
     def create_deposit_address(self, code, params={}):
-        response = self.fetch_deposit_address(code, self.extend({
+        request = {
             'need_new': 1,
-        }, params))
+        }
+        response = self.fetch_deposit_address(code, self.extend(request, params))
         address = self.safe_string(response, 'address')
         self.check_address(address)
         return {
@@ -209,33 +218,51 @@ class yobit (liqui):
             'info': response,
         }
 
+    def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
+        self.load_markets()
+        market = None
+        # some derived classes use camelcase notation for request fields
+        request = {
+            # 'from': 123456789,  # trade ID, from which the display starts numerical 0(test result: liqui ignores self field)
+            # 'count': 1000,  # the number of trades for display numerical, default = 1000
+            # 'from_id': trade ID, from which the display starts numerical 0
+            # 'end_id': trade ID on which the display ends numerical ∞
+            # 'order': 'ASC',  # sorting, default = DESC(test result: liqui ignores self field, most recent trade always goes last)
+            # 'since': 1234567890,  # UTC start time, default = 0(test result: liqui ignores self field)
+            # 'end': 1234567890,  # UTC end time, default = ∞(test result: liqui ignores self field)
+            # 'pair': 'eth_btc',  # default = all markets
+        }
+        if symbol is not None:
+            market = self.market(symbol)
+            request['pair'] = market['id']
+        if limit is not None:
+            request['count'] = int(limit)
+        if since is not None:
+            request['since'] = int(since / 1000)
+        method = self.options['fetchMyTradesMethod']
+        response = getattr(self, method)(self.extend(request, params))
+        trades = self.safe_value(response, 'return', {})
+        ids = list(trades.keys())
+        result = []
+        for i in range(0, len(ids)):
+            id = ids[i]
+            trade = self.parse_trade(self.extend(trades[id], {
+                'trade_id': id,
+            }), market)
+            result.append(trade)
+        return self.filter_by_symbol_since_limit(result, symbol, since, limit)
+
     def withdraw(self, code, amount, address, tag=None, params={}):
         self.check_address(address)
         self.load_markets()
         currency = self.currency(code)
-        response = self.privatePostWithdrawCoinsToAddress(self.extend({
+        request = {
             'coinName': currency['id'],
             'amount': amount,
             'address': address,
-        }, params))
+        }
+        response = self.privatePostWithdrawCoinsToAddress(self.extend(request, params))
         return {
             'info': response,
             'id': None,
         }
-
-    def handle_errors(self, code, reason, url, method, headers, body):
-        if body[0] == '{':
-            response = json.loads(body)
-            if 'success' in response:
-                if not response['success']:
-                    if 'error_log' in response:
-                        if response['error_log'].find('Insufficient funds') >= 0:  # not enougTh is a typo inside Liqui's own API...
-                            raise InsufficientFunds(self.id + ' ' + self.json(response))
-                        elif response['error_log'] == 'Requests too often':
-                            raise DDoSProtection(self.id + ' ' + self.json(response))
-                        elif (response['error_log'] == 'not available') or (response['error_log'] == 'external service unavailable'):
-                            raise DDoSProtection(self.id + ' ' + self.json(response))
-                        elif response['error_log'] == 'Total transaction amount':
-                            # eg {"success":0,"error":"Total transaction amount is less than minimal total: 0.00010000"}
-                            raise InvalidOrder(self.id + ' ' + self.json(response))
-                    raise ExchangeError(self.id + ' ' + self.json(response))
