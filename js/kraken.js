@@ -1451,8 +1451,6 @@ module.exports = class kraken extends Exchange {
         let event = this.safeString (msg, 'event');
         let status = this.safeString (msg, 'status');
 
-        console.log('onMessage', data)
-
         if (event === undefined) {
             // channel data
             let chanId = msg[0];
@@ -1469,6 +1467,9 @@ module.exports = class kraken extends Exchange {
             }
             let symbol = channels[chanKey]['symbol'];
             let event = channels[chanKey]['event'];
+
+            // console.log('onMessage', typeof event, event)
+
             if (event === 'ob') {
                 this._websocketHandleOrderBook (contextId, symbol, data);
             } else if (event == 'trade') {
